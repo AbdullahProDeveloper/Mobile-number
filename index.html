@@ -2,269 +2,238 @@
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-  <title>📞 প্রফেশনাল কন্টাক্ট ম্যানেজার | অফলাইন</title>
-  <!-- Font Awesome for icons (offline fallback via CDN is okay, but we embed minimal icons using unicode for full offline) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>📞 প্রিমিয়াম কন্টাক্ট ম্যানেজার | অফলাইন</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- But to ensure offline, we also use emoji as fallback, and the design remains intact if CDN fails -->
   <style>
-    /* ---------- GLOBAL RESET & VARIABLES ---------- */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', 'Noto Sans Bengali', system-ui, -apple-system, sans-serif;
-    }
-
+    /* ========== RESET & VARIABLES ========== */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', 'Noto Sans Bengali', system-ui, -apple-system, sans-serif; }
     :root {
-      --primary: #1e3c72;
-      --primary-light: #2a5298;
-      --accent: #ff7e5f;
-      --bg-light: #f8fafd;
-      --card-bg: #ffffff;
-      --text-dark: #1e293b;
-      --text-muted: #64748b;
+      --primary: #0b1e3a;
+      --primary-light: #1e3a6e;
+      --primary-glow: #2a5298;
+      --accent: #f59e0b;
+      --accent-light: #fbbf24;
+      --bg-gradient: linear-gradient(145deg, #f1f5f9 0%, #e8edf5 100%);
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --glass-border: rgba(255, 255, 255, 0.8);
+      --text-dark: #0f172a;
+      --text-muted: #475569;
       --border-light: #e2e8f0;
-      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.03);
-      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
-      --radius-lg: 20px;
-      --radius-md: 14px;
-      --radius-sm: 10px;
+      --shadow-sm: 0 8px 32px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 20px 60px rgba(0, 0, 0, 0.12);
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
       --success: #10b981;
       --danger: #ef4444;
       --warning: #f59e0b;
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     body {
-      background: var(--bg-light);
+      background: var(--bg-gradient);
       color: var(--text-dark);
-      padding: 16px;
+      padding: 12px;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
+      -webkit-font-smoothing: antialiased;
+      backdrop-filter: blur(4px);
     }
 
-    /* ---------- APP CONTAINER ---------- */
     .app-container {
-      max-width: 1400px;
+      max-width: 1600px;
       width: 100%;
-      background: transparent;
-      border-radius: var(--radius-lg);
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 12px;
     }
 
-    /* ---------- HEADER ---------- */
+    /* ========== COMPACT HEADER WITH SEARCH & CATEGORY ========== */
     .app-header {
-      background: linear-gradient(135deg, var(--primary), var(--primary-light));
-      padding: 24px 28px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      padding: 16px 24px;
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-md);
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
       align-items: center;
+      gap: 14px;
       color: white;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
     }
 
-    .app-header h1 {
-      font-size: 1.9rem;
-      font-weight: 700;
-      letter-spacing: -0.5px;
+    .app-header .logo-area {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      flex-shrink: 0;
     }
 
-    .app-header h1 i {
-      font-size: 2rem;
+    .app-header .logo-area i {
+      font-size: 1.6rem;
+      color: var(--accent-light);
+    }
+
+    .app-header .logo-area h1 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+
+    .header-search {
+      flex: 1;
+      min-width: 180px;
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 60px;
+      padding: 4px 16px;
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      transition: var(--transition);
+    }
+
+    .header-search:focus-within {
+      border-color: var(--accent-light);
+      background: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2);
+    }
+
+    .header-search i {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9rem;
+      margin-right: 8px;
+    }
+
+    .header-search input {
+      width: 100%;
+      padding: 8px 0;
+      border: none;
+      background: transparent;
+      font-size: 0.9rem;
+      outline: none;
+      color: white;
+      font-weight: 500;
+    }
+
+    .header-search input::placeholder {
+      color: rgba(255, 255, 255, 0.55);
+      font-weight: 400;
     }
 
     .header-stats {
       display: flex;
-      gap: 20px;
-      background: rgba(255, 255, 255, 0.15);
-      padding: 10px 22px;
-      border-radius: 40px;
-      font-weight: 500;
-      font-size: 1rem;
-      backdrop-filter: blur(4px);
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.12);
+      padding: 6px 16px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      white-space: nowrap;
     }
 
     .header-stats span i {
-      margin-right: 6px;
+      margin-right: 4px;
+      color: var(--accent-light);
     }
 
-    /* ---------- SEARCH & FILTER BAR ---------- */
-    .search-section {
-      background: var(--card-bg);
-      padding: 22px 24px;
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-sm);
+    .header-actions {
       display: flex;
-      flex-wrap: wrap;
-      gap: 18px;
-      align-items: center;
-    }
-
-    .search-box {
-      flex: 3;
-      min-width: 260px;
-      display: flex;
-      align-items: center;
-      background: #f1f5f9;
-      border-radius: 60px;
-      padding: 6px 20px;
-      border: 2px solid transparent;
-      transition: 0.25s;
-    }
-
-    .search-box:focus-within {
-      border-color: var(--primary-light);
-      background: white;
-      box-shadow: 0 0 0 4px rgba(42, 82, 152, 0.1);
-    }
-
-    .search-box i {
-      color: var(--text-muted);
-      font-size: 1.2rem;
-      margin-right: 12px;
-    }
-
-    .search-box input {
-      width: 100%;
-      padding: 14px 0;
-      border: none;
-      background: transparent;
-      font-size: 1.1rem;
-      outline: none;
-      color: var(--text-dark);
-    }
-
-    .search-box input::placeholder {
-      color: #94a3b8;
-      font-weight: 400;
-    }
-
-    .filter-actions {
-      flex: 2;
-      display: flex;
-      gap: 12px;
-      justify-content: flex-end;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      padding: 12px 24px;
-      border-radius: 40px;
-      border: none;
-      font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      transition: 0.2s;
-      white-space: nowrap;
-      background: white;
-      color: var(--text-dark);
-      border: 1px solid var(--border-light);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .btn i {
-      font-size: 1rem;
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-      border: none;
-    }
-
-    .btn-primary:hover {
-      background: var(--primary-light);
-      transform: translateY(-1px);
-    }
-
-    .btn-outline:hover {
-      background: #f1f5f9;
-      border-color: #cbd5e1;
-    }
-
-    .btn-danger {
-      background: var(--danger);
-      color: white;
-      border: none;
-    }
-
-    .btn-danger:hover {
-      background: #dc2626;
+      gap: 6px;
+      flex-shrink: 0;
     }
 
     .btn-sm {
-      padding: 8px 16px;
-      font-size: 0.85rem;
-    }
-
-    /* ---------- CATEGORY CHIPS ---------- */
-    .category-section {
-      background: var(--card-bg);
-      padding: 18px 24px;
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-sm);
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .category-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .category-header h3 {
-      font-size: 1.2rem;
+      padding: 8px 14px;
+      border-radius: 40px;
+      border: none;
       font-weight: 600;
-      color: var(--text-dark);
+      font-size: 0.78rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+      white-space: nowrap;
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-sm:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .btn-sm.primary {
+      background: var(--accent);
+      color: var(--primary);
+      border-color: var(--accent);
+    }
+
+    .btn-sm.primary:hover {
+      background: var(--accent-light);
+    }
+
+    /* ========== COMPACT CATEGORY FILTER BAR ========== */
+    .category-bar {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--glass-border);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      scrollbar-width: thin;
+      min-height: 44px;
+    }
+
+    .category-bar .cat-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .category-chips {
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      max-height: 120px;
-      overflow-y: auto;
-      padding: 4px 2px;
+      gap: 4px;
+      flex-wrap: nowrap;
+      align-items: center;
     }
 
     .chip {
-      background: #f1f5f9;
-      padding: 8px 16px;
-      border-radius: 30px;
-      font-size: 0.9rem;
-      font-weight: 500;
+      background: rgba(241, 245, 249, 0.8);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
       color: var(--text-dark);
       cursor: pointer;
-      transition: 0.15s;
+      transition: var(--transition);
       border: 1px solid transparent;
       user-select: none;
+      white-space: nowrap;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 3px;
+      flex-shrink: 0;
     }
 
-    .chip:hover {
-      background: #e2e8f0;
-    }
+    .chip:hover { background: #e2e8f0; }
 
     .chip.active {
       background: var(--primary);
@@ -274,11 +243,10 @@
 
     .chip .count-badge {
       background: rgba(0, 0, 0, 0.08);
-      padding: 2px 8px;
+      padding: 0px 5px;
       border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      margin-left: 4px;
+      font-size: 0.6rem;
+      font-weight: 700;
     }
 
     .chip.active .count-badge {
@@ -286,15 +254,56 @@
       color: white;
     }
 
-    /* ---------- TABLE / LIST AREA ---------- */
+    /* ========== FILTER TOGGLE ROW (Bengali/English) ========== */
+    .filter-toggle-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      padding: 0 4px;
+      flex-wrap: wrap;
+    }
+
+    .filter-toggle-row .toggle-group {
+      display: flex;
+      background: var(--card-bg);
+      border-radius: 40px;
+      padding: 3px;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .toggle-btn {
+      padding: 5px 14px;
+      border-radius: 30px;
+      border: none;
+      background: transparent;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .toggle-btn.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .toggle-btn:hover:not(.active) {
+      background: #f1f5f9;
+    }
+
+    /* ========== TABLE ========== */
     .contact-table-wrapper {
       background: var(--card-bg);
+      backdrop-filter: blur(12px);
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-md);
+      border: 1px solid var(--glass-border);
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      max-height: 560px;
+      max-height: 620px;
       overflow-y: auto;
       position: relative;
     }
@@ -302,125 +311,140 @@
     .contact-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.95rem;
+      font-size: 0.88rem;
       table-layout: auto;
-      min-width: 700px;
+      min-width: 750px;
     }
 
     .contact-table thead {
       position: sticky;
       top: 0;
-      background: #f1f5f9;
+      background: rgba(241, 245, 249, 0.96);
+      backdrop-filter: blur(8px);
       z-index: 5;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
     }
 
     .contact-table th {
       text-align: left;
-      padding: 18px 16px;
-      font-weight: 600;
+      padding: 12px 10px;
+      font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
-      font-size: 0.8rem;
-      letter-spacing: 0.3px;
+      font-size: 0.65rem;
+      letter-spacing: 0.05em;
       border-bottom: 1px solid var(--border-light);
       white-space: nowrap;
     }
 
     .contact-table td {
-      padding: 16px;
+      padding: 10px;
       border-bottom: 1px solid var(--border-light);
       vertical-align: middle;
       color: var(--text-dark);
     }
 
-    .contact-table tbody tr {
-      transition: 0.1s;
-      cursor: default;
-    }
-
-    .contact-table tbody tr:hover {
-      background: #f8fafc;
-    }
+    .contact-table tbody tr { transition: var(--transition); }
+    .contact-table tbody tr:hover { background: rgba(248, 250, 252, 0.9); }
 
     .contact-name {
       font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      word-break: break-word;
+      font-size: 0.88rem;
     }
 
-    .contact-name i {
-      color: var(--primary-light);
-      font-size: 1.1rem;
-      opacity: 0.7;
-    }
+    .contact-name i { color: var(--primary-glow); font-size: 1rem; opacity: 0.7; }
 
     .number-cell {
-      font-family: 'Courier New', monospace;
-      font-weight: 500;
-      letter-spacing: 0.2px;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-weight: 600;
+      letter-spacing: 0.02em;
       color: #0f172a;
       word-break: break-word;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .copy-btn-inline {
+      background: rgba(241, 245, 249, 0.9);
+      border: 1px solid var(--border-light);
+      border-radius: 6px;
+      padding: 3px 8px;
+      cursor: pointer;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .copy-btn-inline:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
     }
 
     .action-cell {
       display: flex;
-      gap: 6px;
+      gap: 2px;
       flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
     .icon-btn {
       background: transparent;
       border: none;
-      padding: 8px;
-      border-radius: 50%;
+      padding: 5px;
+      border-radius: 8px;
       cursor: pointer;
-      font-size: 1.1rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
-      transition: 0.15s;
+      transition: var(--transition);
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 36px;
-      height: 36px;
+      width: 28px;
+      height: 28px;
     }
 
-    .icon-btn:hover {
-      background: #e2e8f0;
-      color: var(--primary);
-    }
+    .icon-btn:hover { background: #e2e8f0; color: var(--primary); }
+    .icon-btn.call:hover { color: #22c55e; background: #dcfce7; }
+    .icon-btn.whatsapp:hover { color: #25D366; background: #dcfce7; }
+    .icon-btn.imo:hover { color: #1e88e5; background: #dbeafe; }
+    .icon-btn.speak:hover { color: var(--accent); background: #fef3c7; }
+    .icon-btn.edit:hover { color: var(--warning); background: #fef3c7; }
+    .icon-btn.delete:hover { color: var(--danger); background: #fee2e2; }
 
-    .icon-btn.call:hover { color: #22c55e; }
-    .icon-btn.whatsapp:hover { color: #25D366; }
-    .icon-btn.imo:hover { color: #1e88e5; }
-    .icon-btn.copy:hover { color: var(--primary); }
-    .icon-btn.speak:hover { color: var(--accent); }
-    .icon-btn.edit:hover { color: var(--warning); }
-    .icon-btn.delete:hover { color: var(--danger); }
-
-    /* ---------- EMPTY STATE ---------- */
+    /* ========== EMPTY STATE ========== */
     .empty-state {
-      padding: 60px 20px;
+      padding: 50px 20px;
       text-align: center;
       color: var(--text-muted);
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 16px;
+      gap: 10px;
     }
 
-    .empty-state i {
-      font-size: 3.5rem;
-      opacity: 0.4;
-    }
+    .empty-state i { font-size: 3rem; opacity: 0.3; }
+    .empty-state h3 { font-size: 1.1rem; font-weight: 600; }
+    .empty-state p { font-size: 0.85rem; }
 
-    /* ---------- MODAL / FORM ---------- */
+    /* ========== MODAL ========== */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(3px);
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(6px);
       display: none;
       align-items: center;
       justify-content: center;
@@ -428,223 +452,246 @@
       padding: 20px;
     }
 
-    .modal-overlay.active {
-      display: flex;
-    }
+    .modal-overlay.active { display: flex; }
 
     .modal-content {
       background: white;
       border-radius: var(--radius-lg);
-      padding: 30px 28px;
-      max-width: 500px;
+      padding: 28px 24px;
+      max-width: 440px;
       width: 100%;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.3);
       position: relative;
       max-height: 90vh;
       overflow-y: auto;
+      border: 1px solid var(--glass-border);
     }
 
     .modal-content h2 {
-      font-size: 1.7rem;
+      font-size: 1.4rem;
       font-weight: 700;
-      margin-bottom: 24px;
+      margin-bottom: 18px;
       color: var(--primary);
+      letter-spacing: -0.02em;
     }
 
-    .form-group {
-      margin-bottom: 20px;
-    }
+    .form-group { margin-bottom: 16px; }
 
     .form-group label {
       display: block;
       font-weight: 600;
-      font-size: 0.95rem;
-      margin-bottom: 8px;
+      font-size: 0.85rem;
+      margin-bottom: 5px;
       color: var(--text-dark);
     }
 
     .form-group input {
       width: 100%;
-      padding: 14px 18px;
+      padding: 12px 16px;
       border-radius: var(--radius-sm);
       border: 1.5px solid var(--border-light);
-      font-size: 1rem;
+      font-size: 0.95rem;
       outline: none;
-      transition: 0.2s;
+      transition: var(--transition);
       background: #f8fafc;
+      font-weight: 500;
     }
 
     .form-group input:focus {
-      border-color: var(--primary);
+      border-color: var(--primary-glow);
       background: white;
-      box-shadow: 0 0 0 4px rgba(30, 60, 114, 0.08);
+      box-shadow: 0 0 0 4px rgba(42, 82, 152, 0.08);
     }
 
     .modal-actions {
       display: flex;
-      gap: 12px;
+      gap: 8px;
       justify-content: flex-end;
-      margin-top: 28px;
+      margin-top: 22px;
     }
 
-    /* ---------- HISTORY PANEL (TOAST LIKE) ---------- */
+    /* ========== HISTORY ========== */
     .history-badge {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
+      bottom: 20px;
+      right: 20px;
       background: var(--primary);
       color: white;
-      padding: 14px 24px;
+      padding: 10px 18px;
       border-radius: 60px;
       font-weight: 600;
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 12px 32px rgba(11, 30, 58, 0.35);
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 8px;
       cursor: pointer;
       z-index: 900;
-      transition: 0.2s;
+      transition: var(--transition);
       border: none;
-      font-size: 1rem;
+      font-size: 0.82rem;
     }
 
-    .history-badge:hover {
-      transform: scale(1.02);
-      background: var(--primary-light);
-    }
+    .history-badge:hover { transform: translateY(-2px); background: var(--primary-light); }
 
     .history-panel {
       position: fixed;
-      bottom: 90px;
-      right: 24px;
-      width: 340px;
-      max-width: calc(100vw - 48px);
+      bottom: 76px;
+      right: 20px;
+      width: 300px;
+      max-width: calc(100vw - 40px);
       background: white;
       border-radius: var(--radius-md);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-      padding: 20px;
+      box-shadow: var(--shadow-md);
+      padding: 16px;
       display: none;
       flex-direction: column;
-      gap: 16px;
+      gap: 10px;
       z-index: 950;
-      max-height: 400px;
+      max-height: 360px;
       overflow-y: auto;
+      border: 1px solid var(--glass-border);
     }
 
-    .history-panel.active {
-      display: flex;
-    }
+    .history-panel.active { display: flex; }
 
     .history-panel h4 {
-      font-size: 1.1rem;
+      font-size: 0.95rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      color: var(--primary);
     }
 
-    .history-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+    .history-list { display: flex; flex-direction: column; gap: 6px; }
 
     .history-item {
       background: #f8fafc;
-      padding: 12px 14px;
-      border-radius: 12px;
-      font-size: 0.9rem;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 0.82rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-left: 4px solid var(--primary);
+      border-left: 3px solid var(--primary-glow);
+      font-weight: 500;
     }
 
-    .history-item .time {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
+    .history-item .time { font-size: 0.68rem; color: var(--text-muted); font-weight: 400; }
 
-    /* ---------- TOAST NOTIFICATION ---------- */
+    /* ========== TOAST ========== */
     .toast {
       position: fixed;
-      top: 24px;
+      top: 20px;
       left: 50%;
-      transform: translateX(-50%);
-      background: #1e293b;
+      transform: translateX(-50%) translateY(-10px);
+      background: #0f172a;
       color: white;
-      padding: 14px 28px;
+      padding: 12px 24px;
       border-radius: 60px;
       font-weight: 500;
       box-shadow: var(--shadow-md);
       z-index: 2000;
       opacity: 0;
-      transition: 0.3s;
+      transition: var(--transition);
       pointer-events: none;
-      font-size: 0.95rem;
+      font-size: 0.88rem;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 1000px) {
+      .app-header { gap: 10px; padding: 12px 16px; }
+      .app-header .logo-area h1 { font-size: 1rem; }
+      .header-stats { font-size: 0.72rem; padding: 4px 12px; }
     }
 
-    /* ---------- RESPONSIVE ---------- */
-    @media (max-width: 768px) {
-      body { padding: 10px; }
-      .app-header { padding: 18px; flex-direction: column; align-items: flex-start; gap: 12px; }
-      .app-header h1 { font-size: 1.5rem; }
-      .search-section { padding: 16px; flex-direction: column; align-items: stretch; }
-      .filter-actions { justify-content: stretch; }
-      .filter-actions .btn { flex: 1; justify-content: center; }
-      .contact-table td, .contact-table th { padding: 12px 10px; }
-      .action-cell { gap: 2px; }
-      .icon-btn { width: 32px; height: 32px; font-size: 1rem; }
-      .history-badge { bottom: 16px; right: 16px; padding: 12px 18px; font-size: 0.9rem; }
+    @media (max-width: 800px) {
+      body { padding: 8px; }
+      .app-header { flex-wrap: wrap; padding: 10px 14px; }
+      .header-search { order: 2; flex: 1 1 100%; }
+      .header-actions { order: 3; flex: 1 1 100%; justify-content: stretch; }
+      .header-actions .btn-sm { flex: 1; justify-content: center; }
+      .header-stats { order: 1; }
+      .contact-table { min-width: 650px; font-size: 0.82rem; }
+      .contact-table td, .contact-table th { padding: 8px 6px; }
+      .action-cell { gap: 1px; }
+      .icon-btn { width: 26px; height: 26px; font-size: 0.78rem; padding: 4px; }
+      .copy-btn-inline { font-size: 0.65rem; padding: 2px 6px; }
     }
 
-    @media (max-width: 480px) {
-      .app-header h1 { font-size: 1.3rem; }
-      .header-stats { font-size: 0.85rem; padding: 8px 14px; }
-      .btn { padding: 10px 16px; font-size: 0.85rem; }
-      .contact-table { font-size: 0.85rem; }
+    @media (max-width: 600px) {
+      .app-header .logo-area h1 { font-size: 0.9rem; }
+      .header-stats span { font-size: 0.68rem; }
+      .category-bar { padding: 6px 10px; gap: 6px; }
+      .chip { padding: 3px 8px; font-size: 0.68rem; }
+      .contact-table { min-width: 100%; display: block; }
+      .contact-table thead { display: none; }
+      .contact-table tbody tr {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-areas: "name name" "number number" "actions actions";
+        gap: 4px;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--border-light);
+      }
+      .contact-table td { padding: 2px 0; border: none; }
+      .contact-table td:first-child { grid-area: name; }
+      .contact-table td:nth-child(2) { grid-area: number; }
+      .contact-table td:nth-child(3) { grid-area: actions; justify-self: end; }
+      .contact-name { font-size: 0.9rem; }
+      .number-cell { font-size: 0.82rem; }
+      .history-badge { bottom: 12px; right: 12px; padding: 8px 14px; font-size: 0.78rem; }
+      .history-panel { bottom: 64px; right: 12px; width: calc(100vw - 24px); }
+    }
+
+    @media (max-width: 400px) {
+      .app-header { padding: 8px 10px; }
+      .header-stats { font-size: 0.65rem; padding: 3px 8px; }
+      .btn-sm { padding: 6px 10px; font-size: 0.7rem; }
+      .contact-table tbody tr { padding: 8px 8px; }
     }
   </style>
 </head>
 <body>
 <div class="app-container">
-  <!-- HEADER -->
+  <!-- COMPACT HEADER WITH SEARCH -->
   <header class="app-header">
-    <h1><i class="fas fa-address-book"></i> কন্টাক্ট ম্যানেজার</h1>
+    <div class="logo-area">
+      <i class="fas fa-address-book"></i>
+      <h1>কন্টাক্ট</h1>
+    </div>
+    <div class="header-search">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="নাম বা নাম্বার খুঁজুন..." autocomplete="off">
+    </div>
     <div class="header-stats">
-      <span><i class="fas fa-users"></i> <span id="totalCount">0</span> Contacts</span>
-      <span><i class="fas fa-filter"></i> <span id="filteredCount">0</span> Showing</span>
+      <span><i class="fas fa-users"></i> <span id="totalCount">0</span></span>
+      <span><i class="fas fa-filter"></i> <span id="filteredCount">0</span></span>
+    </div>
+    <div class="header-actions">
+      <button class="btn-sm" id="clearSearchBtn"><i class="fas fa-times-circle"></i> ক্লিয়ার</button>
+      <button class="btn-sm primary" id="addContactBtn"><i class="fas fa-plus-circle"></i> নতুন</button>
+      <button class="btn-sm" id="exportBtn"><i class="fas fa-download"></i> এক্সপোর্ট</button>
     </div>
   </header>
 
-  <!-- SEARCH & ACTIONS -->
-  <div class="search-section">
-    <div class="search-box">
-      <i class="fas fa-search"></i>
-      <input type="text" id="searchInput" placeholder="নাম বা নাম্বার লিখে খুঁজুন... (লাইভ সার্চ)" autocomplete="off">
-    </div>
-    <div class="filter-actions">
-      <button class="btn btn-outline" id="clearSearchBtn"><i class="fas fa-times-circle"></i> ক্লিয়ার</button>
-      <button class="btn btn-primary" id="addContactBtn"><i class="fas fa-plus-circle"></i> নতুন যোগ করুন</button>
-      <button class="btn btn-outline" id="exportBtn"><i class="fas fa-download"></i> এক্সপোর্ট</button>
-    </div>
+  <!-- COMPACT CATEGORY BAR -->
+  <div class="category-bar">
+    <span class="cat-label"><i class="fas fa-tags"></i></span>
+    <div class="category-chips" id="categoryChips"></div>
   </div>
 
-  <!-- CATEGORY CHIPS (A-Z + Bengali + Numbers) -->
-  <div class="category-section">
-    <div class="category-header">
-      <h3><i class="fas fa-tags"></i> কেটাগরি (A-Z, ক-হ, ০-৯)</h3>
-      <span style="font-size:0.85rem; color:var(--text-muted);">ক্লিক করে ফিল্টার করুন</span>
-    </div>
-    <div class="category-chips" id="categoryChips">
-      <!-- Populated dynamically via JS -->
+  <!-- FILTER TOGGLE ROW -->
+  <div class="filter-toggle-row">
+    <div class="toggle-group">
+      <button class="toggle-btn active" id="toggleAllBtn">সব</button>
+      <button class="toggle-btn" id="toggleBengaliBtn">বাংলা নাম</button>
+      <button class="toggle-btn" id="toggleEnglishBtn">English</button>
     </div>
   </div>
 
@@ -658,9 +705,7 @@
           <th style="text-align:right;">অ্যাকশন</th>
         </tr>
       </thead>
-      <tbody id="tableBody">
-        <!-- Rows will be populated by JS -->
-      </tbody>
+      <tbody id="tableBody"></tbody>
     </table>
     <div id="emptyState" class="empty-state" style="display:none;">
       <i class="fas fa-phone-slash"></i>
@@ -670,18 +715,16 @@
   </div>
 </div>
 
-<!-- HISTORY BADGE & PANEL -->
+<!-- HISTORY -->
 <button class="history-badge" id="historyToggleBtn">
-  <i class="fas fa-history"></i> হিস্ট্রি <span id="historyCountBadge">0</span>
+  <i class="fas fa-history"></i> হিস্ট্রি <span id="historyCountBadge" style="background:rgba(255,255,255,0.25); padding:0px 6px; border-radius:20px; font-size:0.7rem;">0</span>
 </button>
 <div class="history-panel" id="historyPanel">
-  <h4><span>🕒 সার্চ হিস্ট্রি</span> <button class="icon-btn" id="clearHistoryBtn" title="ক্লিয়ার হিস্ট্রি"><i class="fas fa-trash-alt"></i></button></h4>
-  <div class="history-list" id="historyList">
-    <!-- History items -->
-  </div>
+  <h4><span>🕒 সার্চ হিস্ট্রি</span> <button class="icon-btn" id="clearHistoryBtn" title="ক্লিয়ার"><i class="fas fa-trash-alt" style="font-size:0.8rem;"></i></button></h4>
+  <div class="history-list" id="historyList"></div>
 </div>
 
-<!-- ADD/EDIT MODAL -->
+<!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal-content">
     <h2 id="modalTitle">নতুন কন্টাক্ট</h2>
@@ -695,8 +738,8 @@
       <input type="text" id="contactNumber" placeholder="যেমন: +8801678600786" required>
     </div>
     <div class="modal-actions">
-      <button class="btn btn-outline" id="cancelModalBtn">বাতিল</button>
-      <button class="btn btn-primary" id="saveContactBtn">সেভ করুন</button>
+      <button class="btn-sm" id="cancelModalBtn" style="background:#f1f5f9; color:var(--text-dark); border:1px solid var(--border-light);">বাতিল</button>
+      <button class="btn-sm primary" id="saveContactBtn" style="background:var(--primary); color:white; border:none;">সেভ করুন</button>
     </div>
   </div>
 </div>
@@ -705,7 +748,7 @@
 <div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastMessage">সফল!</span></div>
 
 <script>
-  // ---------- INITIAL DATA (Extracted from file, deduplicated partially) ----------
+  // ========== COMPLETE CONTACT DATA ==========
   const initialContacts = [
     { name: "Ebrahim", number: "+2471611623173" },
     { name: "Khadiza Clg", number: "018-707-93390" },
@@ -1004,7 +1047,7 @@
     { name: "Faiyaz Al Muntakim", number: "017-259-43904" },
     { name: "Pis la 38/3 ba", number: "017-157-68209" },
     { name: "Mujaffr bin mh", number: "017-152-49694" },
-    { name: "নাহিদ কেওয়া", number: "017-202-63910" },
+    { name: "নাহিদ কেওয়া", number: "017-202-63910" },
     { name: "Surug police", number: "+8801728221139" },
     { name: "Al amin", number: "014-056-82312" },
     { name: "Sabbir d b l", number: "+8801732559660" },
@@ -1032,7 +1075,7 @@
     { name: "A Krim daka", number: "017-386-41990" },
     { name: "Babo jina garm", number: "+8801716443146" },
     { name: "Bktiar jina", number: "018-175-51296" },
-    { name: "ফুয়াদ কাচ্চাগর", number: "013-052-26172" },
+    { name: "ফুয়াদ কাচ্চাগর", number: "013-052-26172" },
     { name: "MORSID JINA", number: "017-216-42199" },
     { name: "Sultana amvdra", number: "+8801747077955 / 017-470-77955" },
     { name: "Sis", number: "017-303-72803" },
@@ -1048,14 +1091,14 @@
     { name: "সজিব  \" সার \" জৈনাবাজার \"", number: "017-278-08386" },
     { name: "Ismael r a k", number: "019-144-89449" },
     { name: "Emam jina baja", number: "018-835-08482" },
-    { name: "রিয়াদ \" ভাই \"", number: "+8801706834402" },
+    { name: "রিয়াদ \" ভাই \"", number: "+8801706834402" },
     { name: "Majharul r a k", number: "017-618-86589" },
     { name: "SAKIB MOKUNDOB", number: "017-665-88080" },
     { name: "Asmad mauna", number: "017-165-31294" },
     { name: "শাহিনুর \" মেডাম \"", number: "+8801969800640" },
     { name: "Rfekul Emam ji", number: "017-460-77697" },
     { name: "সুহাগ \" আংকেল \"", number: "+8801730648641" },
-    { name: "রেজুয়ান কাচ্চাগর", number: "+8801927887530 / +8801609607823" },
+    { name: "রেজুয়ান কাচ্চাগর", number: "+8801927887530 / +8801609607823" },
     { name: "সুনালি \" মাদারের চর \"", number: "+8801938712947" },
     { name: "Frhad madagng", number: "017-189-08220" },
     { name: "A Hadi mkndbad", number: "017-185-85611" },
@@ -1085,12 +1128,12 @@
     { name: "rayhanbipbop", number: "+8801600023110" },
     { name: "মোছাঃ সরনা আক্তার \" ক্লাস ফেন্ড \"", number: "+8801784610070" },
     { name: "Tanji \" Clg \"", number: "016-464-32685" },
-    { name: "সায়েম খান \"কেওয়া\"", number: "+8801933285595" },
+    { name: "সায়েম খান \"কেওয়া\"", number: "+8801933285595" },
     { name: "Sihab mkndbadi", number: "+8801717105194" },
     { name: "আব্দুর রহমান মামা", number: "017-556-40363" },
     { name: "শিক্কু \" গুঠাইল\"", number: "+8801308286766" },
     { name: "আছুজ্জামা = নাছিমা একতা", number: "+8801749008166" },
-    { name: "সরিফুল ইসলাম \" কেওয়া \"", number: "017-952-71141" },
+    { name: "সরিফুল ইসলাম \" কেওয়া \"", number: "017-952-71141" },
     { name: "দিদারুল ইসলাম \" শেরপুর \"", number: "+8801639412523 / +8801825787130" },
     { name: "Mahfuj Mauna", number: "019-448-61188 / +8801772102823" },
     { name: "Babo vagina", number: "+8801781770167" },
@@ -1101,9 +1144,9 @@
     { name: "A Batin madar", number: "019-119-61914" },
     { name: "Fariha jamal p", number: "019-270-48226" },
     { name: "আঃ করিম \" গুঠাইল \"", number: "+8801642227934 / +8801748451556" },
-    { name: "পিয়ারা ভাবি", number: "017-200-06009" },
+    { name: "পিয়ারা ভাবি", number: "017-200-06009" },
     { name: "md shamim sreepur 2025", number: "+8801626714566" },
-    { name: "ইয়াকুব \" মামা \"", number: "+8801601312953" },
+    { name: "ইয়াকুব \" মামা \"", number: "+8801601312953" },
     { name: "ইসলামপু", number: "+8801917305082" },
     { name: "ফরহাদ \" ধনতলা \"", number: "+8801902246917" },
     { name: "Naymul Islam Islam", number: "+8801621938939" },
@@ -1120,7 +1163,7 @@
     { name: "ইমরান কম্পিউটার ইসলামপুর বাজার", number: "+8801613473617" },
     { name: "Mi Shimul Shimul \" জৈনাবাজার \"", number: "+8801701003221" },
     { name: "কম্পিউটার ইসলামপুর বাজার", number: "+8801610369685" },
-    { name: "রেজুয়ান কম্পিউটার গুঠাইল বাজার", number: "+8801832184897" },
+    { name: "রেজুয়ান কম্পিউটার গুঠাইল বাজার", number: "+8801832184897" },
     { name: "আমেনা Afrina \" কাচ্চাগর\"", number: "+8801764180162" },
     { name: "রবিন টেলিকম টেলিকম \" জারুলতলা বাজার\"", number: "+8801612825524" },
     { name: "মনিকা \" পচাবালাহ\"", number: "+8801306445895" },
@@ -1132,13 +1175,13 @@
     { name: "রেজাউল করিম BSC", number: "+8801603560499" },
     { name: "রেজাউল", number: "016-889-77733" },
     { name: "রেজাউল B S C", number: "017-293-00274" },
-    { name: "সুফিয়া \" ফুবু \"", number: "017-152-81891" },
+    { name: "সুফিয়া \" ফুবু \"", number: "017-152-81891" },
     { name: "নির্বাচন অফিসে লোক \" সার্ভার \"", number: "+8801701068013" },
     { name: "Sebakori", number: "+8801337905138" },
     { name: "BD All Saba", number: "+8801618843060" },
     { name: "Nil", number: "+8801792492762" },
     { name: "Shuvo \" এক মাস কাজ \"", number: "+8801760067082" },
-    { name: "মারিয়া \" আলিম \"", number: "017-999-67383" },
+    { name: "মারিয়া \" আলিম \"", number: "017-999-67383" },
     { name: "mst Khadiza Clg", number: "+8801870793390" },
     { name: "Mohsin Ali জামাই", number: "+8801708597797" },
     { name: "আলইমরান \" আলিম \"", number: "+8801980905853" },
@@ -1146,7 +1189,7 @@
     { name: "Torikul Islam \" আলিম \"", number: "+8801975460850" },
     { name: "Ema Clg", number: "+8801619890615" },
     { name: "Mahin Mama", number: "+8801880478207" },
-    { name: "জাকির \" শরিসাবাড়ী \"", number: "+8801995548588" },
+    { name: "জাকির \" শরিসাবাড়ী \"", number: "+8801995548588" },
     { name: "নিশাদ ভাই \" জৈনা বাজার \"", number: "+8801998374087" },
     { name: "বরিসাল সার্জিক্যাল কেপ \" ঢাকা \"", number: "+8801733388613" },
     { name: "Obaydul Hossain", number: "+8801405693463" },
@@ -2890,16 +2933,17 @@
     { name: "Mother  Of  Ifrahim", number: "+8801611623173" }
   ];
 
-  // ---------- GLOBAL STATE ----------
-  let contacts = [...initialContacts]; // current working array
+  // ========== STATE ==========
+  let contacts = [...initialContacts];
   let filteredContacts = [...contacts];
-  let activeCategory = 'all'; // 'all' or a letter/number
+  let activeCategory = 'all';
   let searchQuery = '';
-  let searchHistory = []; // { query, timestamp }
-  const STORAGE_KEY = 'contact_manager_pro_data';
-  const HISTORY_KEY = 'contact_manager_pro_history';
+  let searchHistory = [];
+  let nameScriptFilter = 'all'; // 'all', 'bengali', 'english'
+  const STORAGE_KEY = 'contact_manager_pro_v3';
+  const HISTORY_KEY = 'contact_manager_pro_history_v3';
 
-  // ---------- DOM REFS ----------
+  // ========== DOM REFS ==========
   const tableBody = document.getElementById('tableBody');
   const emptyState = document.getElementById('emptyState');
   const totalCountSpan = document.getElementById('totalCount');
@@ -2923,11 +2967,14 @@
   const historyList = document.getElementById('historyList');
   const historyCountBadge = document.getElementById('historyCountBadge');
   const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+  const toggleAllBtn = document.getElementById('toggleAllBtn');
+  const toggleBengaliBtn = document.getElementById('toggleBengaliBtn');
+  const toggleEnglishBtn = document.getElementById('toggleEnglishBtn');
 
-  // ---------- UTILITIES ----------
+  // ========== UTILITIES ==========
   function showToast(msg, isError = false) {
     toastMessage.textContent = msg;
-    toast.style.background = isError ? '#ef4444' : '#1e293b';
+    toast.style.background = isError ? '#ef4444' : '#0f172a';
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 2500);
   }
@@ -2936,7 +2983,7 @@
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(contacts));
       localStorage.setItem(HISTORY_KEY, JSON.stringify(searchHistory));
-    } catch (e) { /* ignore quota errors */ }
+    } catch (e) {}
   }
 
   function loadFromLocal() {
@@ -2954,135 +3001,15 @@
         searchHistory = JSON.parse(hist);
         if (!Array.isArray(searchHistory)) searchHistory = [];
       }
-    } catch (e) { /* ignore */ }
+    } catch (e) {}
   }
 
-  // ---------- GET FIRST CHARACTER (Bengali + English + numbers) ----------
   function getFirstChar(name) {
     if (!name) return '#';
     const ch = name.trim().charAt(0);
-    // Bengali digits -> keep as is, or map to '০-৯'
     if (/[০-৯]/.test(ch)) return ch;
     if (/[0-9]/.test(ch)) return ch;
     return ch.toUpperCase();
-  }
-
-  // ---------- BUILD CATEGORY CHIPS ----------
-  function buildCategoryChips() {
-    const charSet = new Set();
-    contacts.forEach(c => {
-      const ch = getFirstChar(c.name);
-      charSet.add(ch);
-    });
-    // Always include A-Z, ০-৯, and others
-    const english = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-    const bengali = 'অআইঈউঊঋএঐওঔকখগঘঙচছজঝঞটঠডঢণতথদধনপফবভমযরলশষসহড়ঢ়য়ৎংঃঁ'.split('');
-    const digits = '0123456789০১২৩৪৫৬৭৮৯'.split('');
-    const allChars = new Set([...english, ...bengali, ...digits, ...charSet]);
-
-    // Sort: English A-Z, Bengali, digits, others
-    const sorted = Array.from(allChars).sort((a, b) => {
-      const isEngA = /[A-Z]/.test(a);
-      const isEngB = /[A-Z]/.test(b);
-      if (isEngA && isEngB) return a.localeCompare(b);
-      if (isEngA) return -1;
-      if (isEngB) return 1;
-      const isBenA = /[অ-হ]/.test(a);
-      const isBenB = /[অ-হ]/.test(b);
-      if (isBenA && isBenB) return a.localeCompare(b, 'bn');
-      if (isBenA) return -1;
-      if (isBenB) return 1;
-      return a.localeCompare(b);
-    });
-
-    let html = `<div class="chip ${activeCategory === 'all' ? 'active' : ''}" data-cat="all">
-      <i class="fas fa-list"></i> সব <span class="count-badge">${contacts.length}</span>
-    </div>`;
-
-    sorted.forEach(ch => {
-      if (ch === '#') return; // skip
-      const count = contacts.filter(c => getFirstChar(c.name) === ch).length;
-      if (count === 0 && !'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.includes(ch)) return; // show only if has items or common
-      // Show only those with count > 0, plus always show A-Z + digits for filtering possibility
-      if (count === 0 && !/[A-Z0-9০-৯]/.test(ch)) return;
-      const isActive = activeCategory === ch ? 'active' : '';
-      html += `<div class="chip ${isActive}" data-cat="${ch}">
-        ${ch} <span class="count-badge">${count}</span>
-      </div>`;
-    });
-
-    categoryChips.innerHTML = html;
-
-    // Attach event listeners
-    categoryChips.querySelectorAll('.chip').forEach(chip => {
-      chip.addEventListener('click', () => {
-        const cat = chip.dataset.cat;
-        activeCategory = cat === 'all' ? 'all' : cat;
-        // Update active class
-        categoryChips.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
-        applyFilters();
-      });
-    });
-  }
-
-  // ---------- APPLY FILTERS (search + category) ----------
-  function applyFilters() {
-    const q = searchQuery.toLowerCase().trim();
-
-    filteredContacts = contacts.filter(c => {
-      // category filter
-      if (activeCategory !== 'all') {
-        const ch = getFirstChar(c.name);
-        if (ch !== activeCategory) return false;
-      }
-      // search filter
-      if (q) {
-        const nameMatch = c.name.toLowerCase().includes(q);
-        const numMatch = c.number.toLowerCase().includes(q);
-        if (!nameMatch && !numMatch) return false;
-      }
-      return true;
-    });
-
-    renderTable();
-    updateStats();
-  }
-
-  // ---------- RENDER TABLE ----------
-  function renderTable() {
-    if (filteredContacts.length === 0) {
-      tableBody.innerHTML = '';
-      emptyState.style.display = 'flex';
-      return;
-    }
-    emptyState.style.display = 'none';
-
-    let html = '';
-    filteredContacts.forEach((c, idx) => {
-      const realIndex = contacts.indexOf(c); // find original index for edit/delete
-      const safeNumber = c.number.replace(/'/g, "\\'");
-      const safeName = c.name.replace(/'/g, "\\'");
-      html += `<tr>
-        <td>
-          <div class="contact-name">
-            <i class="fas fa-user-circle"></i>
-            ${escapeHtml(c.name)}
-          </div>
-        </td>
-        <td class="number-cell">${escapeHtml(c.number)}</td>
-        <td class="action-cell">
-          <button class="icon-btn copy" title="কপি" onclick="copyNumber('${safeNumber}')"><i class="fas fa-copy"></i></button>
-          <button class="icon-btn speak" title="শুনুন" onclick="speakNumber('${safeNumber}')"><i class="fas fa-volume-up"></i></button>
-          <button class="icon-btn call" title="কল" onclick="callNumber('${safeNumber}')"><i class="fas fa-phone-alt"></i></button>
-          <button class="icon-btn whatsapp" title="হোয়াটসঅ্যাপ" onclick="openWhatsApp('${safeNumber}')"><i class="fab fa-whatsapp"></i></button>
-          <button class="icon-btn imo" title="ইমো" onclick="openImo('${safeNumber}')"><i class="fas fa-comment-dots"></i></button>
-          <button class="icon-btn edit" title="এডিট" onclick="editContact(${realIndex})"><i class="fas fa-edit"></i></button>
-          <button class="icon-btn delete" title="ডিলিট" onclick="deleteContact(${realIndex})"><i class="fas fa-trash-alt"></i></button>
-        </td>
-      </tr>`;
-    });
-    tableBody.innerHTML = html;
   }
 
   function escapeHtml(str) {
@@ -3096,18 +3023,138 @@
     });
   }
 
-  // ---------- UPDATE STATS ----------
+  function isBengaliName(name) {
+    return /[\u0980-\u09FF]/.test(name);
+  }
+
+  function isEnglishName(name) {
+    return /[A-Za-z]/.test(name) && !/[\u0980-\u09FF]/.test(name);
+  }
+
+  // ========== CATEGORY CHIPS ==========
+  function buildCategoryChips() {
+    const charSet = new Set();
+    contacts.forEach(c => charSet.add(getFirstChar(c.name)));
+
+    const english = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    const bengali = 'অআইঈউঊঋএঐওঔকখগঘঙচছজঝঞটঠডঢণতথদধনপফবভমযরলশষসহড়ঢ়য়ৎংঃঁ'.split('');
+    const digits = '0123456789০১২৩৪৫৬৭৮৯'.split('');
+    const allChars = new Set([...english, ...bengali, ...digits, ...charSet]);
+
+    const sorted = Array.from(allChars).sort((a, b) => {
+      const isEngA = /[A-Z]/.test(a), isEngB = /[A-Z]/.test(b);
+      if (isEngA && isEngB) return a.localeCompare(b);
+      if (isEngA) return -1;
+      if (isEngB) return 1;
+      const isBenA = /[অ-হ]/.test(a), isBenB = /[অ-হ]/.test(b);
+      if (isBenA && isBenB) return a.localeCompare(b, 'bn');
+      if (isBenA) return -1;
+      if (isBenB) return 1;
+      return a.localeCompare(b);
+    });
+
+    let html = `<div class="chip ${activeCategory === 'all' ? 'active' : ''}" data-cat="all">
+      <i class="fas fa-list"></i> সব <span class="count-badge">${contacts.length}</span>
+    </div>`;
+
+    sorted.forEach(ch => {
+      if (ch === '#') return;
+      const count = contacts.filter(c => getFirstChar(c.name) === ch).length;
+      if (count === 0 && !/[A-Z0-9০-৯]/.test(ch)) return;
+      const isActive = activeCategory === ch ? 'active' : '';
+      html += `<div class="chip ${isActive}" data-cat="${ch}">
+        ${ch} <span class="count-badge">${count}</span>
+      </div>`;
+    });
+
+    categoryChips.innerHTML = html;
+    categoryChips.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        activeCategory = chip.dataset.cat === 'all' ? 'all' : chip.dataset.cat;
+        categoryChips.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        applyFilters();
+      });
+    });
+  }
+
+  // ========== APPLY FILTERS ==========
+  function applyFilters() {
+    const q = searchQuery.toLowerCase().trim();
+    filteredContacts = contacts.filter(c => {
+      // category filter
+      if (activeCategory !== 'all') {
+        const ch = getFirstChar(c.name);
+        if (ch !== activeCategory) return false;
+      }
+      // name script filter
+      if (nameScriptFilter === 'bengali') {
+        if (!isBengaliName(c.name)) return false;
+      } else if (nameScriptFilter === 'english') {
+        if (!isEnglishName(c.name)) return false;
+      }
+      // search filter
+      if (q) {
+        const nameMatch = c.name.toLowerCase().includes(q);
+        const numMatch = c.number.toLowerCase().includes(q);
+        if (!nameMatch && !numMatch) return false;
+      }
+      return true;
+    });
+    renderTable();
+    updateStats();
+  }
+
+  // ========== RENDER TABLE ==========
+  function renderTable() {
+    if (filteredContacts.length === 0) {
+      tableBody.innerHTML = '';
+      emptyState.style.display = 'flex';
+      return;
+    }
+    emptyState.style.display = 'none';
+
+    let html = '';
+    filteredContacts.forEach((c) => {
+      const realIndex = contacts.indexOf(c);
+      const safeNumber = c.number.replace(/'/g, "\\'");
+      const displayNum = escapeHtml(c.number);
+      html += `<tr>
+        <td>
+          <div class="contact-name">
+            <i class="fas fa-user-circle"></i>
+            ${escapeHtml(c.name)}
+          </div>
+        </td>
+        <td class="number-cell">
+          ${displayNum}
+          <button class="copy-btn-inline" onclick="copyNumber('${safeNumber}')" title="কপি করুন">
+            <i class="fas fa-copy"></i> কপি
+          </button>
+        </td>
+        <td class="action-cell">
+          <button class="icon-btn speak" title="শুনুন" onclick="speakNumber('${safeNumber}')"><i class="fas fa-volume-up"></i></button>
+          <button class="icon-btn call" title="কল" onclick="callNumber('${safeNumber}')"><i class="fas fa-phone-alt"></i></button>
+          <button class="icon-btn whatsapp" title="হোয়াটসঅ্যাপ" onclick="openWhatsApp('${safeNumber}')"><i class="fab fa-whatsapp"></i></button>
+          <button class="icon-btn imo" title="ইমো" onclick="openImo('${safeNumber}')"><i class="fas fa-comment-dots"></i></button>
+          <button class="icon-btn edit" title="এডিট" onclick="editContact(${realIndex})"><i class="fas fa-edit"></i></button>
+          <button class="icon-btn delete" title="ডিলিট" onclick="deleteContact(${realIndex})"><i class="fas fa-trash-alt"></i></button>
+        </td>
+      </tr>`;
+    });
+    tableBody.innerHTML = html;
+  }
+
   function updateStats() {
     totalCountSpan.textContent = contacts.length;
     filteredCountSpan.textContent = filteredContacts.length;
   }
 
-  // ---------- SEARCH HANDLER ----------
+  // ========== SEARCH ==========
   function handleSearch() {
     const q = searchInput.value;
     searchQuery = q;
     if (q.trim().length > 0) {
-      // add to history if different from last
       const last = searchHistory[0];
       if (!last || last.query !== q.trim()) {
         searchHistory.unshift({ query: q.trim(), timestamp: Date.now() });
@@ -3119,11 +3166,10 @@
     applyFilters();
   }
 
-  // ---------- RENDER HISTORY ----------
   function updateHistoryUI() {
     historyCountBadge.textContent = searchHistory.length;
     if (searchHistory.length === 0) {
-      historyList.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:20px;">কোনো হিস্ট্রি নেই</div>`;
+      historyList.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:12px; font-size:0.8rem;">কোনো হিস্ট্রি নেই</div>`;
       return;
     }
     let html = '';
@@ -3138,7 +3184,7 @@
     historyList.innerHTML = html;
   }
 
-  // ---------- CRUD ----------
+  // ========== CRUD ==========
   function openAddModal() {
     modalTitle.textContent = 'নতুন কন্টাক্ট';
     editIndexInput.value = '-1';
@@ -3177,15 +3223,11 @@
     }
     const editIdx = parseInt(editIndexInput.value);
     if (editIdx === -1) {
-      // Add new
       contacts.push({ name, number });
       showToast('নতুন কন্টাক্ট যোগ হয়েছে');
-    } else {
-      // Edit existing
-      if (editIdx >= 0 && editIdx < contacts.length) {
-        contacts[editIdx] = { name, number };
-        showToast('কন্টাক্ট আপডেট হয়েছে');
-      }
+    } else if (editIdx >= 0 && editIdx < contacts.length) {
+      contacts[editIdx] = { name, number };
+      showToast('কন্টাক্ট আপডেট হয়েছে');
     }
     saveToLocal();
     buildCategoryChips();
@@ -3193,7 +3235,7 @@
     modalOverlay.classList.remove('active');
   }
 
-  // ---------- ACTION FUNCTIONS ----------
+  // ========== ACTIONS ==========
   window.copyNumber = function(num) {
     navigator.clipboard.writeText(num).then(() => showToast('নাম্বার কপি হয়েছে'))
       .catch(() => showToast('কপি ব্যর্থ', true));
@@ -3224,7 +3266,7 @@
     window.open('https://imo.im/' + clean, '_blank');
   };
 
-  // ---------- EXPORT ----------
+  // ========== EXPORT ==========
   function exportData() {
     const dataStr = JSON.stringify(contacts, null, 2);
     const blob = new Blob([dataStr], { type: 'application/json' });
@@ -3237,14 +3279,22 @@
     showToast('এক্সপোর্ট সম্পন্ন');
   }
 
-  // ---------- INIT ----------
+  // ========== SCRIPT FILTER TOGGLES ==========
+  function setScriptFilter(filter) {
+    nameScriptFilter = filter;
+    toggleAllBtn.classList.toggle('active', filter === 'all');
+    toggleBengaliBtn.classList.toggle('active', filter === 'bengali');
+    toggleEnglishBtn.classList.toggle('active', filter === 'english');
+    applyFilters();
+  }
+
+  // ========== INIT ==========
   function init() {
     loadFromLocal();
     buildCategoryChips();
     applyFilters();
     updateHistoryUI();
 
-    // Event listeners
     searchInput.addEventListener('input', handleSearch);
     clearSearchBtn.addEventListener('click', () => {
       searchInput.value = '';
@@ -3267,26 +3317,25 @@
       saveToLocal();
       showToast('হিস্ট্রি ক্লিয়ার হয়েছে');
     });
-
-    // Close history panel on outside click
     document.addEventListener('click', (e) => {
       if (!historyPanel.contains(e.target) && e.target !== historyToggleBtn && !historyToggleBtn.contains(e.target)) {
         historyPanel.classList.remove('active');
       }
     });
-
-    // Keyboard shortcut ESC to close modal
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         modalOverlay.classList.remove('active');
         historyPanel.classList.remove('active');
       }
     });
+
+    // Script filter toggles
+    toggleAllBtn.addEventListener('click', () => setScriptFilter('all'));
+    toggleBengaliBtn.addEventListener('click', () => setScriptFilter('bengali'));
+    toggleEnglishBtn.addEventListener('click', () => setScriptFilter('english'));
   }
 
-  // Start
   window.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
   </html>
-  
