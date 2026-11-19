@@ -1,0 +1,3292 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>📞 প্রফেশনাল কন্টাক্ট ম্যানেজার | অফলাইন</title>
+  <!-- Font Awesome for icons (offline fallback via CDN is okay, but we embed minimal icons using unicode for full offline) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- But to ensure offline, we also use emoji as fallback, and the design remains intact if CDN fails -->
+  <style>
+    /* ---------- GLOBAL RESET & VARIABLES ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', 'Noto Sans Bengali', system-ui, -apple-system, sans-serif;
+    }
+
+    :root {
+      --primary: #1e3c72;
+      --primary-light: #2a5298;
+      --accent: #ff7e5f;
+      --bg-light: #f8fafd;
+      --card-bg: #ffffff;
+      --text-dark: #1e293b;
+      --text-muted: #64748b;
+      --border-light: #e2e8f0;
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.03);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+    }
+
+    body {
+      background: var(--bg-light);
+      color: var(--text-dark);
+      padding: 16px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ---------- APP CONTAINER ---------- */
+    .app-container {
+      max-width: 1400px;
+      width: 100%;
+      background: transparent;
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* ---------- HEADER ---------- */
+    .app-header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      padding: 24px 28px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+
+    .app-header h1 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .app-header h1 i {
+      font-size: 2rem;
+    }
+
+    .header-stats {
+      display: flex;
+      gap: 20px;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 10px 22px;
+      border-radius: 40px;
+      font-weight: 500;
+      font-size: 1rem;
+      backdrop-filter: blur(4px);
+    }
+
+    .header-stats span i {
+      margin-right: 6px;
+    }
+
+    /* ---------- SEARCH & FILTER BAR ---------- */
+    .search-section {
+      background: var(--card-bg);
+      padding: 22px 24px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .search-box {
+      flex: 3;
+      min-width: 260px;
+      display: flex;
+      align-items: center;
+      background: #f1f5f9;
+      border-radius: 60px;
+      padding: 6px 20px;
+      border: 2px solid transparent;
+      transition: 0.25s;
+    }
+
+    .search-box:focus-within {
+      border-color: var(--primary-light);
+      background: white;
+      box-shadow: 0 0 0 4px rgba(42, 82, 152, 0.1);
+    }
+
+    .search-box i {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      margin-right: 12px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 14px 0;
+      border: none;
+      background: transparent;
+      font-size: 1.1rem;
+      outline: none;
+      color: var(--text-dark);
+    }
+
+    .search-box input::placeholder {
+      color: #94a3b8;
+      font-weight: 400;
+    }
+
+    .filter-actions {
+      flex: 2;
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 40px;
+      border: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: 0.2s;
+      white-space: nowrap;
+      background: white;
+      color: var(--text-dark);
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn i {
+      font-size: 1rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+      border: none;
+    }
+
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+
+    .btn-sm {
+      padding: 8px 16px;
+      font-size: 0.85rem;
+    }
+
+    /* ---------- CATEGORY CHIPS ---------- */
+    .category-section {
+      background: var(--card-bg);
+      padding: 18px 24px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .category-header h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .category-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      max-height: 120px;
+      overflow-y: auto;
+      padding: 4px 2px;
+    }
+
+    .chip {
+      background: #f1f5f9;
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: 0.15s;
+      border: 1px solid transparent;
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chip:hover {
+      background: #e2e8f0;
+    }
+
+    .chip.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .chip .count-badge {
+      background: rgba(0, 0, 0, 0.08);
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-left: 4px;
+    }
+
+    .chip.active .count-badge {
+      background: rgba(255, 255, 255, 0.25);
+      color: white;
+    }
+
+    /* ---------- TABLE / LIST AREA ---------- */
+    .contact-table-wrapper {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      max-height: 560px;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .contact-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+      table-layout: auto;
+      min-width: 700px;
+    }
+
+    .contact-table thead {
+      position: sticky;
+      top: 0;
+      background: #f1f5f9;
+      z-index: 5;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .contact-table th {
+      text-align: left;
+      padding: 18px 16px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.3px;
+      border-bottom: 1px solid var(--border-light);
+      white-space: nowrap;
+    }
+
+    .contact-table td {
+      padding: 16px;
+      border-bottom: 1px solid var(--border-light);
+      vertical-align: middle;
+      color: var(--text-dark);
+    }
+
+    .contact-table tbody tr {
+      transition: 0.1s;
+      cursor: default;
+    }
+
+    .contact-table tbody tr:hover {
+      background: #f8fafc;
+    }
+
+    .contact-name {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .contact-name i {
+      color: var(--primary-light);
+      font-size: 1.1rem;
+      opacity: 0.7;
+    }
+
+    .number-cell {
+      font-family: 'Courier New', monospace;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+      color: #0f172a;
+      word-break: break-word;
+    }
+
+    .action-cell {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .icon-btn {
+      background: transparent;
+      border: none;
+      padding: 8px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      transition: 0.15s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+    }
+
+    .icon-btn:hover {
+      background: #e2e8f0;
+      color: var(--primary);
+    }
+
+    .icon-btn.call:hover { color: #22c55e; }
+    .icon-btn.whatsapp:hover { color: #25D366; }
+    .icon-btn.imo:hover { color: #1e88e5; }
+    .icon-btn.copy:hover { color: var(--primary); }
+    .icon-btn.speak:hover { color: var(--accent); }
+    .icon-btn.edit:hover { color: var(--warning); }
+    .icon-btn.delete:hover { color: var(--danger); }
+
+    /* ---------- EMPTY STATE ---------- */
+    .empty-state {
+      padding: 60px 20px;
+      text-align: center;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .empty-state i {
+      font-size: 3.5rem;
+      opacity: 0.4;
+    }
+
+    /* ---------- MODAL / FORM ---------- */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(3px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 30px 28px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-content h2 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: var(--primary);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+      color: var(--text-dark);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border-light);
+      font-size: 1rem;
+      outline: none;
+      transition: 0.2s;
+      background: #f8fafc;
+    }
+
+    .form-group input:focus {
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 4px rgba(30, 60, 114, 0.08);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 28px;
+    }
+
+    /* ---------- HISTORY PANEL (TOAST LIKE) ---------- */
+    .history-badge {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--primary);
+      color: white;
+      padding: 14px 24px;
+      border-radius: 60px;
+      font-weight: 600;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      z-index: 900;
+      transition: 0.2s;
+      border: none;
+      font-size: 1rem;
+    }
+
+    .history-badge:hover {
+      transform: scale(1.02);
+      background: var(--primary-light);
+    }
+
+    .history-panel {
+      position: fixed;
+      bottom: 90px;
+      right: 24px;
+      width: 340px;
+      max-width: calc(100vw - 48px);
+      background: white;
+      border-radius: var(--radius-md);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      z-index: 950;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .history-panel.active {
+      display: flex;
+    }
+
+    .history-panel h4 {
+      font-size: 1.1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .history-item {
+      background: #f8fafc;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-left: 4px solid var(--primary);
+    }
+
+    .history-item .time {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* ---------- TOAST NOTIFICATION ---------- */
+    .toast {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      color: white;
+      padding: 14px 28px;
+      border-radius: 60px;
+      font-weight: 500;
+      box-shadow: var(--shadow-md);
+      z-index: 2000;
+      opacity: 0;
+      transition: 0.3s;
+      pointer-events: none;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 768px) {
+      body { padding: 10px; }
+      .app-header { padding: 18px; flex-direction: column; align-items: flex-start; gap: 12px; }
+      .app-header h1 { font-size: 1.5rem; }
+      .search-section { padding: 16px; flex-direction: column; align-items: stretch; }
+      .filter-actions { justify-content: stretch; }
+      .filter-actions .btn { flex: 1; justify-content: center; }
+      .contact-table td, .contact-table th { padding: 12px 10px; }
+      .action-cell { gap: 2px; }
+      .icon-btn { width: 32px; height: 32px; font-size: 1rem; }
+      .history-badge { bottom: 16px; right: 16px; padding: 12px 18px; font-size: 0.9rem; }
+    }
+
+    @media (max-width: 480px) {
+      .app-header h1 { font-size: 1.3rem; }
+      .header-stats { font-size: 0.85rem; padding: 8px 14px; }
+      .btn { padding: 10px 16px; font-size: 0.85rem; }
+      .contact-table { font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="app-container">
+  <!-- HEADER -->
+  <header class="app-header">
+    <h1><i class="fas fa-address-book"></i> কন্টাক্ট ম্যানেজার</h1>
+    <div class="header-stats">
+      <span><i class="fas fa-users"></i> <span id="totalCount">0</span> Contacts</span>
+      <span><i class="fas fa-filter"></i> <span id="filteredCount">0</span> Showing</span>
+    </div>
+  </header>
+
+  <!-- SEARCH & ACTIONS -->
+  <div class="search-section">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="নাম বা নাম্বার লিখে খুঁজুন... (লাইভ সার্চ)" autocomplete="off">
+    </div>
+    <div class="filter-actions">
+      <button class="btn btn-outline" id="clearSearchBtn"><i class="fas fa-times-circle"></i> ক্লিয়ার</button>
+      <button class="btn btn-primary" id="addContactBtn"><i class="fas fa-plus-circle"></i> নতুন যোগ করুন</button>
+      <button class="btn btn-outline" id="exportBtn"><i class="fas fa-download"></i> এক্সপোর্ট</button>
+    </div>
+  </div>
+
+  <!-- CATEGORY CHIPS (A-Z + Bengali + Numbers) -->
+  <div class="category-section">
+    <div class="category-header">
+      <h3><i class="fas fa-tags"></i> কেটাগরি (A-Z, ক-হ, ০-৯)</h3>
+      <span style="font-size:0.85rem; color:var(--text-muted);">ক্লিক করে ফিল্টার করুন</span>
+    </div>
+    <div class="category-chips" id="categoryChips">
+      <!-- Populated dynamically via JS -->
+    </div>
+  </div>
+
+  <!-- CONTACT TABLE -->
+  <div class="contact-table-wrapper">
+    <table class="contact-table" id="contactTable">
+      <thead>
+        <tr>
+          <th>নাম</th>
+          <th>নাম্বার</th>
+          <th style="text-align:right;">অ্যাকশন</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <!-- Rows will be populated by JS -->
+      </tbody>
+    </table>
+    <div id="emptyState" class="empty-state" style="display:none;">
+      <i class="fas fa-phone-slash"></i>
+      <h3>কোনো কন্টাক্ট পাওয়া যায়নি</h3>
+      <p>সার্চ বা কেটাগরি পরিবর্তন করে দেখুন</p>
+    </div>
+  </div>
+</div>
+
+<!-- HISTORY BADGE & PANEL -->
+<button class="history-badge" id="historyToggleBtn">
+  <i class="fas fa-history"></i> হিস্ট্রি <span id="historyCountBadge">0</span>
+</button>
+<div class="history-panel" id="historyPanel">
+  <h4><span>🕒 সার্চ হিস্ট্রি</span> <button class="icon-btn" id="clearHistoryBtn" title="ক্লিয়ার হিস্ট্রি"><i class="fas fa-trash-alt"></i></button></h4>
+  <div class="history-list" id="historyList">
+    <!-- History items -->
+  </div>
+</div>
+
+<!-- ADD/EDIT MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-content">
+    <h2 id="modalTitle">নতুন কন্টাক্ট</h2>
+    <input type="hidden" id="editIndex" value="-1">
+    <div class="form-group">
+      <label for="contactName">নাম</label>
+      <input type="text" id="contactName" placeholder="যেমন: Ebrahim / খাদিজা" required>
+    </div>
+    <div class="form-group">
+      <label for="contactNumber">নাম্বার</label>
+      <input type="text" id="contactNumber" placeholder="যেমন: +8801678600786" required>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" id="cancelModalBtn">বাতিল</button>
+      <button class="btn btn-primary" id="saveContactBtn">সেভ করুন</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastMessage">সফল!</span></div>
+
+<script>
+  // ---------- INITIAL DATA (Extracted from file, deduplicated partially) ----------
+  const initialContacts = [
+    { name: "Ebrahim", number: "+2471611623173" },
+    { name: "Khadiza Clg", number: "018-707-93390" },
+    { name: "Maria Alim", number: "017-999-67383" },
+    { name: "Suhag Uncle", number: "017-306-48641" },
+    { name: "Tahera Anti", number: "013-230-28620" },
+    { name: "Customer Care", number: "+8801678600786" },
+    { name: "Kulsum Clg", number: "019-858-56086" },
+    { name: "Atika/sadia Jatrabari", number: "017-309-40908" },
+    { name: "Mahdia Clg", number: "018-396-07471" },
+    { name: "Nurunnahar", number: "017-700-23816" },
+    { name: "Nurunnahar", number: "নাম্বার নেই" },
+    { name: "Anamul Madani", number: "019-216-86618" },
+    { name: "Rmjan nkla", number: "+8801736990998" },
+    { name: "Manik D B L", number: "+8801979352640" },
+    { name: "Gias fisari", number: "+8801736175485" },
+    { name: "Asmad mauna", number: "017-165-31294" },
+    { name: "Ubaidur mkndba", number: "+8801744844462" },
+    { name: "monjorol kajai", number: "+8801985568194" },
+    { name: "Ruhol mknd bad", number: "+8801777339150" },
+    { name: "Abu said daka", number: "017-163-64822" },
+    { name: "SFIK M VAIRA", number: "+8801832790075" },
+    { name: "A Rhim kajla g", number: "+8801790095034" },
+    { name: "Samim Mknd", number: "017-186-68560" },
+    { name: "Mustak jina", number: "017-249-40100" },
+    { name: "Saja maspada", number: "+8801954979706" },
+    { name: "P Tulo fulpur", number: "017-164-90777" },
+    { name: "Ajat d b l503", number: "+8801925061503" },
+    { name: "Asa Ppolar", number: "+8801936074325" },
+    { name: "Ragib juina", number: "019-159-23822" },
+    { name: "Siule daka", number: "+8801745241121" },
+    { name: "Hosiare mauna", number: "017-200-69042" },
+    { name: "Ole hoakoa", number: "017-377-31621" },
+    { name: "HABIB POPOLAR", number: "019-232-43184" },
+    { name: "Frid Basa", number: "017-873-81763" },
+    { name: "SIKKO Vai", number: "+8801308286766" },
+    { name: "Amjat", number: "+8801823884740" },
+    { name: "Asraf jina", number: "+8801749289768" },
+    { name: "Mamun vai", number: "+8801624796745" },
+    { name: "Anoar jinA", number: "017-124-35305" },
+    { name: "A Batin madaR", number: "019-119-61914" },
+    { name: "SAJAHAN PILA", number: "017-264-80228" },
+    { name: "Manik jina par", number: "019-766-12660" },
+    { name: "Hgor 2 vagnaha", number: "017-107-57739" },
+    { name: "MNIRODJAMAN PO", number: "018-724-59144" },
+    { name: "Id no hamidur", number: "269-042-1367494" },
+    { name: "Migan BIDAS", number: "+0046764423055" },
+    { name: "Najim Hajipuku", number: "019-577-59700" },
+    { name: "A rajjak gotal", number: "+8801819517944" },
+    { name: "Oler baba bgod", number: "017-164-76424" },
+    { name: "Saja vai", number: "+8801309367374" },
+    { name: "A Jabbar Rajib", number: "019-627-63358" },
+    { name: "A Rahman mknd", number: "+8801712675717" },
+    { name: "Asik dada", number: "+8801725885723" },
+    { name: "habib poplar", number: "019-232-43184" },
+    { name: "Sar vagnahati", number: "+8801921238026" },
+    { name: "Amdad naeb got", number: "017-199-64441" },
+    { name: "Siddik mobail", number: "+8801964683916" },
+    { name: "Ahmad Daka", number: "017-116-12568" },
+    { name: "Firuj mknd", number: "019-120-77176" },
+    { name: "Robel paspila", number: "+8801750699185" },
+    { name: "Aman A SI A", number: "+8801740904020" },
+    { name: "D Lisu malandh", number: "017-594-55053" },
+    { name: "Angur juina", number: "+8801950902531" },
+    { name: "Drivar a rajja", number: "016-229-64889" },
+    { name: "Bikas", number: "247" },
+    { name: "Sahln d b l", number: "017-557-58520" },
+    { name: "Bjlur rsid dak", number: "017-858-26503" },
+    { name: "Amanulla gajip", number: "017-121-93992" },
+    { name: "Ripun mkndbadi", number: "+8801926959027" },
+    { name: "A Momin Juina", number: "017-017-06778" },
+    { name: "Rafael", number: "+8801648896984" },
+    { name: "Masudul alm na", number: "016-785-11535" },
+    { name: "Hojr vagnahati", number: "018-154-64177" },
+    { name: "SAIKAL FUL PUR", number: "+8801673374176" },
+    { name: "Babo vagina 2", number: "018-452-97804" },
+    { name: "HASAN GATOL SI", number: "019-978-88432" },
+    { name: "D A mannan jin", number: "017-166-04066" },
+    { name: "MOSARF PASPYLA", number: "019-347-98641" },
+    { name: "TISU COMPANI", number: "016-811-82335" },
+    { name: "Ad manajar dbl", number: "017-132-38626" },
+    { name: "A Mtin MKndbad", number: "017-128-97334" },
+    { name: "SOHEL CAP", number: "018-948-82489" },
+    { name: "A Mgid tibbuT", number: "+8801910520441" },
+    { name: "D.Surog Jina", number: "+8801935957728" },
+    { name: "Abutahir Dinas", number: "+8801761657306" },
+    { name: "MHR", number: "013-105-64220" },
+    { name: "JAEDAR MA", number: "014-085-82963" },
+    { name: "MORSID JINA", number: "017-216-42199" },
+    { name: "Rejaul majr ja", number: "017-106-57445" },
+    { name: "Nasrulla MKndi", number: "017-467-60144" },
+    { name: "Saidjaman dbj", number: "017-080-22373" },
+    { name: "Mahbob r s m l", number: "019-248-96294" },
+    { name: "Mgbul ulea", number: "017-176-96118" },
+    { name: "Rbijl gutail", number: "017-283-00974" },
+    { name: "Rhima khala", number: "017-258-43884" },
+    { name: "Mijan daka", number: "017-409-64924" },
+    { name: "Sfik juna", number: "+8801729956877" },
+    { name: "Ahajddi ulia", number: "017-453-50119" },
+    { name: "Tolo malo asia", number: "+601133735673" },
+    { name: "NOR NBI DBL", number: "019-204-51467" },
+    { name: "mnir", number: "+8801774578156" },
+    { name: "Eddis sistur", number: "016-773-90472" },
+    { name: "Badsa faX", number: "017-666-81360" },
+    { name: "OLi fulpur", number: "017-997-51234" },
+    { name: "Rjaul B S C", number: "017-293-00274" },
+    { name: "VAIRA", number: "017-093-19560" },
+    { name: "Homaun d b l", number: "017-719-10196" },
+    { name: "FAISAL NRSIND", number: "017-184-19931" },
+    { name: "Lakt karani va", number: "019-249-36768" },
+    { name: "A Rhman gtail", number: "017-610-08483" },
+    { name: "A kddus ltabr", number: "017-947-50055" },
+    { name: "D, SIDDIK JINA", number: "017-368-03636" },
+    { name: "Homaun gtael", number: "017-231-85355" },
+    { name: "Asad jina", number: "+8801748473466" },
+    { name: "shid uddinakij", number: "017-148-61359" },
+    { name: "I D NO PUPI", number: "391-291-3594761" },
+    { name: "Sahin d b l", number: "017-557-58520" },
+    { name: "Gog mia naran", number: "017-484-92352" },
+    { name: "Bablo mkndbadi", number: "017-331-70551" },
+    { name: "H Said daka", number: "+8801715324542" },
+    { name: "A Hadi mkndbad", number: "017-185-85611" },
+    { name: "Masum mastr ji", number: "+8801728303855" },
+    { name: "RITISHA BISKIT", number: "019-344-51563" },
+    { name: "mhsin 45", number: "+8801741368145" },
+    { name: "Mujaffr bin mh", number: "017-152-49694" },
+    { name: "Samiul psabhal", number: "017-364-15851" },
+    { name: "Eamin r s m l", number: "+8801921091190" },
+    { name: "JBAIDUR", number: "019-160-02843" },
+    { name: "Faruk mkndbadi", number: "+8801729836565" },
+    { name: "Babo vagina", number: "+8801781770167" },
+    { name: "Asad sar vagna", number: "019-141-19361" },
+    { name: "Anuar jamalpur", number: "+8801715625892" },
+    { name: "FARUK PASPILA", number: "+8801724363994" },
+    { name: "Mtiur turmpada", number: "+8801742316900" },
+    { name: "A Mgid tibbt", number: "019-166-63398" },
+    { name: "Sultana amvdra", number: "017-470-77955" },
+    { name: "Abuhanif vagna", number: "017-147-74186" },
+    { name: "Naim", number: "017-626-41344" },
+    { name: "Kobir Dbl", number: "+8801677727382" },
+    { name: "Naim silat", number: "+8801914645566" },
+    { name: "JUEL D B L", number: "017-554-80723" },
+    { name: "Mgnu bdchala", number: "+8801876477666" },
+    { name: "A ajig fulpur", number: "+8801749110160" },
+    { name: "Mjibr jina", number: "+8801734306181" },
+    { name: "Gia basa", number: "+8801729745912" },
+    { name: "Asik s i mama", number: "017-651-12288" },
+    { name: "C N G Maspada", number: "+8801778657670" },
+    { name: "Khairul gaji", number: "017-405-86141" },
+    { name: "Saharul daka", number: "017-766-75508" },
+    { name: "A Rhim d b l", number: "019-646-84153" },
+    { name: "FORID POPOLAR", number: "+8801613279433" },
+    { name: "Eamin h a k", number: "019-110-21256" },
+    { name: "ARIF DBL", number: "019-870-14916" },
+    { name: "ATIKA/SADIA", number: "017-309-40908" },
+    { name: "A Momim rajibp", number: "+8801918428543" },
+    { name: "Anis", number: "019-201-74071" },
+    { name: "Kagi ebrahim", number: "019-423-45123" },
+    { name: "Frhad madagng", number: "017-189-08220" },
+    { name: "Hagi eakub dng", number: "017-162-17587" },
+    { name: "Kabir d b l", number: "+8801912216516" },
+    { name: "HAJERA BALGASa", number: "017-423-72615" },
+    { name: "Baten madar cH", number: "+8801857783590" },
+    { name: "Atr ale r s m", number: "017-211-28218" },
+    { name: "Sihab mkndbadi", number: "+8801717105194" },
+    { name: "Said emam ngr", number: "017-216-46755" },
+    { name: "Sipn paspila", number: "017-182-14510" },
+    { name: "শাহিন সার", number: "015-189-15615" },
+    { name: "Kafe golpukur", number: "017-198-85884" },
+    { name: "RANA NUGA", number: "019-181-17600" },
+    { name: "Tahira mkndbad", number: "017-227-88170" },
+    { name: "Srug maspada", number: "017-180-63443" },
+    { name: "Fglo Vai Maspa", number: "017-306-01821" },
+    { name: "Chan Mia Juina", number: "017-666-54321" },
+    { name: "Basa Vagnahati", number: "019-240-92850" },
+    { name: "Sifa majn", number: "017-535-03500" },
+    { name: "SUHAG VAIRA 41", number: "017-306-48641" },
+    { name: "Rfekul Emam ji", number: "017-460-77697" },
+    { name: "Surug daka", number: "+8801840975108" },
+    { name: "SULAIMAN PAS", number: "017-171-66840" },
+    { name: "D d b l", number: "019-555-38474" },
+    { name: "Asik d b l", number: "+8801780246926" },
+    { name: "AButaleb maspa", number: "017-899-63803" },
+    { name: "Chan mia nonpu", number: "017-728-20270" },
+    { name: "MAKAR JARULTLA", number: "016-235-57940" },
+    { name: "SAHARUL SUDIA", number: "009-665-06053564" },
+    { name: "Soroj r s m l", number: "+8801916162139" },
+    { name: "ALamin vai", number: "+8801628998448" },
+    { name: "Sirag manajar", number: "017-303-72803" },
+    { name: "Faruk d b l", number: "018-295-70433" },
+    { name: "Shidullah imam", number: "017-458-01611" },
+    { name: "Naeb ali d b l", number: "017-107-57527" },
+    { name: "Rfik sirag gnj", number: "019-318-63336" },
+    { name: "আসিক", number: "+8801616334584" },
+    { name: "Habib gotael", number: "017-293-94725" },
+    { name: "MHABBT DBL", number: "019-812-53544" },
+    { name: "Bktiar jina", number: "018-175-51296" },
+    { name: "Ngrul nlsia", number: "019-228-62271" },
+    { name: "Jahagngir d b", number: "019-932-72853" },
+    { name: "Abo gotaelA", number: "017-189-07259" },
+    { name: "E Mamun d b l", number: "017-458-96957" },
+    { name: "Suhag Uncle", number: "017-518-58271" },
+    { name: "Sabber d b l", number: "017-325-59660" },
+    { name: "Tolu mkndbadi", number: "017-135-68226" },
+    { name: "A krim gtael", number: "017-484-51556" },
+    { name: "A kadir fulba", number: "+8801732041569" },
+    { name: "Tauhid prokasn", number: "+880247112762" },
+    { name: "Rjb", number: "+8801992804054" },
+    { name: "Naim emam", number: "+8801990446932" },
+    { name: "Taoe ulia", number: "019-522-14045" },
+    { name: "KHADIGA", number: "+8801910507879" },
+    { name: "Slaiman gotael", number: "017-352-91907" },
+    { name: "Sahin mama", number: "019-179-90430" },
+    { name: "A Rhman Paspil", number: "017-345-03953" },
+    { name: "Abul kalam sis", number: "017-135-33102" },
+    { name: "NGROL BASA", number: "017-201-58150" },
+    { name: "Misti", number: "019-959-27258" },
+    { name: "D,Akkas fulpur", number: "015-583-39226" },
+    { name: "Mnir juina", number: "+8801720158834" },
+    { name: "Jahd d b l", number: "+8801935729497" },
+    { name: "Rket", number: "16216" },
+    { name: "Refat Rak Mor", number: "+8801959570307" },
+    { name: "Sajahan Vai Po", number: "017-216-13014" },
+    { name: "Motahar gotael", number: "+8801709130614" },
+    { name: "Mnir fit sistu", number: "+8801715036853" },
+    { name: "EMAM EKBAPUR J", number: "019-209-10664" },
+    { name: "Rejuan", number: "+8801609607823" },
+    { name: "Masud boss", number: "019-074-75271" },
+    { name: "রহিমা চা", number: "019-933-734660" },
+    { name: "Ajad gutail", number: "017-331-04521" },
+    { name: "Bacho kbiras f", number: "017-347-89181" },
+    { name: "Alamin r a k", number: "017-219-95625" },
+    { name: "Kalu Jamalpur", number: "017-283-36169" },
+    { name: "Sahin jarultla", number: "019-808-06321" },
+    { name: "Saijuddin", number: "019-272-38242" },
+    { name: "Md Nuruzzaman Vai", number: "016-012-44540" },
+    { name: "Nahar", number: "016-820-20736" },
+    { name: "Acaud no hamid", number: "017-467-600181" },
+    { name: "Suhag Ulia", number: "+8801762342619" },
+    { name: "Lichu Malando", number: "017-594-55053" },
+    { name: "অজেদ মামা", number: "019-159-67152" },
+    { name: "জামাইমাছপা", number: "017-819-54073" },
+    { name: "Asha Mame", number: "019-360-74325" },
+    { name: "ফিরোজ ভাই", number: "016-725-47260" },
+    { name: "Abu said daka", number: "017-163-64822" },
+    { name: "Seule Ulia", number: "016-015-16085" },
+    { name: "Jamai Balgasha", number: "+8801823884740 / 017-493-84644" },
+    { name: "Mohsin Jamai", number: "019-932-73299" },
+    { name: "রিমন 8", number: "+8801794962263" },
+    { name: "Masud jina", number: "017-182-68088" },
+    { name: "সাইফুল \" চাচা \"", number: "+8801784632455 / +8801741153344" },
+    { name: "Obadur Rahoman", number: "+8801515620013" },
+    { name: "Beplob", number: "+8801990308660" },
+    { name: "ছাইফুল \" চাচা \"", number: "+8801741153344" },
+    { name: "আরিফ", number: "017-107-59548" },
+    { name: "সুলাইমান \" দপ্তরী \" কাচ্চাগর", number: "+8801738763868" },
+    { name: "Mizan Mama", number: "+8801740964924" },
+    { name: "LAL MIYA", number: "017-623-28933" },
+    { name: "তাসলিমাভাবি", number: "019-159-67152" },
+    { name: "চাঁদনী ভাবি", number: "017-736-65093" },
+    { name: "খাদিজা ফুবু", number: "019-105-07879" },
+    { name: "রুকন মামা", number: "+8801930092970" },
+    { name: "Mama O", number: "017-448-44462" },
+    { name: "মহাদেব \" সার \"", number: "+8801683192951 / +8801722564878" },
+    { name: "Suruj Polish", number: "017-145-74464" },
+    { name: "A Rhman sudia", number: "+971527734706" },
+    { name: "Said emam ngr", number: "017-216-46755" },
+    { name: "A Rhim kagla", number: "019-217-06390" },
+    { name: "Tolu mkndbadi", number: "017-135-68226" },
+    { name: "JUBAIR Tlehat", number: "019-105-15283" },
+    { name: "A Rahman Sudia", number: "+971528837673" },
+    { name: "Sojib Ulia", number: "016-473-01572" },
+    { name: "lutfr d b l", number: "019-493-79380" },
+    { name: "RSOL JINA", number: "017-259-87934" },
+    { name: "Mnjorol Oto", number: "+8801609845969" },
+    { name: "Abul kalam sis", number: "017-135-33102" },
+    { name: "Mtiur turmpada", number: "+8801742316900" },
+    { name: "C N G Maspada", number: "+8801778657670" },
+    { name: "Harun maspada", number: "+8801734401303" },
+    { name: "Ngrul nlsia", number: "019-228-62271" },
+    { name: "FGLO VAI", number: "+8801970601821" },
+    { name: "Eddis sistur", number: "016-773-90472" },
+    { name: "Ovil maspada", number: "017-542-17605" },
+    { name: "Sufean paspila", number: "+8801999520555" },
+    { name: "Ahad d b l 44", number: "019-408-174744" },
+    { name: "A Mtin MKndbad", number: "017-128-97334" },
+    { name: "Sifa", number: "+8801683207372" },
+    { name: "Firuj mknd", number: "019-120-77176" },
+    { name: "Mgbul ulea", number: "017-176-96118" },
+    { name: "Kamrol mekar", number: "017-219-20121" },
+    { name: "MA", number: "+8801784632455" },
+    { name: "Shidullah imam", number: "017-458-01611" },
+    { name: "Ebrahim chkpad", number: "017-244-15812" },
+    { name: "Amanolla kale", number: "016-268-64093" },
+    { name: "A SAMAD N R G", number: "017-912-62274" },
+    { name: "Faiyaz Al Muntakim", number: "017-259-43904" },
+    { name: "Pis la 38/3 ba", number: "017-157-68209" },
+    { name: "Mujaffr bin mh", number: "017-152-49694" },
+    { name: "নাহিদ কেওয়া", number: "017-202-63910" },
+    { name: "Surug police", number: "+8801728221139" },
+    { name: "Al amin", number: "014-056-82312" },
+    { name: "Sabbir d b l", number: "+8801732559660" },
+    { name: "Badsa dukanda", number: "017-132-69860" },
+    { name: "মাক্স এর দুকান্দার", number: "+8801920595846 / +8801328066357" },
+    { name: "ফারিহা জামালপুর", number: "019-270-48226" },
+    { name: "Mhsinar mama", number: "019-179-90430" },
+    { name: "INAL 2", number: "+8801845785462" },
+    { name: "BATAJUR", number: "017-188-00184" },
+    { name: "Robiul maspada", number: "017-480-68538" },
+    { name: "SUMY Compan", number: "019-199-10632" },
+    { name: "Ragib juina", number: "019-159-23822" },
+    { name: "Ripn paspila", number: "+8801319496969" },
+    { name: "Rbiul daka", number: "017-422-43619" },
+    { name: "আশিক জামালপ", number: "016-284-68755" },
+    { name: "Asad sir vagna", number: "019-141-19361" },
+    { name: "H Said daka", number: "+8801715324542" },
+    { name: "MAMUN R S M L", number: "019-122-03521" },
+    { name: "Kafe golpukur", number: "017-198-85884" },
+    { name: "A Mgid tibbut", number: "+8801910520441" },
+    { name: "শামিমডাক্তা", number: "017-186-68560" },
+    { name: "নুনাহার আন্টি", number: "+8801770023816" },
+    { name: "তরিকুল ইসলাম \" ক্লাস ফেন্ড \"", number: "+8801864548130" },
+    { name: "FAISAL NRSIND", number: "017-184-19931" },
+    { name: "A Krim daka", number: "017-386-41990" },
+    { name: "Babo jina garm", number: "+8801716443146" },
+    { name: "Bktiar jina", number: "018-175-51296" },
+    { name: "ফুয়াদ কাচ্চাগর", number: "013-052-26172" },
+    { name: "MORSID JINA", number: "017-216-42199" },
+    { name: "Sultana amvdra", number: "+8801747077955 / 017-470-77955" },
+    { name: "Sis", number: "017-303-72803" },
+    { name: "সারফুল হুজুর \" শ্রীপুর \"", number: "+8801922952006" },
+    { name: "P Tulo fulpur", number: "017-164-90777" },
+    { name: "momin", number: "+8801757074582" },
+    { name: "Ahmad Daka", number: "017-116-12568" },
+    { name: "Sakeb Shake", number: "016-411-55242" },
+    { name: "Asik s i mama", number: "017-651-12288" },
+    { name: "SHOEL CAP", number: "018-948-82489" },
+    { name: "Naem maspada", number: "017-793-55929" },
+    { name: "সফিকুল", number: "+8801533439428 / +8801884802526" },
+    { name: "সজিব  \" সার \" জৈনাবাজার \"", number: "017-278-08386" },
+    { name: "Ismael r a k", number: "019-144-89449" },
+    { name: "Emam jina baja", number: "018-835-08482" },
+    { name: "রিয়াদ \" ভাই \"", number: "+8801706834402" },
+    { name: "Majharul r a k", number: "017-618-86589" },
+    { name: "SAKIB MOKUNDOB", number: "017-665-88080" },
+    { name: "Asmad mauna", number: "017-165-31294" },
+    { name: "শাহিনুর \" মেডাম \"", number: "+8801969800640" },
+    { name: "Rfekul Emam ji", number: "017-460-77697" },
+    { name: "সুহাগ \" আংকেল \"", number: "+8801730648641" },
+    { name: "রেজুয়ান কাচ্চাগর", number: "+8801927887530 / +8801609607823" },
+    { name: "সুনালি \" মাদারের চর \"", number: "+8801938712947" },
+    { name: "Frhad madagng", number: "017-189-08220" },
+    { name: "A Hadi mkndbad", number: "017-185-85611" },
+    { name: "Sojib", number: "017-215-82516" },
+    { name: "ববিতা মেডাম", number: "+8801921868311" },
+    { name: "Sipn paspila", number: "017-182-14510" },
+    { name: "Eamin h a k", number: "019-110-21256" },
+    { name: "D A mannan jin", number: "017-166-04066" },
+    { name: "Masud emam mad", number: "017-336-94897" },
+    { name: "আমির ডক্টর (কাইতপারা)", number: "017-113-27884" },
+    { name: "Sifa majn", number: "017-535-03500" },
+    { name: "Khairol Gajipu", number: "017-405-86141" },
+    { name: "VAIRA", number: "017-093-19560" },
+    { name: "Fast Recharge BD", number: "+8801916282882" },
+    { name: "Samim Mknd", number: "017-186-68560" },
+    { name: "Balal t b t", number: "017-631-52764" },
+    { name: "Mnir fit sistu", number: "+8801715036853" },
+    { name: "MD Rokon কাচ্চাগর", number: "+8801618971287" },
+    { name: "Aman A SI A", number: "+8801740904020" },
+    { name: "Sohil vai 40", number: "017-320-78440" },
+    { name: "RBE MBL", number: "017-123-45386" },
+    { name: "Amanulla gajip", number: "017-121-93992" },
+    { name: "Mobarak", number: "+8801919570406" },
+    { name: "ইসলামপুর উপজেলা", number: "017-321-51046" },
+    { name: "Rohima khala", number: "017-258-43884" },
+    { name: "Sumn,dbl", number: "019-509-07083" },
+    { name: "rayhanbipbop", number: "+8801600023110" },
+    { name: "মোছাঃ সরনা আক্তার \" ক্লাস ফেন্ড \"", number: "+8801784610070" },
+    { name: "Tanji \" Clg \"", number: "016-464-32685" },
+    { name: "সায়েম খান \"কেওয়া\"", number: "+8801933285595" },
+    { name: "Sihab mkndbadi", number: "+8801717105194" },
+    { name: "আব্দুর রহমান মামা", number: "017-556-40363" },
+    { name: "শিক্কু \" গুঠাইল\"", number: "+8801308286766" },
+    { name: "আছুজ্জামা = নাছিমা একতা", number: "+8801749008166" },
+    { name: "সরিফুল ইসলাম \" কেওয়া \"", number: "017-952-71141" },
+    { name: "দিদারুল ইসলাম \" শেরপুর \"", number: "+8801639412523 / +8801825787130" },
+    { name: "Mahfuj Mauna", number: "019-448-61188 / +8801772102823" },
+    { name: "Babo vagina", number: "+8801781770167" },
+    { name: "Abdullah jukir", number: "017-165-88857" },
+    { name: "Mahmodul Sir", number: "019-208-49148" },
+    { name: "Nana ” mkndbadi \"", number: "017-467-60162 / +8801746760162" },
+    { name: "Robin Mama", number: "017-031-85174" },
+    { name: "A Batin madar", number: "019-119-61914" },
+    { name: "Fariha jamal p", number: "019-270-48226" },
+    { name: "আঃ করিম \" গুঠাইল \"", number: "+8801642227934 / +8801748451556" },
+    { name: "পিয়ারা ভাবি", number: "017-200-06009" },
+    { name: "md shamim sreepur 2025", number: "+8801626714566" },
+    { name: "ইয়াকুব \" মামা \"", number: "+8801601312953" },
+    { name: "ইসলামপু", number: "+8801917305082" },
+    { name: "ফরহাদ \" ধনতলা \"", number: "+8801902246917" },
+    { name: "Naymul Islam Islam", number: "+8801621938939" },
+    { name: "আমেনা \" বেলগাছা \"", number: "+8801601346147" },
+    { name: "রাকিপ ভাই ধনতলা", number: "016-001-20896" },
+    { name: "নাসরিন \" ধনতলা \"", number: "016-476-28092" },
+    { name: "মজিবর \" মেম্বার \"", number: "017-206-83232" },
+    { name: "হালিম \" মামা \" জামালপুর", number: "017-180-88904" },
+    { name: "সাথি \" ধনতলা \"", number: "+8801829826524" },
+    { name: "সেফালি \" ফুবু \"", number: "+8801924809285" },
+    { name: "NID", number: "105" },
+    { name: "শাহীন", number: "017-199-07905" },
+    { name: "Akbar_ Ali", number: "+8801328471247" },
+    { name: "ইমরান কম্পিউটার ইসলামপুর বাজার", number: "+8801613473617" },
+    { name: "Mi Shimul Shimul \" জৈনাবাজার \"", number: "+8801701003221" },
+    { name: "কম্পিউটার ইসলামপুর বাজার", number: "+8801610369685" },
+    { name: "রেজুয়ান কম্পিউটার গুঠাইল বাজার", number: "+8801832184897" },
+    { name: "আমেনা Afrina \" কাচ্চাগর\"", number: "+8801764180162" },
+    { name: "রবিন টেলিকম টেলিকম \" জারুলতলা বাজার\"", number: "+8801612825524" },
+    { name: "মনিকা \" পচাবালাহ\"", number: "+8801306445895" },
+    { name: "শ্রীপুর কম্পিউটার দোকান", number: "+8801759212871" },
+    { name: "ডারাজের কাজ Ritu Karim", number: "+8801337919072" },
+    { name: "InstaJob", number: "+8801337254616" },
+    { name: "Jihad সার্ভিস", number: "+8801303898267" },
+    { name: "মাহমুদুল হুজুর পাবেল", number: "+8801515206553" },
+    { name: "রেজাউল করিম BSC", number: "+8801603560499" },
+    { name: "রেজাউল", number: "016-889-77733" },
+    { name: "রেজাউল B S C", number: "017-293-00274" },
+    { name: "সুফিয়া \" ফুবু \"", number: "017-152-81891" },
+    { name: "নির্বাচন অফিসে লোক \" সার্ভার \"", number: "+8801701068013" },
+    { name: "Sebakori", number: "+8801337905138" },
+    { name: "BD All Saba", number: "+8801618843060" },
+    { name: "Nil", number: "+8801792492762" },
+    { name: "Shuvo \" এক মাস কাজ \"", number: "+8801760067082" },
+    { name: "মারিয়া \" আলিম \"", number: "017-999-67383" },
+    { name: "mst Khadiza Clg", number: "+8801870793390" },
+    { name: "Mohsin Ali জামাই", number: "+8801708597797" },
+    { name: "আলইমরান \" আলিম \"", number: "+8801980905853" },
+    { name: "হাছিবুল \" আলিম \" বি", number: "+8801992596390" },
+    { name: "Torikul Islam \" আলিম \"", number: "+8801975460850" },
+    { name: "Ema Clg", number: "+8801619890615" },
+    { name: "Mahin Mama", number: "+8801880478207" },
+    { name: "জাকির \" শরিসাবাড়ী \"", number: "+8801995548588" },
+    { name: "নিশাদ ভাই \" জৈনা বাজার \"", number: "+8801998374087" },
+    { name: "বরিসাল সার্জিক্যাল কেপ \" ঢাকা \"", number: "+8801733388613" },
+    { name: "Obaydul Hossain", number: "+8801405693463" },
+    { name: "Baijid Al Alif Al Alif", number: "+8801969217159" },
+    { name: "অনলাইন সার্ভিস", number: "+8801898012505" },
+    { name: "israfil", number: "+8801728536454" },
+    { name: "Ab Media Media", number: "+8801734301673" },
+    { name: "Nazmul", number: "+8801840648881" },
+    { name: "রাশেদা বেগম", number: "+8801925035256" },
+    { name: "Rupali Seba Seba", number: "+8801327097837" },
+    { name: "Alamin mondul mondul", number: "+8801866727681" },
+    { name: "MD.ZOSIM UDDIN ZOSIM UDDIN", number: "+8801744425450" },
+    { name: "Air travel  & Tour", number: "+8801873000300" },
+    { name: "JAKIR HOSSAIN HOSSAIN", number: "+8801997944215" },
+    { name: "Ashiqur Rahman \" রংপুর \"", number: "+8801786940054" },
+    { name: "Delowar Hasan Hasan-72", number: "+8801766259272" },
+    { name: "SARAH DIGITAL POINT", number: "+8801880970062" },
+    { name: "Data Service 24 Service 24", number: "+96599775972" },
+    { name: "E Mamun d b l", number: "017-458-96957" },
+    { name: "Rjaul B S C", number: "017-293-00274" },
+    { name: "Kagi ebrahim", number: "019-423-45123" },
+    { name: "Drivar a rajja", number: "016-229-64889" },
+    { name: "Eamin r s m l", number: "+8801921091190" },
+    { name: "RITISHA BISKIT", number: "019-344-51563" },
+    { name: "Fglo Vai Maspa", number: "017-306-01821" },
+    { name: "Asik dada", number: "+8801725885723" },
+    { name: "SUHAG VAIRA 41", number: "+8801730648641" },
+    { name: "MHR", number: "013-105-64220" },
+    { name: "Bjlur rsid dak", number: "017-858-26503" },
+    { name: "Saidjaman dbj", number: "017-080-22373" },
+    { name: "ALamin vai", number: "+8801628998448" },
+    { name: "Habib gotael", number: "017-293-94725" },
+    { name: "Sahin mama", number: "019-179-90430" },
+    { name: "Kobir Dbl", number: "+8801677727382" },
+    { name: "A Momin Juina", number: "017-017-06778" },
+    { name: "NGROL BASA", number: "017-201-58150" },
+    { name: "Chan mia nonpu", number: "017-728-20270" },
+    { name: "Rfik sirag gnj", number: "019-318-63336" },
+    { name: "Frid Basa", number: "017-873-81763" },
+    { name: "mhsin 45", number: "+8801741368145" },
+    { name: "SIKKO Vai", number: "+8801308286766" },
+    { name: "ARIF DBL", number: "019-870-14916" },
+    { name: "EMAM EKBAPUR J", number: "019-209-10664" },
+    { name: "Jahd d b l", number: "+8801935729497" },
+    { name: "A kddus ltabr", number: "017-947-50055" },
+    { name: "FORID POPOLAR", number: "+8801613279433" },
+    { name: "JAEDAR MA", number: "014-085-82963" },
+    { name: "Anis", number: "019-201-74071" },
+    { name: "Saja maspada", number: "+8801954979706" },
+    { name: "Homaun d b l", number: "017-719-10196" },
+    { name: "Sajahan Vai Po", number: "017-216-13014" },
+    { name: "Amdad naeb got", number: "017-199-64441" },
+    { name: "Baten madar cH", number: "+8801857783590" },
+    { name: "Hgor 2 vagnaha", number: "017-107-57739" },
+    { name: "Migan BIDAS", number: "+0046764423055" },
+    { name: "MAKAR JARULTLA", number: "016-235-57940" },
+    { name: "A rajjak gotal", number: "+8801819517944" },
+    { name: "Abuhanif vagna", number: "017-147-74186" },
+    { name: "Sar vagnahati", number: "+8801921238026" },
+    { name: "Alamin r a k", number: "017-219-95625" },
+    { name: "Anoar jinA", number: "017-124-35305" },
+    { name: "Angur juina", number: "+8801950902531" },
+    { name: "Rjb", number: "+8801992804054" },
+    { name: "Gias fisari", number: "+8801736175485" },
+    { name: "Najim Hajipuku", number: "019-577-59700" },
+    { name: "TISU COMPANI", number: "016-811-82335" },
+    { name: "NOR NBI DBL", number: "019-204-51467" },
+    { name: "Ajat d b l503", number: "+8801925061503" },
+    { name: "Ad manajar dbl", number: "017-132-38626" },
+    { name: "A Rhman Paspil", number: "017-345-03953" },
+    { name: "MHABBT DBL", number: "019-812-53544" },
+    { name: "Samiul psabhal", number: "017-364-15851" },
+    { name: "Saijuddin", number: "019-272-38242" },
+    { name: "A Rhim kajla g", number: "+8801790095034" },
+    { name: "Naim silat", number: "+8801914645566" },
+    { name: "KHADIGA", number: "+8801910507879" },
+    { name: "Hojr vagnahati", number: "018-154-64177" },
+    { name: "Soroj r s m l", number: "+8801916162139" },
+    { name: "JBAIDUR", number: "019-160-02843" },
+    { name: "Motahar gotael", number: "+8801709130614" },
+    { name: "Masud boss", number: "019-074-75271" },
+    { name: "Chan Mia Juina", number: "017-666-54321" },
+    { name: "RANA NUGA", number: "019-181-17600" },
+    { name: "Manik D B L", number: "+8801979352640" },
+    { name: "A Rhman gtail", number: "017-610-08483" },
+    { name: "Rmjan nkla", number: "+8801736990998" },
+    { name: "Ruhol mknd bad", number: "+8801777339150" },
+    { name: "A Mgid tibbt", number: "019-166-63398" },
+    { name: "Asad jina", number: "+8801748473466" },
+    { name: "SFIK M VAIRA", number: "+8801832790075" },
+    { name: "MOSARF PASPYLA", number: "019-347-98641" },
+    { name: "Naim emam", number: "+8801990446932" },
+    { name: "SAHARUL SUDIA", number: "009-665-06053564" },
+    { name: "Hosiare mauna", number: "017-200-69042" },
+    { name: "Tauhid prokasn", number: "+880247112762" },
+    { name: "Babo vagina 2", number: "018-452-97804" },
+    { name: "Mahbob r s m l", number: "019-248-96294" },
+    { name: "A krim gtael", number: "017-484-51556" },
+    { name: "Ole hoakoa", number: "017-377-31621" },
+    { name: "Asik d b l", number: "+8801780246926" },
+    { name: "Refat Rak Mor", number: "+8801959570307" },
+    { name: "Siddik mobail", number: "+8801964683916" },
+    { name: "Tolo malo asia", number: "+601133735673" },
+    { name: "A ajig fulpur", number: "+8801749110160" },
+    { name: "HASAN GATOL SI", number: "019-978-88432" },
+    { name: "Mamun vai", number: "+8801624796745" },
+    { name: "Masudul alm na", number: "016-785-11535" },
+    { name: "shid uddinakij", number: "017-148-61359" },
+    { name: "Jahagngir d b", number: "019-932-72853" },
+    { name: "Bablo mkndbadi", number: "017-331-70551" },
+    { name: "আসিক", number: "+8801616334584" },
+    { name: "Homaun gtael", number: "017-231-85355" },
+    { name: "Rket", number: "16216" },
+    { name: "D d b l", number: "019-555-38474" },
+    { name: "Rejuan", number: "+8801609607823" },
+    { name: "Naim", number: "017-626-41344" },
+    { name: "Atr ale r s m", number: "017-211-28218" },
+    { name: "A kadir fulba", number: "+8801732041569" },
+    { name: "D Lisu malandh", number: "017-594-55053" },
+    { name: "রহিমা চা", number: "019-933-734660" },
+    { name: "JUEL D B L", number: "017-554-80723" },
+    { name: "Saja vai", number: "+8801309367374" },
+    { name: "Slaiman gotael", number: "017-352-91907" },
+    { name: "mnir", number: "+8801774578156" },
+    { name: "Rafael", number: "+8801648896984" },
+    { name: "Misti", number: "019-959-27258" },
+    { name: "Faruk d b l", number: "018-295-70433" },
+    { name: "Hagi eakub dng", number: "017-162-17587" },
+    { name: "Badsa faX", number: "017-666-81360" },
+    { name: "Ajad gutail", number: "017-331-04521" },
+    { name: "MNIRODJAMAN PO", number: "018-724-59144" },
+    { name: "Asa Ppolar", number: "+8801936074325" },
+    { name: "Sirag manajar", number: "017-303-72803" },
+    { name: "Mgnu bdchala", number: "+8801876477666" },
+    { name: "Lakt karani va", number: "019-249-36768" },
+    { name: "monjorol kajai", number: "+8801985568194" },
+    { name: "Mustak jina", number: "017-249-40100" },
+    { name: "SebaJEct – Official", number: "+60107181501" },
+    { name: "অগরিম╰•★★ ƙąῳʂąཞ ★★•╯ ƙąῳʂąཞ ★★•╯", number: "+8801902661978" },
+    { name: "আসিবুল হাসান \" আলিম পরিক্ষারথী \"", number: "+8801956415723" },
+    { name: "ফারুক আহমেদ মমতাজী \" পিন্সিপাল কামিল মাদ্রাসা \" শ্রীপুর", number: "018-205-42324" },
+    { name: "bKash Ltd", number: "+8801844116247" },
+    { name: "ফরহাদ মামা \" সরিষাবাড়ি \"", number: "+8801922046583" },
+    { name: "Samiul Islam \"  Nana \"", number: "+8801913843908" },
+    { name: "সাদিয়া মামি", number: "014-028-09001" },
+    { name: "মুন্তাকিম মামা \" জামালপুর \"", number: "+8801536464585" },
+    { name: "জবা \" কাচ্চাগর \"", number: "+8801916829669" },
+    { name: "Admin \" Myseba (Customar Support) \"", number: "+447877454630" },
+    { name: "Mschadniakter95", number: "+8801718874456" },
+    { name: "সোহাগ ভাই \" উলিয়া \"", number: "+97471773152" },
+    { name: "Rakib \" কাচ্চাগর \"", number: "+8801935145932" },
+    { name: "NID Ahammed Amar Seba", number: "+8801867355740" },
+    { name: "আব্দুল্লাহ আল লাবিব \" মদিনা \"", number: "+8801612389928" },
+    { name: "মাহদী হাসান \" যাত্রা বাড়ি \"", number: "+8801729384405" },
+    { name: "সাগর ভাই \" জামালপুর \"", number: "+8801915591396" },
+    { name: "Mama M", number: "+46764423055" },
+    { name: "Abdullah Al Masud", number: "+8801914639137" },
+    { name: "মেহেদি হাসান \" জামালপুর \"", number: "+8801913651710" },
+    { name: "নয়নপুর বাজার, গেট", number: "+8801988446814" },
+    { name: "Abdullah Al Masud \" S+M \"", number: "+966503396914" },
+    { name: "Naeb ali d b l", number: "017-107-57527" },
+    { name: "বিপ্লব", number: "+8809638720595 / +8801600093110" },
+    { name: "আয়েশা \" কাচ্চাগর \" যায়েদ \"", number: "+8801875001902 / +8801405309798" },
+    { name: "তামিম \" কলেজ \"", number: "+8801300737200 / +8801811343600" },
+    { name: "Manik jina par", number: "017-166-12660 / 019-766-12660" },
+    { name: "মারুফ \" মামা \" জামালপুর", number: "+8801317312966 / +8801711067966" },
+    { name: "নাছুরুল্লাহ \" মামা \"", number: "+8809638399876 / +8801756427041" },
+    { name: "Basa Vagnahati", number: "019-240-92850 / 017-200-19747" },
+    { name: "মিজান \" আলিম পরিক্ষারথী \" শ্রীপুর", number: "+8801540657495 / +8801635568601" },
+    { name: "শাহিন সার", number: "+8801518915615" },
+    { name: "Kabir d b l", number: "019-122-16516 / +8801912216516" },
+    { name: "ABEBABS", number: "+8801712427447 / 017-124-27447" },
+    { name: "Suhag Uncle", number: "+8801730648641 / 017-518-58271" },
+    { name: "Sahin d b l", number: "017-557-58520" },
+    { name: "HABIB POPOLAR", number: "019-232-43184" },
+    { name: "I D NO PUPI", number: "391-291-3594761" },
+    { name: "Obaidur Mama", number: "+4915739734950" },
+    { name: "Anowara telecom", number: "015-804-20575 / +8801312532424" },
+    { name: "হাসিবুল \" রিদিশা \"", number: "+8801613169498" },
+    { name: "Barisal Surgical", number: "017-333-88625" },
+    { name: "Bikes", number: "247" },
+    { name: "বিদ্যুৎ চাচা", number: "013-219-80772" },
+    { name: "সেলিম মোল্লা \" জৈনাবাজার, মাদ্রাসামোর \"", number: "+8801960471799" },
+    { name: "সেলিম মোল্লা, মাদ্রাসামোর", number: "019-222-46868" },
+    { name: "সাকিল ভাই \" মুকুন্দবাড়ি \"", number: "+8801768130589" },
+    { name: "মাহমুদউল \" কেরানি \" শ্রীপুর", number: "+8801929367218" },
+    { name: "Mujammel Haque \" Grine Life\"", number: "017-180-41460" },
+    { name: "Mostofa \" Grin Life MD\"", number: "017-161-06111" },
+    { name: "নাসরিন আফু", number: "+8801946459433" },
+    { name: "মহশিন জামাই", number: "+8801341648065" },
+    { name: "বরিশাল সার্জিকেল", number: "+8801911600466" },
+    { name: "মোছাঃ হাজেরা বেগম \" বেলগাছা \"", number: "017-423-72615" },
+    { name: "নাইম \" মোল্লা বাড়ি \"", number: "+8801614614030 / 019-462-19435" },
+    { name: "হাজেরা \" ফুবু \"", number: "+8801402259618" },
+    { name: "বক্কর কাকা", number: "+8801760102943" },
+    { name: "Abdullah \" A - 409 \"", number: "+8801626800409" },
+    { name: "Airtel Mins \" এয়ারটেল মিনিট \"", number: "11" },
+    { name: "Abdullah \" Rocket - 77 \"", number: "017-983-833771" },
+    { name: "Abdullah \" B - 559 \"", number: "+8801970027559" },
+    { name: "Abdullah \" R - 184 \"", number: "018-403-53184" },
+    { name: "Abdullah \" B- 556 \"", number: "+8801917610556" },
+    { name: "Abdullah \" S - 632 \"", number: "+8801744714632" },
+    { name: "মাহফুজ মাউনা", number: "+8801953316892" },
+    { name: "আবু সাইদ ভাই ' মাদ্রাসা '", number: "+8801956247225" },
+    { name: "সাইফুল ইসলাম \" অনার্স \"", number: "+8801766587669" },
+    { name: "আক্তার মাস্টার \" নানা \"", number: "+8801950925027" },
+    { name: "সাজিদ হাসান \" কাচ্চাগর \"", number: "+8801947160438" },
+    { name: "তাহিরা \" আন্টি \" 42", number: "013-070-57742" },
+    { name: "নানি", number: "017-062-92121" },
+    { name: "সেতারা আন্টি \" দুরমুট \"", number: "019-231-39060" },
+    { name: "AJAD DBL", number: "+8801925061503" },
+    { name: "Kbir Dbl 82", number: "+8801677727382" },
+    { name: "Abdullah \" R - 216 \"", number: "+8801884988216" },
+    { name: "Abdur Rahman \" Mama \"", number: "+971556176883" },
+    { name: "Ripun mkndbadi", number: "+8801926959027" },
+    { name: "Sfik juna", number: "+8801729956877" },
+    { name: "homaun2 gtael", number: "016-337-83368" },
+    { name: "Badsa melandh", number: "016-393-45491" },
+    { name: "Gahangir jamal", number: "019-251-81567" },
+    { name: "Taoe ulia", number: "019-522-14045" },
+    { name: "Hjrt ale islam", number: "+8801633402022" },
+    { name: "A Rhim d b l53", number: "+8801964684153" },
+    { name: "VADU MASPADA", number: "019-345-84223" },
+    { name: "Ahajddi ulia", number: "017-453-50119" },
+    { name: "HADISUR IMAM", number: "017-343-52214" },
+    { name: "Anuar jamalpur", number: "+8801715625892" },
+    { name: "Solaiman gtaiL", number: "+8801925759277" },
+    { name: "Sahin jarultla", number: "019-808-06321" },
+    { name: "Said madargon", number: "016-212-44843" },
+    { name: "SAIKAL FUL PUR", number: "+8801673374176" },
+    { name: "DAG B B H O", number: "16216" },
+    { name: "SAJAHAN PILA", number: "017-264-80228" },
+    { name: "Rejaul majr ja", number: "017-106-57445" },
+    { name: "NOAN MASPADA", number: "+8801952659303" },
+    { name: "Amjat", number: "+8801823884740" },
+    { name: "Robel paspila", number: "+8801750699185" },
+    { name: "D D M", number: "+8801710437442" },
+    { name: "SULAIMAN PAS", number: "017-171-66840" },
+    { name: "Bacho kbiras f", number: "017-347-89181" },
+    { name: "HAJERA BALGASa", number: "017-423-72615" },
+    { name: "সুহাগ \" ভাই \" \" জামালপুর \"", number: "+8801918646171" },
+    { name: "Rbijl gutail", number: "017-283-00974" },
+    { name: "D Edres", number: "017-384-42411" },
+    { name: "তাজমিনা \" মেডাম \"", number: "+8801711987607" },
+    { name: "Srafat d.", number: "017-161-37911" },
+    { name: "Tahira mkndbad", number: "017-227-88170" },
+    { name: "Gog mia naran", number: "017-484-92352" },
+    { name: "NaJmul s q", number: "+8801766260362" },
+    { name: "Mijan suidan", number: "+46764423055" },
+    { name: "D, SIDDIK JINA", number: "017-368-03636" },
+    { name: "OLi fulpur", number: "017-997-51234" },
+    { name: "Mjibr jina", number: "+8801734306181" },
+    { name: "Sheuly", number: "016-145-16091" },
+    { name: "Siule wlea", number: "+8801762342619" },
+    { name: "RUKON HRIPUR", number: "019-131-29368" },
+    { name: "Saharul daka", number: "017-766-75508" },
+    { name: "D.Surog Jina", number: "+8801935957728" },
+    { name: "Najmul juina", number: "+8801740719001" },
+    { name: "জায়েদ বাবা", number: "+8801720019747" },
+    { name: "আব্বাস আলি \" মোল্লাবাড়ি \"", number: "017-988-44769" },
+    { name: "Abo gotaelA", number: "017-189-07259" },
+    { name: "নিরব  কাচ্চাগর", number: "+60172516451" },
+    { name: "রফিকুল", number: "016-088-99603" },
+    { name: "Taoe wlea 33", number: "+8801646911733" },
+    { name: "Asraf jina", number: "+8801749289768" },
+    { name: "Mhsin wlea 99", number: "019-932-73299" },
+    { name: "Beddot Kaka", number: "+8801321980772" },
+    { name: "Faruk mkndbadi", number: "+8801729836565" },
+    { name: "Lutfa", number: "017-779-89543" },
+    { name: "সুফিয়া দপ্ত", number: "017-471-81167" },
+    { name: "Nagim gina", number: "019-236-75461" },
+    { name: "AButaleb maspa", number: "017-899-63803" },
+    { name: "জান্নাত", number: "017-710-11332" },
+    { name: "Karani jarultl", number: "017-270-91330" },
+    { name: "Ubaidur mkndba", number: "+8801744844462" },
+    { name: "Rbiul 8", number: "+8801877381614" },
+    { name: "সাজিদ \" কাচ্চাগর \"", number: "+8801816691962" },
+    { name: "Babo Balgasa", number: "+8801781770167" },
+    { name: "মাহিন জৈনা বাজার", number: "+8801988565113" },
+    { name: "বাবু ভাই \" বেলগাছা \"", number: "+8801781770167" },
+    { name: "রাকিব ক", number: "016-488-49384" },
+    { name: "PAPRY", number: "018-622-43373" },
+    { name: "তাহিরা, \" আন্টি \"", number: "+8801400149046 / +8801323028620" },
+    { name: "Tahmid Samii", number: "+8801862724214 / +8801862724214" },
+    { name: "Badsa haje Jun", number: "+8801632528400" },
+    { name: "নাসুরুল্লা, মামা", number: "+8801876896265" },
+    { name: "ATIKA/SADIA", number: "017-309-40908" },
+    { name: "Kalu Jamalpur", number: "017-283-36169" },
+    { name: "নুসরাত জামালপুর", number: "014-082-55910" },
+    { name: "হাসিব \"ক্লাস ফেন্ড \"", number: "+8801995158239" },
+    { name: "Nasu", number: "+8801744715512" },
+    { name: "সেফালি ফুবু", number: "+8801771345020 / +8801935037424" },
+    { name: "D,Akkas fulpur", number: "015-583-39226" },
+    { name: "Obaidur Mama O", number: "017-448-44462" },
+    { name: "Masum mastr ji", number: "+8801728303855" },
+    { name: "ইসতিয়াক কেওয়া", number: "+8801608436412 / +8801896426375 / +8801996923319" },
+    { name: "সাকিব ভাই কাচ্চাগর", number: "+8801627688698" },
+    { name: "Surug daka", number: "+8801840975108" },
+    { name: "Anamul Madani", number: "019-216-86618" },
+    { name: "Satara JAMALPU", number: "019-231-39060" },
+    { name: "Nasrulla MKndi", number: "017-467-60144" },
+    { name: "আরাফাত কাচ্চাগর", number: "+8801323504113" },
+    { name: "আশিক কাচ্চাগর", number: "+8801616334584" },
+    { name: "Mahmudul Mauna", number: "017-760-69453" },
+    { name: "A GONI JAMALPU", number: "017-188-91182" },
+    { name: "Mijan daka", number: "017-409-64924" },
+    { name: "Rajaul wlea", number: "+8801729561351" },
+    { name: "Amanlla kmilla", number: "017-763-65959" },
+    { name: "Mnir juina", number: "+8801720158834" },
+    { name: "Gia basa", number: "+8801729745912" },
+    { name: "Mhi uddin jina", number: "017-685-14202" },
+    { name: "A Jabbar Rajib", number: "019-627-63358" },
+    { name: "যায়েদের মা", number: "+8801408582963" },
+    { name: "হুসনিয়ারা ছ", number: "+8801772312193" },
+    { name: "আব্দুর রোফ, \" সার \"", number: "+8801715202713" },
+    { name: "ইসমাইল \" বেলগাছা \"", number: "+8801886717939" },
+    { name: "Amzad \"Balgasa\"", number: "017-493-84644" },
+    { name: "Hm Mokbul", number: "+8801324516644" },
+    { name: "সুহাগ জামালপুর", number: "+8801918646171" },
+    { name: "আকরাম, \"ক্লাস ফেন্ড \"", number: "019-418-49301 / 019-418-49301 / +8801984327557" },
+    { name: "Amana \"Balgasa\"", number: "017-423-72615" },
+    { name: "জৈনা বাযারের লাইবেরি", number: "+8801721997452" },
+    { name: "A Rahman mknd", number: "+8801712675717" },
+    { name: "মহসিন জামাই", number: "+8801741368145" },
+    { name: "Mosarf jina", number: "019-131-79721" },
+    { name: "KOHINUR.MUKUND", number: "017-648-42554" },
+    { name: "Id no hamidur", number: "269-042-1367494" },
+    { name: "ইমন \" কাচ্চাগর \"", number: "+8801910120275" },
+    { name: "মহাদেব সার", number: "+8801683192951" },
+    { name: "Khadija", number: "017-846-32455" },
+    { name: "Abutahir Dinas", number: "+8801761657306" },
+    { name: "Ansari juina", number: "018-696-65244" },
+    { name: "Oler baba bgod", number: "017-164-76424" },
+    { name: "BD Book", number: "+8809639002255" },
+    { name: "A Momim rajibp", number: "+8801918428543" },
+    { name: "Anls dbl 7", number: "017-997-57873" },
+    { name: "Tarek R S L", number: "019-439-35267" },
+    { name: "Eunos hagi", number: "+8801924703373" },
+    { name: "ছাইফুলমাছপা", number: "+8801741153344" },
+    { name: "লাইব্রেরি \" জৈনা বাজার \"", number: "017-219-97452" },
+    { name: "Babu BALGASA", number: "018-452-97804" },
+    { name: "Juil r s m l", number: "+8801403005897" },
+    { name: "সেফালি \" ফুবু \" মাদারের চর", number: "+8801329962042" },
+    { name: "নির্জন \" জৈনা বাজার \"", number: "+8801919652859 / +8801906904952" },
+    { name: "Hasan Sir", number: "016-340-00704" },
+    { name: "মিজান \" মামা \"", number: "+44462" },
+    { name: "সুহাগ আংকেল", number: "+8801730648641" },
+    { name: "A", number: "+8801756427854" },
+    { name: "Abdullah \" B - 545 \"", number: "+8801993360545" },
+    { name: "Abdullah \" G - 377 \"", number: "+8801798383377" },
+    { name: "হিরা আন্টি", number: "017-790-11180" },
+    { name: "Customer Care", number: "+8801819400400 / +8801678600786" },
+    { name: "Masterbari huj", number: "+8801602697282" },
+    { name: "Mamun maspadA", number: "017-173-73845" },
+    { name: "Srug maspada", number: "017-180-63443" },
+    { name: "হেলাল হুজুর \" ধনতলা \"", number: "+8801722490374" },
+    { name: "সানু চাচা \" ধনতলা \"", number: "019-298-25692" },
+    { name: "নাসরিন মা", number: "+8801909390459" },
+    { name: "ARUMA MASTER", number: "+8801625030582" },
+    { name: "Bllal  aneymal", number: "+8801772881632" },
+    { name: "Sanjbaxk  jangaleya", number: "017-774-75354" },
+    { name: "Lablo  sobelapur", number: "016-206-36015" },
+    { name: "Rohema   A", number: "+8801957577315" },
+    { name: "Ormey   st", number: "+8801791231626" },
+    { name: "Amanulla   own", number: "017-200-06009 / +8801621253150 / 017-200-06009" },
+    { name: "Teoteo  caca", number: "+8801761895687" },
+    { name: "Sayed  A", number: "018-319-40978" },
+    { name: "Halema  own", number: "017-649-78913 / 017-649-78913" },
+    { name: "Mafojur   polisha", number: "017-119-31212" },
+    { name: "Rohim   bataga", number: "+8801756181166" },
+    { name: "Kader  Tener", number: "017-781-74118" },
+    { name: "Melen  via  jangaleya", number: "+8801670108924" },
+    { name: "Gahangir  office", number: "019-301-49516" },
+    { name: "Janty   Jute", number: "017-772-70301 / 017-772-70301" },
+    { name: "Polash  master", number: "017-218-58005" },
+    { name: "Koka  via  sodrabari", number: "017-126-28531" },
+    { name: "Kaium  SASo  mankgonj", number: "017-185-57176" },
+    { name: "Nasmonnaher  SAAo", number: "+8801735714465" },
+    { name: "Bablo  kaka  Dhaka", number: "015-523-04591" },
+    { name: "Sohedulla  mrmber  A", number: "+8801761642992" },
+    { name: "Motin   own", number: "017-128-97334" },
+    { name: "Roman  Sappo", number: "017-203-17182" },
+    { name: "Shofiqul   madter", number: "017-259-07092" },
+    { name: "Molena  kasany  A", number: "+8801704632936" },
+    { name: "Kasuddrn  member", number: "017-256-55291 / 017-256-55291" },
+    { name: "Bus  Saydor", number: "+8801730177380" },
+    { name: "Nasrin   member  3", number: "019-932-94105" },
+    { name: "Nepa   polisha", number: "+8801799094372" },
+    { name: "Kobir    via   polisha", number: "017-489-30063" },
+    { name: "Lipe  DOCTOr", number: "017-633-78219" },
+    { name: "Tahamena   Own", number: "017-206-51013" },
+    { name: "BulBul  via   Malancha", number: "017-689-05180" },
+    { name: "Katim   nadena", number: "018-535-70450" },
+    { name: "Karim  nandena   own", number: "+8801968416866" },
+    { name: "Motiey   via  adrvita", number: "017-128-25114" },
+    { name: "Molena  kasaney  A", number: "+8801635886245" },
+    { name: "Shahen   principal   own", number: "017-159-72619" },
+    { name: "Amanlla  A", number: "+8801760418623" },
+    { name: "A   T  O", number: "017-176-27755" },
+    { name: "Sorur   pady   dan adano", number: "017-322-97660" },
+    { name: "Shahabudd  SAAO", number: "017-217-41606" },
+    { name: "Plileder", number: "+8801732317424" },
+    { name: "Amnul   farmer   bada", number: "+8801731419744" },
+    { name: "Tohen  master   jamalpur", number: "017-312-10597" },
+    { name: "Sohal   kalybari", number: "+8801711516465" },
+    { name: "Fardus    jangalya  own", number: "+8801715438047" },
+    { name: "ID  NO", number: "391-581-1290435" },
+    { name: "Motalaf   SAAO  malandha", number: "017-909-48918 / 017-909-48918" },
+    { name: "Masud  Own", number: "017-198-14548" },
+    { name: "Nasminher   SAAO", number: "+8801707988907" },
+    { name: "Alanur  S AAO", number: "017-124-78336 / +8801712478336" },
+    { name: "Ax", number: "016-276-88936" },
+    { name: "Jolel   Member", number: "017-350-27811" },
+    { name: "Molena  Kasane", number: "+8801760030110" },
+    { name: "Roholamin", number: "017-260-62200 / +8801739978335" },
+    { name: "Mister  Master", number: "+8801735367836" },
+    { name: "DOLLS  Delay", number: "+8801736037882" },
+    { name: "Santa Apu", number: "019-162-94733" },
+    { name: "Hamindur Badi", number: "017-411-53344" },
+    { name: "Nupu Apu", number: "017-129-42876" },
+    { name: "M0NIKA", number: "017-466-23651 / 017-466-23651" },
+    { name: "Eaqub  Vie", number: "+8801743288945" },
+    { name: "Lavly", number: "017-442-84753" },
+    { name: "Setara", number: "019-231-39060" },
+    { name: "Hamidur Own", number: "017-467-60018" },
+    { name: "Dety  St", number: "017-763-73518" },
+    { name: "Dety   St  Fat", number: "017-318-28560" },
+    { name: "Noral Vatyany", number: "017-346-38522" },
+    { name: "Mosheur  Own", number: "016-834-03642 / 016-834-03642" },
+    { name: "Roge  Own", number: "+8801776543042 / 017-548-74849" },
+    { name: "Rajo  Mukundab", number: "017-439-11880" },
+    { name: "Polas  Up", number: "017-331-04597" },
+    { name: "Tokpn  own", number: "+8801714240047" },
+    { name: "Aklema  Own", number: "017-720-07214" },
+    { name: "Zinna  Master", number: "+8801628348564" },
+    { name: "Nela  st", number: "+8801830061580" },
+    { name: "Rohol  Aima  A", number: "+8801761709794" },
+    { name: "Faruk  own", number: "017-135-92512 / +8801736795151" },
+    { name: "Anus Ali j", number: "017-563-53611 / 017-563-53611" },
+    { name: "Likon", number: "017-470-78951" },
+    { name: "Momen  Kalybar", number: "017-199-61649" },
+    { name: "Fatema", number: "017-758-43995" },
+    { name: "Sima", number: "+8801766030314" },
+    { name: "Eapub", number: "+8801930149182" },
+    { name: "Beauti", number: "+8801790902837" },
+    { name: "Tulu Ba:", number: "019-165-94959 / 019-165-94959" },
+    { name: "Sobi b+k", number: "+8801724454940" },
+    { name: "TAMANNA", number: "017-202-48146" },
+    { name: "RomaSASo   c", number: "+8801779482123" },
+    { name: "Juail", number: "+8801745241121" },
+    { name: "Rokia", number: "+8801953905200" },
+    { name: "Nitu Apu", number: "017-134-44340" },
+    { name: "Mezan Vai Ta", number: "015-532-04947" },
+    { name: "B", number: "5669" },
+    { name: "Momin  kaka", number: "+8801867059625" },
+    { name: "Kalam Vai-Ba", number: "017-285-73682" },
+    { name: "Joalfekar  A A", number: "+8801721020081" },
+    { name: "Lepe  aramgaty", number: "017-222-61274" },
+    { name: "Mango", number: "017-297-96994" },
+    { name: "Ansis   A", number: "017-784-06578" },
+    { name: "Ansis  somassaba  office", number: "017-103-04142 / 017-103-04142" },
+    { name: "Homaun   CEAL", number: "+8801726902473" },
+    { name: "Anuar   Claksr  Education", number: "017-156-25892" },
+    { name: "Roson    SAAO", number: "017-163-61203" },
+    { name: "Rongo   kahet   pada", number: "017-220-78821" },
+    { name: "Nazrul    A  A  O", number: "017-185-94152 / 017-185-94152" },
+    { name: "Moslema   own", number: "017-296-25752" },
+    { name: "Mahabub  Goshrpada", number: "+8801872945045" },
+    { name: "Ozzal   farmer  Ramch", number: "+8801712416016" },
+    { name: "Nsl", number: "017-926-33012" },
+    { name: "Harun   doctor  kaley bari    A", number: "+8801733104561" },
+    { name: "Ebrahim   Montry   garad", number: "019-308-37613" },
+    { name: "Amanul  sharpur", number: "018-217-89217" },
+    { name: "Robin   father   A", number: "+8801746257604" },
+    { name: "Motalave    hamra  bari", number: "017-216-41477" },
+    { name: "Alamin   sosef   up  golabari", number: "017-189-89338" },
+    { name: "Amanulla   bowo", number: "019-989-12483" },
+    { name: "Menhas   malatarey", number: "+8801718847618" },
+    { name: "Fokril   hortyculter", number: "017-111-47412" },
+    { name: "Halal    malanca", number: "017-146-43729" },
+    { name: "Sohed   malanca   jamata", number: "017-146-40006" },
+    { name: "Jual    Tatey   polisha", number: "+8801717317494" },
+    { name: "Mosarf   master   bataga", number: "017-204-57648" },
+    { name: "Salim     income  taks", number: "+8801629036357" },
+    { name: "Robna    member    A", number: "+8801780157558" },
+    { name: "Lul  Tatey", number: "017-331-04418" },
+    { name: "Anura   mage", number: "017-894-37071" },
+    { name: "Roma   A", number: "+8801747528198" },
+    { name: "A    A   O          A", number: "017-167-58752 / 017-167-58752" },
+    { name: "Golkar   kalybari  hotal", number: "017-197-44117" },
+    { name: "Sati   own     A", number: "+8801922047249" },
+    { name: "Lotfir   Friend", number: "019-220-52049" },
+    { name: "Mokul    Taty", number: "+8801733280605" },
+    { name: "Ness   own   A", number: "016-253-94875" },
+    { name: "Altafur   Malancha", number: "017-124-90174" },
+    { name: "d", number: "+8801708942409" },
+    { name: "Sorus    millk", number: "017-516-36384" },
+    { name: "Rokun", number: "017-234-51442" },
+    { name: "SAAO RUBEL", number: "019-374-76217 / 019-374-76217" },
+    { name: "SASO  Robal   A", number: "+8801977476217" },
+    { name: "সাইফুল চাচা", number: "+8801784632455" },
+    { name: "Ziail  hpke  master", number: "+8801734225879" },
+    { name: "Mosaid  own  A", number: "+8801910520441" },
+    { name: "Razia   billa  hamra ari", number: "017-546-31628" },
+    { name: "Shoshi", number: "017-848-79661" },
+    { name: "Roholaimen     A  own", number: "017-286-54866 / 017-286-54866" },
+    { name: "Tata  polisha   lunder", number: "+8801720350494" },
+    { name: "FT", number: "+8801995920088" },
+    { name: "Asja  maty", number: "017-573-09564" },
+    { name: "Assa    st", number: "016-364-84935" },
+    { name: "Assa    st     A", number: "+8801848200173" },
+    { name: "Halal   master   mukundabari", number: "017-248-35483 / 017-248-35483" },
+    { name: "Hasan   Via   polisha", number: "019-261-84300" },
+    { name: "Hasan   Via   polisha    A", number: "+8801705000682" },
+    { name: "Halim  Ageridource", number: "+8801722950671" },
+    { name: "SOmOn   hataga", number: "017-217-89734" },
+    { name: "Kalo   sodra  bari", number: "017-128-42505" },
+    { name: "Lipe  st     A", number: "+8801718025273" },
+    { name: "Monjo  farmer  bataga", number: "+8801727175515" },
+    { name: "Mnhas  D D  Office", number: "017-212-81411" },
+    { name: "Meznun    molana   balyjury", number: "+8801720391402" },
+    { name: "Bassa  farmer    A", number: "019-658-74790" },
+    { name: "Hobe   member  golabari", number: "+8801735745122" },
+    { name: "U  P   saydur   competer", number: "017-489-46496" },
+    { name: "U   P   Tojammal   6", number: "019-214-81872" },
+    { name: "Hotal  bagtar  pada", number: "+8801753499743 / +8801779681931" },
+    { name: "dp", number: "+8801743945700" },
+    { name: "Sabina   FT", number: "017-306-64094" },
+    { name: "Mnto    Garmer", number: "017-352-97541" },
+    { name: "Mostafejur   Member   3", number: "+8801731328187" },
+    { name: "Asrap   Vatyany   SASO", number: "017-351-12998" },
+    { name: "Lalil     farmer   3", number: "017-148-52925" },
+    { name: "Masud      SAAO", number: "+8801718795526" },
+    { name: "SOLtana   parvin   SAAO", number: "016-535-38929" },
+    { name: "OZZal    farmer    3", number: "+8801726565650" },
+    { name: "Rago    Sokud    degolkany", number: "+8801936010501" },
+    { name: "Galaney    SAAO    A", number: "+8801770099326" },
+    { name: "U   N   O   Aminul   maderganj", number: "017-831-16165" },
+    { name: "Monjo   Farmer    bataga      A", number: "+8801706927094" },
+    { name: "Jakarea   Tatyeleg", number: "017-135-76566" },
+    { name: "Balal  Aoame  Sobapty", number: "017-331-73340" },
+    { name: "Asmaul   SRDI", number: "+8801729315204" },
+    { name: "Rohmen   undertola", number: "+8801724313980" },
+    { name: "Johoril  Membr     3", number: "+8801715581075" },
+    { name: "Harun   Office", number: "019-578-97232 / 019-578-97232" },
+    { name: "Ormey   st   Father", number: "+8801771662426" },
+    { name: "BRDB   office  madergnj", number: "017-114-27585" },
+    { name: "BRD B    asraful", number: "+8801755306681" },
+    { name: "Head   Master  Adarvita     dchool", number: "017-125-47356 / 017-125-47356" },
+    { name: "Salim   Cor   A", number: "+8801954135121" },
+    { name: "Shahen  Alam  L  I  F  E    A", number: "+8801616935232" },
+    { name: "Ajhar   S", number: "017-187-89035" },
+    { name: "Rakib  Hasan   U, P   5", number: "017-107-31200" },
+    { name: "Norunnhar   jonsl", number: "017-700-23816" },
+    { name: "Sabural    norul", number: "017-254-66652" },
+    { name: "A  E   O     Own", number: "017-243-72007 / +8801675961786" },
+    { name: "Ssmiul    SAAO", number: "+8801986131763" },
+    { name: "Mnto      Farmer    3", number: "017-313-67268" },
+    { name: "Rosid    deler   Kalybari", number: "017-135-61231" },
+    { name: "Repun Bada", number: "017-318-10590" },
+    { name: "Shahanuzzaman", number: "017-188-03799" },
+    { name: "Bakur Nasary", number: "017-358-27739" },
+    { name: "N S I Badul", number: "017-256-48925 / 017-256-48925" },
+    { name: "Sobour Via Own", number: "017-258-36692 / 017-258-36692" },
+    { name: "Faruk Master P", number: "017-147-89334" },
+    { name: "Bada Bada", number: "017-464-34444 / 017-464-34444" },
+    { name: "Norul Saktary", number: "017-241-28139 / 017-241-28139" },
+    { name: "Somrat", number: "017-245-83960" },
+    { name: "Ericsson", number: "নাম্বার নেই" },
+    { name: "Halth", number: "017-110-67449" },
+    { name: "Rostum Member", number: "+8801758656864" },
+    { name: "Azad Bataga", number: "017-346-82947" },
+    { name: "Tanvire Sir", number: "017-114-33675" },
+    { name: "Asrap Saao", number: "017-215-72924" },
+    { name: "Jalal Saao", number: "017-171-12600" },
+    { name: "Sayudr Office", number: "017-183-75097" },
+    { name: "Hamid Talukpad", number: "017-107-63144" },
+    { name: "Ambay", number: "+8801942762505" },
+    { name: "Aubsama Saao", number: "018-205-08237" },
+    { name: "Rosld Mama Jan", number: "017-276-45553" },
+    { name: "Fazlul Sherpur", number: "017-124-00218 / 017-124-00218" },
+    { name: "Fazaul Sharpur", number: "019-479-92570" },
+    { name: "Nasurulla Bari", number: "017-062-92121" },
+    { name: "Nahar Sharpur", number: "017-250-62452 / 017-250-62452" },
+    { name: "নাম উল্লেখ নেই", number: "+8801728783255" },
+    { name: "Moshiur", number: "017-120-79877" },
+    { name: "Nesl   Slster", number: "017-250-25944" },
+    { name: "Monire Saao", number: "017-163-64909" },
+    { name: "Ahamed Ali", number: "017-116-12568" },
+    { name: "Hobe Kalebari", number: "017-290-34578" },
+    { name: "Sumsul Member", number: "017-243-59341" },
+    { name: "Anour Motor Ka", number: "017-355-25064" },
+    { name: "Mojamal Sir", number: "017-114-52922 / 017-114-52922" },
+    { name: "Fozzlo Saao", number: "017-135-66130" },
+    { name: "Samad Saao", number: "017-260-55945" },
+    { name: "Mumu", number: "016-739-97245" },
+    { name: "P P I Office", number: "017-313-19872" },
+    { name: "Nazrul Saao", number: "017-796-34315 / 017-796-34315" },
+    { name: "Habib Sir", number: "017-126-29043" },
+    { name: "Basa Kale Bari", number: "017-190-10619 / 017-190-10619" },
+    { name: "Maria  R", number: "নাম্বার নেই" },
+    { name: "Labo Master", number: "017-186-32420" },
+    { name: "Head Assistant", number: "017-365-69192" },
+    { name: "Milean Jangali", number: "017-195-29277 / 017-195-29277" },
+    { name: "Mnjamal Golaba", number: "019-236-89140 / 019-236-89140" },
+    { name: "Shahjahan", number: "+8801731087787" },
+    { name: "Tukan Own", number: "017-440-26795" },
+    { name: "Soja Deler", number: "017-135-69934" },
+    { name: "Kalam Saao", number: "017-172-74239" },
+    { name: "Sohid   Farmer", number: "+8801734518242" },
+    { name: "Altab Kamarpad", number: "+8801713561201" },
+    { name: "Shakauat Own", number: "+8801720120489" },
+    { name: "Obydur Master", number: "017-412-06276 / 017-412-06276" },
+    { name: "Sahen Farmar", number: "+8801729479656" },
+    { name: "Monire Master", number: "017-269-52717" },
+    { name: "Tozanmel Maste", number: "017-167-14578 / 017-167-14578" },
+    { name: "Azid Golabari", number: "+8801720925769" },
+    { name: "Honara", number: "+8801728825527" },
+    { name: "D Kalam Vigma", number: "017-285-73682 / 017-285-73682" },
+    { name: "Jafar", number: "017-409-49146" },
+    { name: "Rajaual Saao", number: "017-128-73196" },
+    { name: "Chan Master Eo", number: "017-279-09495" },
+    { name: "Ronjo Sit Pada", number: "+8801917033251" },
+    { name: "Karim Via Own", number: "017-129-67488 / 017-129-67488" },
+    { name: "Korsad Golabar", number: "+8801715286342" },
+    { name: "Soliman", number: "017-269-01885" },
+    { name: "Sakauat   own", number: "+8801637543914" },
+    { name: "Pobtro Kalebar", number: "017-135-12888" },
+    { name: "Rena   Own   J", number: "017-631-64263" },
+    { name: "Noro Golabari", number: "+8801739551990" },
+    { name: "Momen Deglknd", number: "017-345-43893 / 017-345-43893" },
+    { name: "Jea Saao", number: "+8801717566305" },
+    { name: "Nutu", number: "019-772-41181" },
+    { name: "Rofequl Member", number: "017-272-31957" },
+    { name: "Mostofa Degulk", number: "017-124-33970 / 017-124-33970" },
+    { name: "Hira Degulkand", number: "+8801732107034" },
+    { name: "Goljar Kalebar", number: "+8801713540828" },
+    { name: "Delur Saao", number: "019-211-33831" },
+    { name: "Mozid", number: "017-209-90058" },
+    { name: "Nazrul", number: "017-372-98416" },
+    { name: "Ahmeod  Vai A", number: "+8801687424982" },
+    { name: "Mamun Own", number: "017-172-76992" },
+    { name: "Jour", number: "017-188-17907" },
+    { name: "Homun Chairman", number: "+8801740627263" },
+    { name: "Johorul Doctor", number: "+8801713564132" },
+    { name: "Arif Saao", number: "017-100-13762" },
+    { name: "Nuar Alam Saao", number: "019-255-76878" },
+    { name: "Odue Degalkany", number: "017-342-99653" },
+    { name: "Ibra Him", number: "017-542-19298 / 017-542-19298" },
+    { name: "Hamidur 3", number: "017-564-27854" },
+    { name: "Azid Bataga A", number: "+8801943390248" },
+    { name: "Akbur Own", number: "017-516-68113" },
+    { name: "Tukan Own A", number: "+8801733173354" },
+    { name: "Hazrat", number: "+8801727844081" },
+    { name: "Hagi Asadul", number: "+8801740854004" },
+    { name: "Somobay Office", number: "+8801716424241" },
+    { name: "Alaim A", number: "017-309-40905" },
+    { name: "Rotun Lotabor", number: "017-114-68793" },
+    { name: "Alamgir Member", number: "+8801741049323" },
+    { name: "Sohedulla Memb", number: "017-531-63552" },
+    { name: "mpstak  motor", number: "017-170-69679 / 017-170-69679" },
+    { name: "juwrl  vatara", number: "019-372-01056 / 019-372-01056" },
+    { name: "Fahema   Ovm", number: "+8801764669524" },
+    { name: "Rokun    vagna  omn", number: "019-300-92970" },
+    { name: "member   mosno", number: "017-120-12940 / 017-120-12940" },
+    { name: "Asraf  deglkandy", number: "+8801728766573" },
+    { name: "FORID    A", number: "017-719-15165" },
+    { name: "Lipe    A    st", number: "+8801856547616" },
+    { name: "Mostofa   A  vatesny", number: "+8801721988000" },
+    { name: "Bahad.ur   jangalya", number: "+8801793680123" },
+    { name: "Meznur    profasur", number: "+8801717362680" },
+    { name: "Sety   vag.ney  own", number: "016-734-74662" },
+    { name: "Motalaf     A", number: "+8801625552945" },
+    { name: "Soltan   SAAO  madergonj", number: "019-953-99270" },
+    { name: "Bbul   Master  Mukundabari", number: "+8801737191716" },
+    { name: "Jahager   vagna  own", number: "+8801925181567" },
+    { name: "FT", number: "+8801739763002" },
+    { name: "Janna  via  jangalya", number: "+8801761889777" },
+    { name: "DD   jamalpur", number: "017-264-65111 / 017-120-54248" },
+    { name: "Samul   Farmer    degolkanday", number: "+8801735728448" },
+    { name: "Azizs   Nata   Dacca  DASO", number: "017-186-67677" },
+    { name: "Rosid  nive   jamalpur", number: "017-121-25231" },
+    { name: "Rofile   sir  ovdan  kosin", number: "017-253-14471" },
+    { name: "নাম উল্লেখ নেই", number: "+8801764654744" },
+    { name: "Monsour   via   jangalya", number: "017-819-93655" },
+    { name: "Sinj.ta   Company", number: "+8801996113387" },
+    { name: "Forhad   motet   bagtarpada", number: "019-949-72900" },
+    { name: "Tara   mama   kalybari", number: "017-106-63180" },
+    { name: "Nauan   bataga", number: "+8801725134817 / +8801768061008" },
+    { name: "Alam   Taner    A", number: "+8801640784352" },
+    { name: "Sakait    Salak", number: "017-450-37481" },
+    { name: "Sajhan   Farmer", number: "017-508-84442" },
+    { name: "Rogb   farmer  bataga", number: "+8801764464905" },
+    { name: "Goday  samad  member", number: "+8801730940874" },
+    { name: "Korshad   mogebor  mukundabari", number: "+8801739438247" },
+    { name: "F  T   A", number: "+8801721143698" },
+    { name: "Tolo   own   A", number: "+8801711020071" },
+    { name: "UP   Tojammal  6   sochob", number: "+8801720123552" },
+    { name: "Dole    Sister   own   chan", number: "+8801756527133" },
+    { name: "F  T    Sontosda", number: "017-189-87797 / 017-189-87797" },
+    { name: "Gas   saao", number: "017-123-77493" },
+    { name: "Foraf   motoir  A", number: "017-817-96419" },
+    { name: "dctot     balu", number: "017-582-66163" },
+    { name: "Jual      Taner", number: "017-285-54566" },
+    { name: "Mostafa   Member   3", number: "017-563-43885" },
+    { name: "Balal   Member    2", number: "017-700-83252 / 017-700-83252" },
+    { name: "Sofekil   Nasren   A    3", number: "+8801778843998" },
+    { name: "Polish   Madargonj", number: "018-360-13883" },
+    { name: "Sherrna    F  T", number: "019-966-75515" },
+    { name: "Rubel    S  A   A   O", number: "+8801701243673" },
+    { name: "TOJamal   Kada   bazzar", number: "017-369-84823" },
+    { name: "Raja   farmer   3", number: "+8801780229138" },
+    { name: "Rphul  Amin    own  A", number: "+8801777339150" },
+    { name: "নাম উল্লেখ নেই", number: "016-355-38929" },
+    { name: "Sokud   deler   kataltoley", number: "017-245-20600" },
+    { name: "Rokun     own    A", number: "+8801824558163" },
+    { name: "Morgnajahan    Farmer   degolkandy", number: "017-153-37222" },
+    { name: "Gelape    dada   kuada", number: "+8801739282516" },
+    { name: "Rema     Farmer   bataga", number: "017-548-53806 / 017-410-49209" },
+    { name: "Sajahan    Farmer    3", number: "+8801788678169" },
+    { name: "Bsso    Tatye  podabari", number: "017-779-42382" },
+    { name: "Malek  Fulgosa", number: "017-198-12589" },
+    { name: "Dapa   mukunda   bari", number: "017-836-03116" },
+    { name: "Jualrana   S  A A O", number: "+8801726901140" },
+    { name: "Dctor   Razzk   Farmer   3", number: "+8801733280983" },
+    { name: "Dolo   master   mukunda  bari", number: "+8801719812587" },
+    { name: "Rema    St   mother", number: "+8801731748101" },
+    { name: "Mahnub   molana  own", number: "017-107-79775 / 017-107-79775" },
+    { name: "Ormey   natney   pwn", number: "019-551-66152" },
+    { name: "Nogo    paday", number: "017-573-74875 / 017-573-74875" },
+    { name: "Sorus   via    Aramgate", number: "+88093161082" },
+    { name: "Aklema   master  Own", number: "017-315-61800 / 017-315-61800" },
+    { name: "Shakamal", number: "017-309-03058" },
+    { name: "Dm", number: "+8801639739047" },
+    { name: "NADMONNhAR    S  A  A  O", number: "+8801728915355" },
+    { name: "Metun  Own  jangalya", number: "017-135-25767" },
+    { name: "Bodrul   Sosin    5", number: "017-189-55348 / 017-189-55348" },
+    { name: "Monera     Own", number: "+8801748099345" },
+    { name: "C  N  G  Sohel", number: "017-651-18550" },
+    { name: "C  N  G   Saydur", number: "017-468-06825" },
+    { name: "C  N  G   Ajhar", number: "017-332-81305 / 017-332-81305" },
+    { name: "Tolu   oWn    A", number: "+601133735673" },
+    { name: "Johorul    member     A      3", number: "+8801781606850" },
+    { name: "Amunal   S  A  A  O     Sodor", number: "017-166-57618" },
+    { name: "Arsad   monshe   mojagor   Bagtarpada", number: "+8801851152765" },
+    { name: "Farul    Milk", number: "017-775-17231" },
+    { name: "Rosid Bada", number: "+8801747124041" },
+    { name: "B D R", number: "+8801739763322" },
+    { name: "B Sc Sit0pada", number: "017-593-53571" },
+    { name: "Rabbani Bada", number: "+8801917872241" },
+    { name: "Salime Kalybar", number: "+8801715108477" },
+    { name: "Dodu Via Own", number: "+8801713507675" },
+    { name: "Halim+betaga", number: "017-387-62196" },
+    { name: "Mostafa Rmcdrp", number: "+8801724570497" },
+    { name: "Robul Master K", number: "017-123-95173" },
+    { name: "KAKON  AN PUR", number: "017-409-27912" },
+    { name: "Solaiman Saao", number: "017-199-84251" },
+    { name: "Alamger Chairm", number: "017-135-69935" },
+    { name: "Boue Own", number: "017-309-40906" },
+    { name: "Unos All Janga", number: "+8801922187781" },
+    { name: "Mezan Paday", number: "017-127-24245" },
+    { name: "Hafejur Degolk", number: "017-248-10630" },
+    { name: "Motalf Office", number: "017-364-42022" },
+    { name: "Nazrul Bada", number: "017-319-86305" },
+    { name: "Julfiquar Saao", number: "019-218-86358" },
+    { name: "Tk40,100mi,7d", number: "1111-00 / 1111-00" },
+    { name: "Sojaj Saao", number: "+8801724736566" },
+    { name: "Halal Kalebari", number: "017-115-17224" },
+    { name: "Gofur Degolkan", number: "017-439-14438 / 017-439-14438" },
+    { name: "Samad Chairman", number: "017-193-12284" },
+    { name: "Ohaib Mamber", number: "017-268-75132 / 017-268-75132" },
+    { name: "Asad Gard Ofic", number: "019-171-66525" },
+    { name: "Babue  Saao", number: "017-123-95924" },
+    { name: "Azad Master", number: "017-192-17341" },
+    { name: "Romejul Master", number: "017-195-10985 / 017-195-10985" },
+    { name: "Malak  Master", number: "017-287-89391" },
+    { name: "Jaglo Farmer", number: "017-295-25565" },
+    { name: "Johoril   Memb", number: "+8801706294989" },
+    { name: "Mafoue Deler", number: "017-135-99794" },
+    { name: "Soktara", number: "017-151-84522" },
+    { name: "Saqul Sharabar", number: "017-130-04546" },
+    { name: "Horepur", number: "017-399-44220" },
+    { name: "Jolal Golabari", number: "+8801723477913 / 017-774-76138" },
+    { name: "Mosharuf", number: "017-126-84778" },
+    { name: "Rofue D Mader", number: "017-125-64375" },
+    { name: "Jamail", number: "+8801719942922" },
+    { name: "Sheraj Golabar", number: "017-314-14651" },
+    { name: "Kokon   Kaleba", number: "017-454-97232" },
+    { name: "Haive", number: "নাম্বার নেই" },
+    { name: "Mozid Saao", number: "017-180-96968" },
+    { name: "Mokbul", number: "+8801716550941" },
+    { name: "Faruk Golabari", number: "+8801747748867" },
+    { name: "Tulu Own", number: "017-135-68226" },
+    { name: "Mosharof Jor", number: "+8801719744146" },
+    { name: "Bepul Kamarpad", number: "+8801718451951" },
+    { name: "Ibrahim", number: "017-213-05865" },
+    { name: "Billal Saao", number: "019-155-22443" },
+    { name: "Dando", number: "017-222-28435" },
+    { name: "Samem Own", number: "017-186-68560" },
+    { name: "Rajak Master", number: "+8801728097859" },
+    { name: "Mojafor Gnlaba", number: "+8801737018089" },
+    { name: "Nahar Sherpur", number: "+8801675618389" },
+    { name: "Menhas Master", number: "017-147-47783" },
+    { name: "Al-amin", number: "017-203-17239 / 017-203-17239" },
+    { name: "Jotish Saao", number: "017-154-04489" },
+    { name: "Vabi  Dhaka", number: "015-584-00494" },
+    { name: "DR. Shofiq", number: "017-120-05532 / 017-120-05532" },
+    { name: "Manajar Ropaly", number: "017-127-18215" },
+    { name: "Jamal Jurkly", number: "017-163-63743" },
+    { name: "Sayed", number: "+8801736555163" },
+    { name: "Kalpona", number: "018-120-81026" },
+    { name: "Malak Degulkan", number: "017-135-69767" },
+    { name: "Halal Bada", number: "017-314-19748" },
+    { name: "Dalur Member", number: "017-229-44645 / 017-229-44645" },
+    { name: "Sohid  Ramcdpu", number: "+8801726206695" },
+    { name: "Mohamud Member", number: "017-369-72412" },
+    { name: "Azid Bada", number: "+8801929102931" },
+    { name: "Noseb  master", number: "+8801714715373" },
+    { name: "Mgno Nata", number: "017-346-38521" },
+    { name: "Sajdul Saao", number: "017-182-94660" },
+    { name: "Mozammel Degl", number: "+8801712585340" },
+    { name: "Alhas Sit Pada", number: "017-135-11382" },
+    { name: "Robul Member", number: "017-365-35617 / 017-365-35617" },
+    { name: "A A O", number: "017-123-52364" },
+    { name: "Tamca", number: "017-373-10755" },
+    { name: "Rohamut Saao", number: "017-127-14611" },
+    { name: "Ah Bha", number: "017-297-00129" },
+    { name: "Hasak Bada", number: "017-107-87320 / 017-107-87320" },
+    { name: "Badul  Jangaly", number: "+8801725155539" },
+    { name: "Tojam Delar", number: "017-168-29569" },
+    { name: "Mamuo Own A", number: "+8801916594959" },
+    { name: "Hafejur Via Ow", number: "+8801711195264" },
+    { name: "Halim Master", number: "017-199-27373" },
+    { name: "Satara Horepur", number: "+8801923139060" },
+    { name: "Asad Degalkaod", number: "017-394-71889" },
+    { name: "Samul Boue", number: "017-517-09113" },
+    { name: "Kaja Degolkand", number: "+8801733124003" },
+    { name: "Maria Is  A", number: "নাম্বার নেই" },
+    { name: "Salaudan Sit", number: "+8801741153036" },
+    { name: "Goljar Naive", number: "017-138-55101" },
+    { name: "At ife", number: "নাম্বার নেই" },
+    { name: "Alam Hen Bjtar", number: "+8801742566727" },
+    { name: "Sorowar Saao", number: "017-392-38562" },
+    { name: "Sodi Mamun Own", number: "+966590455263" },
+    { name: "Nasrallah", number: "017-467-60144" },
+    { name: "Head    Assi t", number: "017-613-58893" },
+    { name: "Jalal Bada", number: "+8801724874362" },
+    { name: "Kalal Degulkan", number: "+8801742566763" },
+    { name: "নাম উল্লেখ নেই", number: "016-202-92862" },
+    { name: "Nazrul Deler", number: "017-301-25352" },
+    { name: "Mnfaztl Degelk", number: "+8801757746832" },
+    { name: "Lablul", number: "017-376-73364" },
+    { name: "Tanvir Sir A", number: "+880982556017" },
+    { name: "Babue Saao A", number: "017-525-79806" },
+    { name: "Satter  nata  sherpur", number: "017-168-00367" },
+    { name: "Ferus   own", number: "+8801716094219 / +8801672547260" },
+    { name: "Leton bataga", number: "017-310-22030" },
+    { name: "Rema  SAAO  A", number: "017-587-50390 / 017-186-67124 / 017-587-50390 / 017-186-67124" },
+    { name: "Bpuple", number: "016-719-91598" },
+    { name: "Bple  A", number: "017-923-78901 / 017-923-78901" },
+    { name: "Kamrul  office", number: "017-681-53685" },
+    { name: "Monir   saao    A", number: "+8801986965249" },
+    { name: "Rokun  hortyculter  Saao", number: "017-187-61497" },
+    { name: "Sepon golabari", number: "+8801816948447 / +8801731735184" },
+    { name: "Masud  maulana", number: "019-207-47213" },
+    { name: "M", number: "017-127-12782" },
+    { name: "Bobeta  own", number: "017-847-42114 / 017-847-42114" },
+    { name: "Bus   saydur", number: "+8801766641137" },
+    { name: "Mofej  farmer", number: "+8801735953588" },
+    { name: "Rashada   sister", number: "+8801789437111" },
+    { name: "Mosharraf  Saao", number: "017-187-86624" },
+    { name: "Robena   member", number: "017-408-11677" },
+    { name: "Balal  bataga", number: "017-635-81959" },
+    { name: "Mosaruf  A c i  grouf", number: "+8801739158583" },
+    { name: "OZZal  kalybari", number: "017-580-88884" },
+    { name: "Salam  mama  patadha", number: "+8801786168683" },
+    { name: "Roge   A", number: "017-765-40649 / 017-765-40649 / 017-871-70631 / 017-871-70631" },
+    { name: "Jalaney  SAAO", number: "017-201-03248" },
+    { name: "Sorus   Somas   saba", number: "017-460-23694" },
+    { name: "Jahanur   SAAO", number: "017-349-76240" },
+    { name: "Mostafezur   SAAO", number: "017-248-35258" },
+    { name: "Mostofa  Member", number: "017-728-81614 / 017-728-81614" },
+    { name: "Hive   SASO", number: "017-353-64602" },
+    { name: "FOrid    2", number: "017-405-48367 / 017-405-48367" },
+    { name: "Ada   via   Ronk pur", number: "017-268-26103" },
+    { name: "Sokud   deler   kataltly", number: "+8801733280657" },
+    { name: "Mozammel   deler  kataltly", number: "017-650-01236" },
+    { name: "Maruf   via   own", number: "017-150-05618" },
+    { name: "Nila st", number: "+8801736421716" },
+    { name: "A  E  O", number: "017-405-55538 / 017-253-29143" },
+    { name: "Naztul memam mukunda bari", number: "+8801728875621" },
+    { name: "Salem  mukunda  bari", number: "017-310-39922" },
+    { name: "Carent   kalebari", number: "017-694-01976" },
+    { name: "Basa   farmer", number: "017-423-25514" },
+    { name: "Rema   St   A", number: "+8801707996432" },
+    { name: "Tohen  master  jamalpur   A", number: "017-189-15283" },
+    { name: "Sobi   own", number: "+8801708112558" },
+    { name: "Harun  Mukunda  bari", number: "017-409-24944" },
+    { name: "Doctor  JOhoru", number: "+8801620779585" },
+    { name: "Aabir", number: "+8801914100912" },
+    { name: "reka", number: "017-784-93201" },
+    { name: "Jol", number: "017-597-57736" },
+    { name: "Belal  Enemal", number: "017-244-37459" },
+    { name: "Rasal  Vai", number: "+8801728609390" },
+    { name: "Popy Own", number: "017-564-27854 / 017-564-27854" },
+    { name: "Peno Kaki", number: "017-259-43904" },
+    { name: "LOVELU", number: "+8801737673364" },
+    { name: "Vaby sarpur", number: "017-595-77400 / +8801730940906" },
+    { name: "Aynul  Doct", number: "016-253-80700" },
+    { name: "Master", number: "+8801724273695" },
+    { name: "Horject BATAGA", number: "017-993-44059" },
+    { name: "Kamal Via", number: "017-171-12241 / 017-171-12241" },
+    { name: "Rokey  Member", number: "017-984-42681" },
+    { name: "Sohal Narbason", number: "017-176-09506" },
+    { name: "Tangena  St", number: "+8801768731769" },
+    { name: "Forad Molana", number: "017-189-08220" },
+    { name: "Sheren Aktet T", number: "017-563-55185" },
+    { name: "Sathi  Own", number: "017-199-52197 / 017-199-52197" },
+    { name: "Azid  D D Offi", number: "019-781-42535" },
+    { name: "Lotfor  Viao", number: "017-105-85018 / 017-105-85018" },
+    { name: "Naju", number: "017-866-71056" },
+    { name: "Sorifa", number: "017-034-22567" },
+    { name: "Friend  Dacca", number: "017-157-70464" },
+    { name: "PPl", number: "017-124-40916" },
+    { name: "Apple   Kale", number: "017-394-29292" },
+    { name: "Popy", number: "+8801798383377" },
+    { name: "Mina", number: "017-330-76453" },
+    { name: "Rohima Khala", number: "017-258-43884 / 017-258-43884" },
+    { name: "Sulaiman  Va", number: "017-269-01885" },
+    { name: "Obydur   Own", number: "017-448-44462 / 017-448-44462" },
+    { name: "শিউলী", number: "+8801789663628" },
+    { name: "Sumaia", number: "017-526-54269" },
+    { name: "Mojafur  Naiv", number: "017-278-72171" },
+    { name: "Popy  B", number: "880-191-7610556" },
+    { name: "ARPIN", number: "+8801790765049" },
+    { name: "RASEL", number: "+8801935531839" },
+    { name: "MAMI", number: "+8801728623683" },
+    { name: "Moshur  Own", number: "019-321-20084" },
+    { name: "Gehaed  head  clark", number: "017-161-99918" },
+    { name: "Naznunnaher  SASO   A", number: "017-190-47692" },
+    { name: "Lotfa  notabor", number: "017-153-74549" },
+    { name: "Nese   own", number: "+8801779611813" },
+    { name: "Faruk   poda    Bari", number: "017-393-04667" },
+    { name: "Shahen   Alam   LIFE", number: "017-069-35232" },
+    { name: "Master  A", number: "+8801748997376 / +8801787455022" },
+    { name: "Monjurul", number: "+8801737877613" },
+    { name: "Faruk   Mulana   madpur", number: "017-243-63994" },
+    { name: "Bilkiss   Sister", number: "019-675-19946" },
+    { name: "Dayful   jurkaly   A", number: "017-332-81380" },
+    { name: "নাম উল্লেখ নেই", number: "019-928-41959" },
+    { name: "Lipe     st", number: "017-264-66316" },
+    { name: "Obdur  chairman  gosarpada", number: "017-111-87903" },
+    { name: "Satter   SASO", number: "017-181-04044" },
+    { name: "Jea   nata    SAAO", number: "017-119-08385 / 017-119-08385" },
+    { name: "Mostafa      vatyany", number: "+8801703328812" },
+    { name: "Robul    nata   mukunda bari", number: "017-255-78761 / 017-255-78761" },
+    { name: "Bablo   vatara  jamats", number: "017-952-60824" },
+    { name: "High   vatany   NGO", number: "017-143-57585" },
+    { name: "Cut     nobire", number: "017-489-04865 / 017-489-04865" },
+    { name: "Tara   degulkanday", number: "017-936-78920" },
+    { name: "Anna   own", number: "+8801753255724" },
+    { name: "Motin    own      A", number: "+8801833671580" },
+    { name: "Sayed    Tofazzal   master", number: "+8801713524219" },
+    { name: "Rajaul   farmer   bada", number: "+8801751583059" },
+    { name: "A   wahed   molana", number: "017-265-64074" },
+    { name: "Iskander    BSC", number: "+8801722003426" },
+    { name: "Labo Master  Kgs", number: "017-183-52681" },
+    { name: "rakha", number: "017-063-83309" },
+    { name: "B", number: "5669" },
+    { name: "নাম উল্লেখ নেই", number: "016-355-38929" },
+    { name: "নাম উল্লেখ নেই", number: "016-202-92862" },
+    { name: "নাম উল্লেখ নেই", number: "019-928-41959" },
+    { name: "chonchol", number: "017-182-93959" },
+    { name: "A", number: "566" },
+    { name: "Mezan", number: "017-409-64924 / 017-816-01820" },
+    { name: "Amby  own", number: "+8801732000763" },
+    { name: "Mezan Vai", number: "017-409-64924" },
+    { name: "Rema  SAAo  B", number: "018-275-27882 / 018-275-27882" },
+    { name: "PPI", number: "+8801623006532" },
+    { name: "Sorop  Norunnhar", number: "017-044-78401 / 017-044-78401" },
+    { name: "Salim  Friend", number: "017-777-75602 / 017-777-75602" },
+    { name: "Rasadkan   Nata  Dhaka", number: "018-197-24757 / 018-197-24757" },
+    { name: "Hanan   bataga", number: "017-209-98863 / 017-209-98863" },
+    { name: "Tofazzal   master  own", number: "+8801732357279" },
+    { name: "Malak   SAAO", number: "019-257-62194 / 019-257-62194" },
+    { name: "Jan   member  Ramchandra  pur", number: "+8801725390413" },
+    { name: "Solyman   own", number: "+8801761594399" },
+    { name: "Halim  londey  kalebari", number: "017-476-27322 / 017-476-27322" },
+    { name: "Meznur  Rohman  Mukunda bari", number: "017-129-41436 / 017-129-41436" },
+    { name: "Gone Saao", number: "017-188-91182 / +8801933227745 / 017-188-91182" },
+    { name: "Fatema  St", number: "017-676-19812 / 017-676-19812" },
+    { name: "Noramin   Saao", number: "017-716-67960 / 017-716-67960" },
+    { name: "Sima  APU", number: "+8801759576925" },
+    { name: "Noronnahar A", number: "+8801715374560" },
+    { name: "Lavly", number: "017-442-84753" },
+    { name: "Al Mamun Samad", number: "017-115-05970 / 017-115-05970" },
+    { name: "Alam  Tanar", number: "017-379-20445 / 017-379-20445" },
+    { name: "Mosno  jangaly", number: "+8801739856273" },
+    { name: "Helth  A", number: "+8801736994396" },
+    { name: "Naju", number: "017-866-71056" },
+    { name: "Sorifa", number: "017-034-22567" },
+    { name: "PPl", number: "017-124-40916" },
+    { name: "AB: Bariek", number: "017-467-60162 / 017-467-60162" },
+    { name: "Tohen  masrer   A", number: "+8801748690722" },
+    { name: "Mango", number: "017-297-96994" },
+    { name: "Babul  Ronkpur  ADA  VIA", number: "+8801767219945" },
+    { name: "Afas   poun", number: "017-482-91828 / 017-482-91828" },
+    { name: "Soltan   jamata   shodha  bari", number: "017-384-93378 / 017-384-93378" },
+    { name: "Momen  vala", number: "017-715-55711 / 017-715-55711" },
+    { name: "Lual    Taty      A", number: "+8801744412418" },
+    { name: "Homauan   master   polisha", number: "017-425-66721 / 017-425-66721" },
+    { name: "g     SAAO", number: "+8801701243689" },
+    { name: "Bauas    boktar", number: "+8801760445825" },
+    { name: "kolile   Tatye", number: "+8801758341856" },
+    { name: "Bus  daydor       A", number: "+8801738849236" },
+    { name: "Shahidulla   FF", number: "017-288-81872 / 017-288-81872" },
+    { name: "Azid  paper   A", number: "+8801624799524" },
+    { name: "Saity    Own", number: "+8801911315622" },
+    { name: "Rajaual     office", number: "019-321-20747 / 019-321-20747" },
+    { name: "Khaja Rmcdrpur", number: "+8801718919759" },
+    { name: "Asalam Office", number: "017-250-82131 / 017-250-82131" },
+    { name: "Nebas Bada", number: "+8801739663363" },
+    { name: "B C Sit Pada", number: "017-593-53576 / 017-593-53576" },
+    { name: "Hanan Bada", number: "+8801938271930" },
+    { name: "Hamhd", number: "+8801746320991" },
+    { name: "Ropaly Member", number: "017-264-71928 / 017-264-71928" },
+    { name: "Mokta Propasir", number: "017-122-33112 / 017-122-33112" },
+    { name: "Rostum Office", number: "019-142-10942 / 019-142-10942" },
+    { name: "Horepur", number: "017-399-44220" },
+    { name: "Mosharuf", number: "017-126-84778" },
+    { name: "Karim Kamarpad", number: "017-245-70479 / 017-245-70479" },
+    { name: "Anamul N", number: "017-361-96924 / 017-361-96924" },
+    { name: "Azid Paper", number: "017-301-84815 / 017-301-84815" },
+    { name: "Gage", number: "+8801726474459" },
+    { name: "Alamger", number: "+8801715039085" },
+    { name: "Mojaharul Mast", number: "017-349-33123 / 017-349-33123" },
+    { name: "Anise  Kalada", number: "+8801724210489" },
+    { name: "Sayful Jurkaly", number: "+8801719781512" },
+    { name: "Bada Ford", number: "017-135-41924 / 017-135-41924" },
+    { name: "D Harun Kaley", number: "017-167-69916 / 017-167-69916" },
+    { name: "Harun Golabari", number: "017-391-55597 / 017-391-55597" },
+    { name: "Soliman", number: "017-269-01885" },
+    { name: "Sumon Med.", number: "017-126-71464 / 017-126-71464" },
+    { name: "Tamca", number: "017-373-10755" },
+    { name: "Norul Bari", number: "019-221-49672 / 019-221-49672" },
+    { name: "Sayful Kada", number: "+8801731262902" },
+    { name: "Azid Pramank R", number: "017-411-53481 / 017-411-53481" },
+    { name: "Kamrul     Malancha", number: "017-362-77523" },
+    { name: "Kamrul     Malan cha    A", number: "017-847-24299" },
+    { name: "SOhal     S A A O    Sodor", number: "017-115-19858" },
+    { name: "Mezin    friend     SSAO", number: "017-991-07501" },
+    { name: "Moheidden  SASzo", number: "017-198-09443" },
+    { name: "Sameul     DASO", number: "017-298-17520" },
+    { name: "Kadyer   S A A O", number: "017-392-19246" },
+    { name: "Anour    S A A o", number: "017-352-57522" },
+    { name: "Menhad    malaytarey        member", number: "+8801631610154" },
+    { name: "b    k   office", number: "+8801630134382" },
+    { name: "Mokbul    Jamata   own   A", number: "+8801740602439" },
+    { name: "Vabie   own   home", number: "017-208-27578" },
+    { name: "Ballal    degolka.day", number: "017-800-32417" },
+    { name: "Soltan    polish", number: "019-115-34240" },
+    { name: "Kalam    SAAO    Nata", number: "+8801716627106" },
+    { name: "Rema  st  A A", number: "+8801999469222" },
+    { name: "Bus    hafejur", number: "017-621-57520" },
+    { name: "Rajal   munch", number: "017-135-69764" },
+    { name: "Monjurul   delet   degolkandy", number: "017-727-35816" },
+    { name: "Mojno   steo", number: "016-435-85687" },
+    { name: "Auto  Asadul  Kahed  para", number: "017-974-59544" },
+    { name: "Happy", number: "+8801771064429" },
+    { name: "Monto  Vabe  Ramcandapur", number: "+8801780271866" },
+    { name: "Salim  kayda  baxzar dkrator", number: "017-135-67767" },
+    { name: "Soriya    own", number: "017-467-60151" },
+    { name: "B   R   D    B", number: "+8801620215002" },
+    { name: "Lamon  kahed  pada", number: "017-169-44383" },
+    { name: "A.niul   Undertola    basa", number: "019-211-77640" },
+    { name: "Sofekul  Nasrin  member 3", number: "019-270-50459" },
+    { name: "Sohag   Satara  jamalpur", number: "019-186-46171" },
+    { name: "A.D. D.P. P. DAE", number: "017-161-71957" },
+    { name: "Tahmena  Own  A", number: "+8801625686758" },
+    { name: "Kurshed  Bada", number: "+8801734421703" },
+    { name: "Mukul   millk", number: "017-272-74481" },
+    { name: "Mister  Farmer  3", number: "+8801739673240" },
+    { name: "Horo  Farmer    3", number: "+8801741153801" },
+    { name: "Barik  Farmer  3", number: "+8801733281387" },
+    { name: "Mojammel  Masteer    3", number: "016-247-58663" },
+    { name: "Sofekul    S A A O", number: "017-271-47288" },
+    { name: "Milon Fuljor.", number: "+8801715312013" },
+    { name: "Enamul Fuljor.", number: "017-245-77752" },
+    { name: "Doctor  Mostak  jamalpur", number: "017-437-18357" },
+    { name: "Sohed  sir  ovdan  kochdn", number: "019-205-73639" },
+    { name: "Nasrulla   Own", number: "+8801876896265" },
+    { name: "D  2  A", number: "+8801643320517" },
+    { name: "B  R   D   P", number: "+8801710652355" },
+    { name: "Sohan  Own   Vatara", number: "017-393-96937" },
+    { name: "Obydur  Own     A", number: "+8801515620013" },
+    { name: "Rajaual    Own     A", number: "+8801731081071" },
+    { name: "Noraja   master   mukanda  Bari", number: "017-254-88704" },
+    { name: "Buple   agna   own", number: "+8801304862053" },
+    { name: "Gahager   Office  A", number: "+8801970149516" },
+    { name: "Afas  Poun     A", number: "+8801811956739" },
+    { name: "MM", number: "017-060-32431" },
+    { name: "A  T  O   Malandoh", number: "017-147-89331" },
+    { name: "Zia   via   jamalpur", number: "017-150-19310" },
+    { name: "Sofekul   S A  AO  friend", number: "019-388-23967" },
+    { name: "Jamata   Soraya  Own", number: "017-548-74998" },
+    { name: "Don   Via   own", number: "017-665-88080" },
+    { name: "Popy madam  Adarvita", number: "017-245-18890" },
+    { name: "Bokul   Friend", number: "+8801772668251" },
+    { name: "Our", number: "017-409-24950" },
+    { name: "Halema   farmer   bataga", number: "018-223-81587" },
+    { name: "Meznur     prpfessor", number: "+8801713569777" },
+    { name: "Kaja   Rumchnrapur", number: "+8801631399491" },
+    { name: "gass   sahen", number: "017-189-89233" },
+    { name: "Dalut   sarbidr   baltil", number: "017-320-01720" },
+    { name: "Mister    Own   A   2", number: "+8801837671051" },
+    { name: "Habib Fatmer  3", number: "+8801711670573" },
+    { name: "Kuasudden   member     A", number: "+8801952264546" },
+    { name: "Sofekul   SAAo   Malnda", number: "+8801552442154" },
+    { name: "Dalal  kaka  Rongpur", number: "017-355-61468" },
+    { name: "Sorap  Own   A", number: "017-123-41641" },
+    { name: "Samul  Own", number: "017-541-73452" },
+    { name: "Amunul   Own", number: "017-331-70551" },
+    { name: "Aorongjb  farmer  jurkaly  2", number: "+8801713576980" },
+    { name: "Anamul   Super  Star", number: "+8801730085934" },
+    { name: "Rasad   Rajual", number: "017-325-27337" },
+    { name: "Hanife  jamata  Aramgaty", number: "017-604-45148" },
+    { name: "Atauar  jamalpur", number: "+8801710110480" },
+    { name: "Fojul  Delar  3", number: "017-566-26256" },
+    { name: "Habibullah  S A A O  Sodor", number: "017-169-04395" },
+    { name: "Anamul  Super  Dtar  A", number: "+8801303476066" },
+    { name: "Abjul  Hosain", number: "017-080-50583" },
+    { name: "Yesar  Mother  Amunul", number: "019-130-87522" },
+    { name: "Bight S  pur", number: "016-765-38307" },
+    { name: "Salim   S A A O  Dayangonj", number: "019-388-24079" },
+    { name: "Rofekul    lybary", number: "+8801716775452" },
+    { name: "Meton   own  A  jangalya", number: "019-086-41002" },
+    { name: "Azid    D D  Office   A", number: "+8801701243583" },
+    { name: "Tottho officer", number: "017-589-15131" },
+    { name: "Obydur   KOLage", number: "015-152-45226" },
+    { name: "Halal  Hamrabari", number: "017-162-51978" },
+    { name: "La bo", number: "+8801645835164" },
+    { name: "Jute   gola bari  A", number: "+8801762804609" },
+    { name: "Robul   Arib   Office", number: "019-113-70882" },
+    { name: "Jahid  Katlamarey", number: "017-477-52417" },
+    { name: "Monerul  Jamalpur", number: "+8801712223390" },
+    { name: "Mokul   Via  jangaleya", number: "017-112-89408" },
+    { name: "Hahiy", number: "+8801731421317" },
+    { name: "Asma   bataga  Righter", number: "+8801766647528" },
+    { name: "Sorhab   via   Bada", number: "+8801777380792" },
+    { name: "Emam  Ali   Poresokan", number: "017-189-03315" },
+    { name: "Robul  Alam  nata  kamarmavgda", number: "+8801718989223" },
+    { name: "Jahid      A  Katlamarey", number: "+8801997127750" },
+    { name: "Imran   Soceb  Jorkaly", number: "019-222-89858" },
+    { name: "Razin   farmer   3", number: "017-572-19271" },
+    { name: "Lablu   Bada", number: "+8801743542052" },
+    { name: "Ibrahim", number: "017-213-05865" },
+    { name: "lsrat  Jahan. Bataga", number: "+8801763894373" },
+    { name: "Gulekha SAAO", number: "017-270-31142 / 017-270-31142" },
+    { name: "Halal Paddy", number: "+8801721973383" },
+    { name: "Mafujur Sir", number: "017-194-03525" },
+    { name: "Kium. Via  Hatbari", number: "017-271-90371" },
+    { name: "Alaim  Golabari Delear", number: "+8801643974695" },
+    { name: "Liton. Degolkandy", number: "017-436-68756" },
+    { name: "Lejo Farmer. 3", number: "017-208-27655" },
+    { name: "Johora Bagum", number: "017-361-29867" },
+    { name: "Dalsad Farmer 3", number: "017-629-62826" },
+    { name: "Sorus.  Police", number: "+8801728221139" },
+    { name: "manan Farmer  3", number: "017-524-80748" },
+    { name: "Malake. Degol", number: "+8801707996754" },
+    { name: "Ruble. SAAO", number: "+8809611807712 / +8801721178687" },
+    { name: "Tasyar Via  Tohosil Office Kalybari", number: "017-403-40273" },
+    { name: "Manan Farmer  Foljur  3", number: "+8801304514906" },
+    { name: "Mahen. Hotal Bagetarpada", number: "017-485-78653" },
+    { name: "Tahera. Own", number: "+8801307057742" },
+    { name: "Sofekul  Farmer. Fuljor  3", number: "017-362-30849" },
+    { name: "Babul  Member  Bada", number: "017-421-04231" },
+    { name: "Bariek. Farmer  A. 3", number: "017-332-81587" },
+    { name: "Ormey Norul Jamalpur", number: "+8801932690303" },
+    { name: "Soja Farmer.  A. 3", number: "017-308-53125" },
+    { name: "Shakhawat. Own", number: "+8801824088428" },
+    { name: "Leton. Own", number: "+8801739662867" },
+    { name: "Rotun. Farmer. 3", number: "017-353-55074" },
+    { name: "Auto. Sepon  Hamra Bari", number: "017-783-60903" },
+    { name: "Sojun  Bagetar Pada", number: "017-218-71859" },
+    { name: "Kaurul. Own", number: "017-286-61471" },
+    { name: "Kaural. Own.   A", number: "+8801829648900" },
+    { name: "Nazrul. Via Bagetarpada", number: "+8801761857486" },
+    { name: "Koberaj. Tarakanday", number: "017-722-92741" },
+    { name: "Mister. SAAO", number: "017-162-05944" },
+    { name: "Sohedulla  Rumcnrapur", number: "017-135-84610" },
+    { name: "Ragu  Master  Nandena", number: "017-205-28196" },
+    { name: "Champa. Farmer. 3", number: "017-569-41898" },
+    { name: "Korsted. Via. Own", number: "+8801712998381" },
+    { name: "Hanan. Farmer. 3", number: "+8801742714113" },
+    { name: "Forud  Nagerpada", number: "+8801728275157" },
+    { name: "Kaberaj  Hagepur", number: "018-872-83732" },
+    { name: "Kaberaj. Hagepur. A", number: "+8801726875129" },
+    { name: "Babul. Carant", number: "017-774-76078" },
+    { name: "Babul. Carent. A", number: "017-256-55884" },
+    { name: "Dalsad Farmer. 3", number: "017-436-62809" },
+    { name: "Sabegunnhar. Farmer  3", number: "017-463-44899" },
+    { name: "Mostak. Jamalpur", number: "019-228-58694" },
+    { name: "Master.  AAA", number: "+8801950925027" },
+    { name: "Cut  Soltun. Kalebari", number: "017-287-06284" },
+    { name: "Masharul. Deler. 3", number: "017-147-40970" },
+    { name: "Norislam. Farmer  3", number: "017-364-13891" },
+    { name: "Sobous. Hortyculcer. Jam", number: "+8801721570887" },
+    { name: "Sohag Deler  3", number: "017-406-41293" },
+    { name: "Sohag. Deler.. A. 3", number: "018-142-90328" },
+    { name: "Nasrulla. Sir Jamalpur", number: "+8801722053271" },
+    { name: "Amaiul  Farmer  Bada. A", number: "+8801679539196" },
+    { name: "Samul. Deler", number: "017-155-22402" },
+    { name: "Altafur  Deler", number: "017-936-80688" },
+    { name: "Sofegul  Degolkandy", number: "+8801748964019" },
+    { name: "Sohag. Deler. 3", number: "017-406-41213 / 018-142-10328" },
+    { name: "Lotife. Mukunda Bari", number: "017-540-45226" },
+    { name: "Mostfa. Bataga", number: "017-260-76208" },
+    { name: "Refat. Own", number: "018-799-25685" },
+    { name: "Foslo. Golabari", number: "+8801795273019" },
+    { name: "AEO  Mezan. Sir", number: "017-125-27684" },
+    { name: "Fojul  Farmer. 3", number: "017-905-56291" },
+    { name: "Mabub Janata. Bank  Kalebari", number: "019-260-94757" },
+    { name: "Cut  Nober", number: "013-009-06322" },
+    { name: "Hafejur. Frinend", number: "+8801720837657" },
+    { name: "Bokur. Bataga", number: "+8801750474310" },
+    { name: "Jolil. Farmer. 3", number: "017-901-43970" },
+    { name: "Lablu Degolkandy", number: "017-364-15040" },
+    { name: "Auto  Sohag  Podabari", number: "017-458-60115" },
+    { name: "Robin.  Own", number: "+8801703185174" },
+    { name: "Cur. Ramgan.", number: "017-122-37999" },
+    { name: "Hasmut.  Office.  A", number: "+8801975582369" },
+    { name: "Hamid  Farmer.  3", number: "017-593-10092" },
+    { name: "Janata. Bank. Manajyar", number: "017-292-72797" },
+    { name: "Hobe  Via. Kalebari", number: "017-357-43350" },
+    { name: "Rasal. Farmer  Ramcdrapur", number: "+8801740510374" },
+    { name: "Somya. Mother", number: "017-309-40908" },
+    { name: "Nazrul. Disline", number: "017-408-83007" },
+    { name: "Nour  Master. 3", number: "+8801732994401" },
+    { name: "Hasam  Sobelapur. Deler", number: "+8801622114065" },
+    { name: "Balal. Farmer  Fuljur.  3", number: "+8801768872566" },
+    { name: "Harese. Farmer.. Fuljur  3", number: "017-185-16504" },
+    { name: "Anjo. Sister  Polisha", number: "+8801675254151" },
+    { name: "Hanan. Farmer.  1", number: "017-719-15250" },
+    { name: "Soylas  Condro. Bataga", number: "017-314-19970" },
+    { name: "Mostofa  Farmer. Bataga", number: "017-260-76238" },
+    { name: "Tokun  Farmer.  3", number: "+8801793145025" },
+    { name: "Bachy  Tatylige. Podabari", number: "017-841-53520" },
+    { name: "Soban. Farmer. Degolkandy", number: "017-723-07843" },
+    { name: "Dolal  Sorkar  Bataga", number: "017-109-75570" },
+    { name: "Nauan. Bataga. Bari. A", number: "017-252-07701" },
+    { name: "Chan. Via. Aramgatye", number: "+8801743343075" },
+    { name: "Seddk  Master. Rumcdrpur", number: "+8801619526066" },
+    { name: "Shahen. Londy. Bagetarpada", number: "017-705-91782" },
+    { name: "Sonaher  Farmer. Member. 3", number: "+8801737017973" },
+    { name: "Kafe. Own", number: "+8801727916752" },
+    { name: "Sajahan. Degolkandy", number: "+8801709413157" },
+    { name: "Motiur. Molana", number: "+8801792698364" },
+    { name: "Meznour  Rohama. Own", number: "+46764423055" },
+    { name: "Melton. Farmer. 3", number: "+8801300821146" },
+    { name: "Mongj. Farmer. 3", number: "+8801787937281" },
+    { name: "Jahagr. Mister.  Fuljur. 3", number: "+8801639334265" },
+    { name: "Sahalom  Farmer. 3", number: "+8801726921035" },
+    { name: "Sajadul. S A A. O", number: "+8801934780738" },
+    { name: "Abbas. Master  Rumnrapur", number: "+8801726195508" },
+    { name: "Auto. Nybaly. Mukunda Bari", number: "+8801627797709" },
+    { name: "C N G. Norislam", number: "018-682-59471" },
+    { name: "Mamoda. S A A O", number: "017-273-09108" },
+    { name: "Salime. S A A O", number: "017-203-21442" },
+    { name: "Roge. A A A", number: "013-173-11515" },
+    { name: "Kajur  Bataga", number: "+8801877444132" },
+    { name: "Nazrul. Sobelapur", number: "017-398-52072" },
+    { name: "Asife. Sub Asstant Engnier Madergonj", number: "019-520-30805" },
+    { name: "Sohid Rumcnrapur", number: "+8801611618298" },
+    { name: "Salam. Jamat. Farmer  3", number: "017-436-82359" },
+    { name: "Ohedparvas. Acound  Officer Madergonj", number: "017-342-70496" },
+    { name: "Engner  Malanda", number: "017-694-01268" },
+    { name: "Engner. Malanda. A", number: "017-651-21110" },
+    { name: "Gary Jamata Folkocha Po", number: "017-280-21445" },
+    { name: "Sopoun. S", number: "017-572-86974" },
+    { name: "OZZjul. Dakarator Jourkaly", number: "019-374-63920" },
+    { name: "Hana. U N O Office", number: "017-275-02198" },
+    { name: "Gahagur Farmer Fuljur  A 3", number: "+8801716516487" },
+    { name: "Rohul Amin Motor Kandua", number: "017-299-31130" },
+    { name: "Ansis Motor. Kyada", number: "017-127-59742" },
+    { name: "Kajur. Bataga.  A", number: "017-922-67509" },
+    { name: "Vkguk Kadpada", number: "017-112-68740" },
+    { name: "Sajue Fofue Jangalya", number: "017-276-52913" },
+    { name: "Charchal. it", number: "018-236-35374" },
+    { name: "Robin Father  A A", number: "+8801639342740" },
+    { name: "Solyma Own. A", number: "+8801840738529" },
+    { name: "Sohag Farmer   3", number: "+8801789032530" },
+    { name: "Billal  Gonareytola", number: "013-041-55161" },
+    { name: "Sajahan. Degolkandy. A", number: "+8801735256457" },
+    { name: "Mahady Hasan. Farmer  3", number: "013-118-64638" },
+    { name: "Babo Lal", number: "017-525-12432" },
+    { name: "Azzad Mukunda Bari", number: "017-414-26951" },
+    { name: "Master  A A A A", number: "+8801580491513" },
+    { name: "Badsa Akand Fuljur Farmer", number: "+8801739236032" },
+    { name: "Romon Via Jurkalye", number: "+8801794707996" },
+    { name: "Mosaruf  It", number: "+8801725860118" },
+    { name: "Forhad  Motor Bagetarpada", number: "017-817-98419" },
+    { name: "Salam. Mama Patadh", number: "013-123-39281" },
+    { name: "Kobir. Myke", number: "017-579-64353" },
+    { name: "Azzad  Bataga A", number: "017-946-18405" },
+    { name: "Amdadul  Poda Bari", number: "017-747-47518" },
+    { name: "Master  Sosur. Hokoa", number: "017-640-89009" },
+    { name: "Dummba Gonaretola", number: "+8801757811974" },
+    { name: "Ishita", number: "018-507-79895" },
+    { name: "Chan  Bea  Sohesa Bari", number: "017-162-26228" },
+    { name: "Lanjo  Mokunda Bari", number: "017-906-77043" },
+    { name: "A A A A A", number: "018-181-55222" },
+    { name: "Sopon adarvta office", number: "017-674-17406" },
+    { name: "Nelofa S A A O  Hajrabari", number: "017-125-77196" },
+    { name: "AEO. Fatematujohora", number: "+8801749417289" },
+    { name: "Soja  Deler.  A", number: "017-921-77199" },
+    { name: "Bdr. Millk", number: "017-318-15608" },
+    { name: "Korsad S I", number: "017-454-80264" },
+    { name: "Sajal. Rumchandrapur", number: "+8801733280708" },
+    { name: "Bilkase  Appa Gonaretola", number: "017-122-32457" },
+    { name: "Asharul B S C  Polisha", number: "017-181-41881" },
+    { name: "Mamub. Engnier  Bddud", number: "017-439-34028" },
+    { name: "Melton Farmer.  A.  3", number: "+8801784999772" },
+    { name: "Golamsoror. SAAO Dhaka", number: "019-404-13984" },
+    { name: "Momo. Own", number: "015-589-65005" },
+    { name: "Nazrul. Notabor  Omr Bia", number: "+8801303234369" },
+    { name: "Meznur  Rohoman Notabor", number: "017-658-45814" },
+    { name: "Saleka Bataga  Own", number: "+8801300645233" },
+    { name: "Arsad Nolka Chairman", number: "017-117-77717" },
+    { name: "Hakime Koberaj", number: "018-687-06237" },
+    { name: "Abdur Razzk Notabor", number: "017-423-01517" },
+    { name: "Mm  Sir", number: "017-167-77805" },
+    { name: "Vasaney. Degolkandy", number: "+8801737126532" },
+    { name: "Chan. Via. Aramgatay", number: "+8801870230335" },
+    { name: "Samar. Millk", number: "017-797-82890" },
+    { name: "Samoui. Bataga", number: "+8801307746616" },
+    { name: "Alya. Maybe. Adarvita. Office", number: "017-273-51902" },
+    { name: "Abdul Alim S A A O Manda", number: "+8801718786625" },
+    { name: "Kasum Mata. Dhaka", number: "017-114-88425" },
+    { name: "Sobemol. Natasha Janata Bank", number: "017-194-74120" },
+    { name: "Makes Moulana Jamalpur", number: "017-378-69879" },
+    { name: "Hamidur. Own. A", number: "+8801992804050" },
+    { name: "Movie. Myke. A", number: "+8801936353944" },
+    { name: "Mahesh. S A A O", number: "+8801923960175" },
+    { name: "Homaun. CEAL.  A", number: "+8801640587177" },
+    { name: "Jea   brother. D D O", number: "017-156-91657" },
+    { name: "Sahadul. Sir. Officer", number: "017-253-14028" },
+    { name: "Ohedparvas  Accounts.  A", number: "+8801946333168" },
+    { name: "Luka. Mama  Kaureal", number: "017-647-18340" },
+    { name: "Sojun Bagetar Pads. A", number: "+8801621297624" },
+    { name: "Gahager. Office. A", number: "+8801313859133" },
+    { name: "Raka Boy  A", number: "+8801725720966" },
+    { name: "Bobeta. Own. A", number: "013-195-25347" },
+    { name: "Fish. Soun", number: "017-294-16251" },
+    { name: "Mostakim. Own", number: "+8801620290532" },
+    { name: "Paddy. Meznur", number: "016-451-85184" },
+    { name: "Mokbul. Sir Polisha", number: "017-125-61151" },
+    { name: "Karin. Batata. Own. A", number: "+8801791022813" },
+    { name: "Auto. Kausar. Mukunda Bari A", number: "+8801889597406" },
+    { name: "‌।আকর্্", number: "017-542-19391" },
+    { name: "Azzjur Rohan Notabor", number: "017-107-53302" },
+    { name: "Anssur Rohaman Notabor", number: "017-129-40435" },
+    { name: "Solyman. Koberaj  Baltol", number: "+8801645173494" },
+    { name: "Samolda Doy Kayda Bazzar", number: "017-241-44387" },
+    { name: "Mont Own", number: "001-972-100737" },
+    { name: "Babe. Dacca Own", number: "017-106-31663" },
+    { name: "Khirul. Polish", number: "017-377-64007" },
+    { name: "Mahen. Own", number: "018-804-78207" },
+    { name: "Monitor Degolkandy", number: "017-936-82647" },
+    { name: "Jahanur S A A O.   A", number: "+8801701243693" },
+    { name: "Monohor Degolkandy. A", number: "013-169-58516" },
+    { name: "M,Saiful Islam", number: "017-155-61861" },
+    { name: "Asad Hard Office. A", number: "+8801721555172" },
+    { name: "Lotfor Made Own", number: "017-331-76347" },
+    { name: "Lotfor Kafeown", number: "017-543-32966" },
+    { name: "Hasmut Wife. Office. A", number: "+8801745114888" },
+    { name: "Mogebor nagerpada", number: "+8801764707607" },
+    { name: "Romesa. Kalkaty", number: "017-814-95205" },
+    { name: "Bailey. Up Golabari", number: "017-475-01188" },
+    { name: "Chan. Mohes Muknda bari", number: "017-343-22560" },
+    { name: "Sabekunnahar Farmer 3", number: "017-651-65657" },
+    { name: "Sohel  Mukundabari Doctor", number: "017-110-60877" },
+    { name: "Sasha Money Degolkandy", number: "+8801300943738" },
+    { name: "Jakaria S A A O", number: "016-252-09919" },
+    { name: "Julfeker A A O", number: "+8801852835882" },
+    { name: "Lotife Bagetar Pada", number: "+8801727407210" },
+    { name: "Men's Farmer Dagol. A", number: "+8801746946370" },
+    { name: "Rage Mesrey", number: "+8801790360398" },
+    { name: "Nazrul. Balu Jangaleya", number: "017-225-13326" },
+    { name: "Auto Simon Mukundabari", number: "019-961-28742" },
+    { name: "Bada Koberaj Gagepur", number: "017-347-89181" },
+    { name: "Sohag Chodore. it", number: "017-409-80893" },
+    { name: "Banomu Own Bari", number: "018-157-55035" },
+    { name: "Rakib. Mukanda bari", number: "017-447-08836" },
+    { name: "Lotife Gonareytola", number: "014-016-02083" },
+    { name: "Meznur. Sogep. 5", number: "019-119-06278" },
+    { name: "Mymony. Main. 5", number: "017-146-81356" },
+    { name: "Moro Mokandabari", number: "+8801747493886" },
+    { name: "Audit Khamarmagoda", number: "017-164-74305" },
+    { name: "Anis. Member 2", number: "017-646-68598" },
+    { name: "Bada Master Malandha", number: "+8801725482159" },
+    { name: "Pabna Collage. Sir. Propesor", number: "+8801719014265" },
+    { name: "Hobib Member", number: "+8801319989056 / 017-273-64728" },
+    { name: "Upazlla Chairman", number: "017-126-01818" },
+    { name: "Anour Hadeasstant Jamalpur", number: "017-181-58338" },
+    { name: "Asad Headasstant Nokla", number: "+8801712305634" },
+    { name: "Raja. Kolpona", number: "013-177-78239" },
+    { name: "Hobe nandena", number: "017-111-18717" },
+    { name: "Poster Master Julkha", number: "+8801759150297" },
+    { name: "Ragipepur Motine", number: "+8801521384693" },
+    { name: "Forod", number: "017-577-69253" },
+    { name: "Sohedul Natny Dacca", number: "+8801755640363" },
+    { name: "C N G Forid", number: "017-540-81787" },
+    { name: "Rofe bataga", number: "+8801711008318" },
+    { name: "Motion Notabor", number: "017-892-65283" },
+    { name: "Lolol Tatelige", number: "+8801678373613" },
+    { name: "Amanolla Kajla", number: "014-027-76786" },
+    { name: "Sohedula Golabari", number: "+8801751615049" },
+    { name: "Rascal Cenjanda Company", number: "017-718-14523" },
+    { name: "Leto Chairman Gosharpada", number: "017-139-90072" },
+    { name: "Onu Kaleybari", number: "017-115-10681" },
+    { name: "Demo Chakratrey  6", number: "017-161-12996" },
+    { name: "Hafejur Rasmesrey Jangaleya", number: "017-305-00091" },
+    { name: "Kolile Mokandabari", number: "+8801989993758" },
+    { name: "Popy Madam Adarvita School", number: "017-601-32594" },
+    { name: "Foreda Parvin Master", number: "017-250-04707" },
+    { name: "Rohan Own", number: "018-746-62652" },
+    { name: "Lago Kollage", number: "017-135-82752" },
+    { name: "Malaria  SAAO. A", number: "+8801795982205" },
+    { name: "Arshad Rage Mesry", number: "+8801762492785" },
+    { name: "Arshad Rage Mesrey  A", number: "+8801916348765" },
+    { name: "Shake Forid Carant", number: "017-615-94288" },
+    { name: "Arife D B Bank Jamalpur", number: "017-104-13070" },
+    { name: "Dolaley Blue Own", number: "017-478-41585" },
+    { name: "Kobire Uno Office", number: "017-124-10629" },
+    { name: "Azzise Uno Office", number: "017-125-84193" },
+    { name: "Cut. Allal. Kahad Pada", number: "017-728-20744" },
+    { name: "Amnul  It Vangarey", number: "018-284-02555" },
+    { name: "Mamun Jamalpur", number: "017-364-41771" },
+    { name: "Hotel Bagetarpada  A", number: "+8801728132111" },
+    { name: "Nazrul Solapur. A", number: "018-554-35507" },
+    { name: "Fojo Ground", number: "017-941-98160" },
+    { name: "Robbney Mokunda Bari", number: "+8801821341934" },
+    { name: "Sorus Via aramgaty  A", number: "019-273-58281" },
+    { name: "Master  A2", number: "+8801302515231" },
+    { name: "Carent. Kaleybari   A", number: "018-398-47390" },
+    { name: "Sofequl. Nata After Ita", number: "017-195-97438" },
+    { name: "Fojul  Posimpada", number: "016-259-93015" },
+    { name: "Arshad Bagtarpada", number: "013-037-85907" },
+    { name: "Nazrul. Raman. A", number: "+8801642603490" },
+    { name: "Banomue. Home. A", number: "+8801751407866" },
+    { name: "Molla Kaley Bari", number: "017-332-80601" },
+    { name: "Altafour Vatara", number: "017-123-56834" },
+    { name: "Banomoue Home. A", number: "+8808801751407866" },
+    { name: "Norul. Gojarya", number: "017-582-08140" },
+    { name: "Samad. Milk. A", number: "+8801741127333" },
+    { name: "Dando Mokanabari", number: "014-067-70727" },
+    { name: "Nahar Janata Dhaka", number: "017-179-91666" },
+    { name: "Monera. Own. A", number: "018-760-21649" },
+    { name: "Gulekha. S A A O. A", number: "+8801714199530" },
+    { name: "Cut. Uno's. Ali", number: "017-334-36467" },
+    { name: "Johorul Mukundabari", number: "+8801876262777" },
+    { name: "Ground. Rofequl", number: "017-426-89440" },
+    { name: "Ground. Mosno", number: "+8801613970877" },
+    { name: "Goday. Samad. Mukundabari", number: "+8801885858590" },
+    { name: "Ground Mosno", number: "+8801719523484" },
+    { name: "Halal. It", number: "017-847-78142" },
+    { name: "Salome  It  Vangare Bada", number: "017-534-19156" },
+    { name: "Jomona. It Donbari", number: "+8801933418723" },
+    { name: "Jomona. It  Donbari. Jebon", number: "+8801310990589" },
+    { name: "All. Sement Jurkaly", number: "+8801920131421" },
+    { name: "Kamrul. S A A O", number: "017-395-31794 / 017-706-70660" },
+    { name: "Abdur Rahman Dubai", number: "+971556176883" },
+    { name: "Master.  A3", number: "+8801618173738" },
+    { name: "Jalena.", number: "016-001-39318" },
+    { name: "Lipe. Master", number: "017-187-39901" },
+    { name: "Khairul. S A A O  Madergonj", number: "+8801837057713" },
+    { name: "Amjad  Cut  Vatara", number: "017-193-17660" },
+    { name: "Hasan. Cut. Kaleybari", number: "017-332-81461" },
+    { name: "TM Rajaul. Karim. Hd Jamalpur", number: "017-175-64361" },
+    { name: "Aminul. Basdyer", number: "+8801721318032" },
+    { name: "Araman. Emam", number: "013-155-32883" },
+    { name: "Sofik. Van. Mokundabari", number: "017-293-63949" },
+    { name: "Yeakb. Balejorey", number: "+8801601312953" },
+    { name: "Jalena. Balejury. A", number: "017-910-10266" },
+    { name: "Balu. A", number: "+8801930779336" },
+    { name: "Motor. Stor. Sp. Sahen", number: "+8801325136282" },
+    { name: "Rokibe. Member Polisha", number: "+8801774909094" },
+    { name: "Morshedul. Gojarya", number: "017-518-58686" },
+    { name: "C N G. Samime", number: "018-729-44876" },
+    { name: "Auto  Dolal Jamalpur", number: "017-398-30845" },
+    { name: "Auto. Simon Jamalpur", number: "014-048-89552" },
+    { name: "Romon  Via  Own. Jorkley", number: "+8801781917762" },
+    { name: "Tangna  St Father Jeaul Master", number: "017-258-64365" },
+    { name: "Satter Van. Harabari", number: "+8801932783251" },
+    { name: "Sheddk. Cull. Boring", number: "017-588-22364" },
+    { name: "Ronk. Sofekul  Mesrey", number: "+8801938439987" },
+    { name: "Tise Mereys Bagbari", number: "+8801646344417" },
+    { name: "Nazrul. Cut  M, Mukundabari", number: "017-291-60498" },
+    { name: "Rofek  Kahedpada", number: "013-045-98922" },
+    { name: "Faruk. Van. Bagterpada", number: "017-674-62142" },
+    { name: "Nela. St Sherpur", number: "+8801981059523" },
+    { name: "Gahagr  Own. A", number: "+8801842553121" },
+    { name: "Raseda  Own  Vatyan", number: "+8801925035256" },
+    { name: "Jamaley Via Jamalpur", number: "017-319-36040" },
+    { name: "Uno's. Cut. Jamalpur", number: "017-480-68545" },
+    { name: "Tahera  Own.  A", number: "019-236-38778 / +8801400149046" },
+    { name: "Rofegul  Ground", number: "018-883-78656" },
+    { name: "Sakaud Saylak. A", number: "+8801886037481" },
+    { name: "Afroja Own Royerchor", number: "017-663-28354" },
+    { name: "A A O  Madergonj", number: "017-135-29978" },
+    { name: "Tise Mesrey. Mokles", number: "017-135-71411" },
+    { name: "Saydjaman Jangalya", number: "+8801706658125" },
+    { name: "Motas  Via. Bnnafyr", number: "017-187-80630" },
+    { name: "Faruk. Own.   A. Home", number: "+8801729836565" },
+    { name: "Lotefa  Golabari  Own", number: "017-416-65541" },
+    { name: "Faruk Master Gosherpada High School", number: "017-747-40736" },
+    { name: "Romjan. Popular Gonabari", number: "+8801736413744" },
+    { name: "Sopna  Competer", number: "017-938-91715" },
+    { name: "Jawgara", number: "017-276-94959" },
+    { name: "Sopna Competer. A", number: "+8801595539575" },
+    { name: "Sahalum. Kalebari", number: "017-571-01830" },
+    { name: "Nahar Fufu", number: "016-820-20736 / 017-793-15899 / 016-820-20736" },
+    { name: "Jomsad. Sharpur", number: "017-291-60886" },
+    { name: "Sahen. Popular", number: "+8801735449645" },
+    { name: "Mother  Of  Yeakub", number: "019-654-73661" },
+    { name: "Akbur Ali. Goshar Pada", number: "+8801871686828" },
+    { name: "Kobir  Balyjure", number: "+8801914291527" },
+    { name: "Jakire. Populre", number: "+8801995548588" },
+    { name: "Cur Obydulla", number: "019-348-31672" },
+    { name: "Cur. Abdulla", number: "018-243-63866" },
+    { name: "Forhad Populer", number: "+8801613279433" },
+    { name: "Forhad Popular. A", number: "+8801922046583" },
+    { name: "Motor Shan. Jamalpur", number: "+8801917387569" },
+    { name: "Passport Office Jamalpur", number: "+8801710651548" },
+    { name: "Mento Kha. S A A O Dhaka", number: "017-467-48915" },
+    { name: "Arife A D Office Mymenshing", number: "+8801710354607" },
+    { name: "Hotel Myana. Bagetrpada A A", number: "+8801324628912" },
+    { name: "Sofke Van Mokadabari A", number: "+8801616066940" },
+    { name: "C N G  Sopon Kahedpada", number: "017-725-40506" },
+    { name: "Gone. Otter Pada", number: "017-369-91151" },
+    { name: "Dr. Kobir Juel 2", number: "017-328-23868" },
+    { name: "Dr Kobir Juel", number: "017-110-73597" },
+    { name: "Mezun Own A", number: "+8801944481862 / +8801781601820" },
+    { name: "৬১ Sohal Azzam Collageনং চরভাটিয়ানী সরকারী প্রাথমিক বিদ্যালয়", number: "017-172-15519" },
+    { name: "Haraz Makundabari", number: "017-456-56224" },
+    { name: "Sofike Van Mokundabari A A", number: "+8801642068390" },
+    { name: "Sofike Accounts Office", number: "017-124-15718" },
+    { name: "ASHA Frind", number: "+8801308261203" },
+    { name: "Jolul Mokandabari", number: "017-319-59082" },
+    { name: "Rema Bataga A A A", number: "019-666-55465" },
+    { name: "Hr", number: "017-666-46638" },
+    { name: "Aktar U N O Office", number: "017-520-21691" },
+    { name: "Motor. Baleyjurey", number: "+8801325136280" },
+    { name: "Chan Via Aramgatey. A", number: "+8801772822746" },
+    { name: "Romjan", number: "+530294451" },
+    { name: "Konekha Popular", number: "+8801785063104" },
+    { name: "Dr Kabir Jewels", number: "017-110-73579" },
+    { name: "Golam Hosin Molana", number: "017-511-81295" },
+    { name: "Morshedul Gojarya. A", number: "+8801894089272" },
+    { name: "Samad Milk A A A", number: "017-767-38896" },
+    { name: "Ground. Geyer Gojarya", number: "017-332-81549" },
+    { name: "Cut Hafejr Hamrabari", number: "+8801713518950" },
+    { name: "Cut Rostom Hamranari", number: "017-306-48811" },
+    { name: "Hasan Cut. Kaleybari   A", number: "+8801876936781" },
+    { name: "Ata Charman. Vageta", number: "017-395-32224" },
+    { name: "Nazrul. Via. Khadpada", number: "018-280-09665" },
+    { name: "Bahadur Jangaleya", number: "+8801942157021" },
+    { name: "Ground Geyer Gojarya. A", number: "+8801314046626" },
+    { name: "Ripon Saudi", number: "+966504972116" },
+    { name: "Waxed. Lotife Mukunda Bari", number: "019-067-30262" },
+    { name: "Agency", number: "+8801851620791" },
+    { name: "Waxed Lotife Mokandabari A", number: "+8801894808990" },
+    { name: "Abdur Rahime", number: "+966507815033" },
+    { name: "Forced Own", number: "017-183-53626" },
+    { name: "Van Boslo Mokandabari", number: "017-033-58102" },
+    { name: "Sohail Taylor Jamalpur", number: "019-861-09553" },
+    { name: "Romjan  Soudey", number: "+966530294451" },
+    { name: "Hakime  Own", number: "017-276-78299" },
+    { name: "Melon. S A A O Dhaka", number: "017-499-59998" },
+    { name: "Aktar.Master", number: "057-618-5407" },
+    { name: "A Bariek Soudiy", number: "054-243-0621" },
+    { name: "Sanvi Sakib", number: "013-110-43042" },
+    { name: "Sakil Mokbul", number: "056-266-3983" },
+    { name: "Nur MD. Muallem", number: "056-052-1767" },
+    { name: "Baky Own", number: "053-849-3629" },
+    { name: "Mamun. Own", number: "050-190-2343" },
+    { name: "Forhad. Own", number: "057-817-2909" },
+    { name: "Soraf Srkar", number: "+8801913322446" },
+    { name: "Araman Eamam. A", number: "+8801603279064" },
+    { name: "Abdulla. Own", number: "+8801970027559" },
+    { name: "Koneka  Own. Mukundabari", number: "+8801768078854" },
+    { name: "Rane Bagom Parpur Sohal Gahagr", number: "+8801782154673" },
+    { name: "Koneka Gulekha Shanbari", number: "+8801893198261" },
+    { name: "Koneka Gulekha Sanbari A", number: "+8801732720092" },
+    { name: "C. N   G. Spoon Sobelapur", number: "+8801867167676" },
+    { name: "Borhan Gosharpada", number: "+8801867178686" },
+    { name: "Metun A A A", number: "+880248321159" },
+    { name: "Koneka Own Mukundabari. A", number: "+8801329954662" },
+    { name: "Dolal Via Nandena", number: "+8801757718604" },
+    { name: "Vandar. Sojun. Jamalpur", number: "+8801716401679" },
+    { name: "Forhad Delear Kalebari", number: "+8801612821054" },
+    { name: "Mogebor Gojarya Land", number: "+8801757786682" },
+    { name: "Sohedulla Patan Nayve 6", number: "+8801719057437" },
+    { name: "Bodrul Native 1", number: "+8801757964064" },
+    { name: "Janty Sister  S A A O", number: "+8801936499141" },
+    { name: "Halime. Land", number: "+8801724282405" },
+    { name: "Dolal Via. Nandena. A", number: "+8801989236266" },
+    { name: "Robine Josna Home", number: "+8801734662016" },
+    { name: "Asma Bataga Righter  A", number: "+8801932000849" },
+    { name: "Cut Kolile Binnafyre", number: "+8801747078916" },
+    { name: "Carant  Refat  Adarvita", number: "+8801902755202" },
+    { name: "Josna  Asha", number: "+8801307110809" },
+    { name: "Kokon Police Fare Kalebari", number: "+8801719430187" },
+    { name: "Joglo Hamra Bari", number: "+8801610366473" },
+    { name: "Mosno  Kahadpada", number: "+8801724733991" },
+    { name: "Hasan  S A A O", number: "+8801303086069" },
+    { name: "Konekha Mother Baleyjury", number: "+8801931483447" },
+    { name: "Soruf Own Dhaka", number: "+8801912395396" },
+    { name: "ASHA Bow Own. A Bakhas", number: "+8801964889025" },
+    { name: "Rofegul Eamam Notabor", number: "+8801741359139" },
+    { name: "Hanife. Land Office", number: "+8801731451844" },
+    { name: "Rohema. A A", number: "+8801707051162" },
+    { name: "Soketara  A", number: "+8801761581716" },
+    { name: "Robin Member Jangalya", number: "+8801748904909" },
+    { name: "Land Office 6", number: "+8801729700190" },
+    { name: "নাম উল্লেখ নেই", number: "019-237-79037" },
+    { name: "Hafejur  Friend. A", number: "+8801981837935" },
+    { name: "Lotfur Friend  Polish  A", number: "+8801642068895" },
+    { name: "Samuel Friend Polisha", number: "+8801770636161" },
+    { name: "Horse Norislam Cur", number: "+8801757130323" },
+    { name: "Repon", number: "+8801713584426" },
+    { name: "Dolal Master Bagetarpada", number: "+8801735714517" },
+    { name: "Joynal Bagetarpada", number: "+8801304861928" },
+    { name: "Zillur  Gojarya Friend", number: "+8801751778058" },
+    { name: "Sohal. Milk", number: "+8801732174423" },
+    { name: "Geyrul  Lotfor. Taktar", number: "+8801869970161" },
+    { name: "ASHA Blow.One", number: "+62878468875591" },
+    { name: "asha", number: "+46762152680" },
+    { name: "Nazrul Diseline Soblapur", number: "+8801711163853" },
+    { name: "Sohag Satara Jamalpur A", number: "+8801517846081" },
+    { name: "Redoy It Vatara", number: "+8801617418822" },
+    { name: "Bahadur Sogona A", number: "+8801937969932" },
+    { name: "Chan Motor Bagetarpada", number: "+8801742692518" },
+    { name: "Azizur Kage Baushe", number: "+8801718262099" },
+    { name: "Koneka Own. Jangalya. A", number: "+8801998235172" },
+    { name: "ASHA Mother", number: "+8801931021315" },
+    { name: "Sofike  Bris", number: "+8801722741971" },
+    { name: "Juko Hamrabari", number: "+8801724586138" },
+    { name: "Rohan Own. A", number: "+8801300890907" },
+    { name: "Bright Sobelapur. A", number: "+8801914357758" },
+    { name: "Rojone Spoon Nagarpada", number: "+8801409756151" },
+    { name: "Dando Rabya Mukundabari. A", number: "+8801746577307" },
+    { name: "Kajla", number: "+8801985568194" },
+    { name: "Rofike Bogoda", number: "+8801331470366" },
+    { name: "Bahadur Sogona", number: "+8801799343896" },
+    { name: "Foshal", number: "+8801826209996" },
+    { name: "Rajjak  Notabor", number: "+8801942948763" },
+    { name: "নাম উল্লেখ নেই", number: "+8801781670599" },
+    { name: "Hanan Bataga  A", number: "+8801962559522" },
+    { name: "Tolo. Own. A", number: "+8801613568226" },
+    { name: "Ammanulla Own. A A", number: "+8801725771017" },
+    { name: "Biddod. Notabor", number: "+8801711133533" },
+    { name: "Nazrul Dr. Polisha", number: "+8801764266529" },
+    { name: "+01811949624 Shohidullah. Natney A", number: "+8801811949624" },
+    { name: "Rasul. Own. A", number: "+8801648858676" },
+    { name: "Nasyer  Notabor", number: "+8801757085255" },
+    { name: "Rajaul Master Golabari  A", number: "+8801777190570" },
+    { name: "Faruk Mesrey Notabor", number: "+8801917985033" },
+    { name: "Dr Naiymur Hamrabari", number: "+8801713523106" },
+    { name: "Sakib  Own   A", number: "+8801631448279" },
+    { name: "Sabber  Car", number: "+8801924862851" },
+    { name: "Auto  Komul  Bagetarpada", number: "+8801748099377" },
+    { name: "Karim  Via. Gojareya", number: "+8801752236289" },
+    { name: "Fored 2  A", number: "+8801989538236" },
+    { name: "Lotife  Bagetarpada. A", number: "+8801630594766" },
+    { name: "Bobita", number: "+8801747662899" },
+    { name: "Babue. S A A O  A A", number: "+8801711479439" },
+    { name: "Rajo. Mukundabari. A A", number: "+8801852938661" },
+    { name: "Ground. Saaun  Utterpada", number: "+8801835126205" },
+    { name: "Tepty. Own. A", number: "+8801779319568" },
+    { name: "Fazlul Bari  Kahedpada", number: "+8801731991254" },
+    { name: "Kokun Professor Kahedpada", number: "+8801712084749" },
+    { name: "Momo. Own. A A", number: "+8801909605703" },
+    { name: "Md Ali. Own", number: "+8801716317713" },
+    { name: "Fojul Kitnasok Dokandar", number: "+8801741054228" },
+    { name: "Kumrul Karim Via Gojarya", number: "+8801995190797" },
+    { name: "Mumu Germany", number: "+4915218686700" },
+    { name: "Balo. Jamalpur", number: "+8801328025013" },
+    { name: "Aslam Gojarya", number: "+8801877686097" },
+    { name: "Cur Abdullah Kalebari", number: "+8801733248826" },
+    { name: "Cemahen Kahedpada", number: "+8801714529708" },
+    { name: "Cemahen Kahedpada. A", number: "+8801873677736" },
+    { name: "Ground  Momotas", number: "+8801741153499" },
+    { name: "Mamun Sodi Own", number: "+966544594271" },
+    { name: "Jusna  Own", number: "+8801636672642" },
+    { name: "Lokion  A", number: "+8801796350463" },
+    { name: "Hanife Vome Office Madergonj  A", number: "+8801971451844" },
+    { name: "Bakyebilla Golam Molana Gojarya", number: "+8801942364015" },
+    { name: "Robul Master Sister K", number: "+8801789951893" },
+    { name: "Eman Alli  Mohore Gojarya", number: "+8801710789598" },
+    { name: "Sohal Soadrabari", number: "+8801719644487" },
+    { name: "Tara Mukundabari. A", number: "+8801728267413" },
+    { name: "Moja  Via  Polisha", number: "+8801731842175" },
+    { name: "Halime Halema Jonaiel", number: "+8801718088904" },
+    { name: "Aemjed Cherman  A", number: "+8801714622717" },
+    { name: "Aemjed Charman", number: "+8801795272795" },
+    { name: "Nobaly Mukundabari", number: "+8801614604016" },
+    { name: "Balal Wife Hamrabari", number: "+8801726471879" },
+    { name: "Lavlo Kaliybari. Votaroffice", number: "+8801712819741" },
+    { name: "Kbrya Via Khadpada", number: "+8801766241284" },
+    { name: "Popey Own. A A A", number: "+8801993360545" },
+    { name: "Jobydur Ricekokar Bagtarpada", number: "+8801898374916" },
+    { name: "C N G. Hafejur. Kahedpada. A", number: "+8801618677475" },
+    { name: "Shawon Polisha", number: "+1-520-414-3521" },
+    { name: "Dando Mukundabari. A A A", number: "+8801832223047" },
+    { name: "Ayenol Nandena", number: "+8801766709270" },
+    { name: "Obdur Rohaman Own   A A", number: "+8801750889412" },
+    { name: "Ezzat  Ali Mukundabari", number: "+8801736374759" },
+    { name: "Bulbul. Hasrabari", number: "+8801746967773" },
+    { name: "Cur  Mozzam Hasra Bari", number: "+8801730859346" },
+    { name: "Van Razzak", number: "+8801797804181" },
+    { name: "Obaidur Rahman Own  A A A", number: "+4915739734950" },
+    { name: "Mong  S A A O Adra", number: "+8801728087227" },
+    { name: "Babul   It Vagarey Gonareytola", number: "+8801713599767" },
+    { name: "Eiles Elektak  Shorabari", number: "+8801785678103" },
+    { name: "Shahim  Allam Own", number: "+8801711872274" },
+    { name: "Auto Komol A A", number: "+8801756472604" },
+    { name: "Repon Mukundabari A A", number: "+8801885851494" },
+    { name: "Joeydur riceka bejeterpada A", number: "017-143-43627 / 017-143-43624" },
+    { name: "Jusna Asha Jamata", number: "+8801923243184" },
+    { name: "Motion Notabor A", number: "+8801768933385" },
+    { name: "Cur Fokire Kakra Hasrabari", number: "+8801885446130" },
+    { name: "Koneka A A A", number: "+8801747743799" },
+    { name: "Sobhan Emam Patanpada", number: "+8801735655606" },
+    { name: "Greel  Dodo", number: "+8801812321184" },
+    { name: "Salim Dore Dekpayd", number: "+8801999178823" },
+    { name: "Alim. Uddin. Golabari", number: "+8801794750384" },
+    { name: "Bahadur  Makar Bagetarpada", number: "+8801745872772" },
+    { name: "Auto. Rohim Mukunda Bari", number: "+8801321978995" },
+    { name: "Asadul Bagetarpada  Bazzar", number: "+8801610366292" },
+    { name: "Mother  Of  Ifrahim", number: "+8801611623173" }
+  ];
+
+  // ---------- GLOBAL STATE ----------
+  let contacts = [...initialContacts]; // current working array
+  let filteredContacts = [...contacts];
+  let activeCategory = 'all'; // 'all' or a letter/number
+  let searchQuery = '';
+  let searchHistory = []; // { query, timestamp }
+  const STORAGE_KEY = 'contact_manager_pro_data';
+  const HISTORY_KEY = 'contact_manager_pro_history';
+
+  // ---------- DOM REFS ----------
+  const tableBody = document.getElementById('tableBody');
+  const emptyState = document.getElementById('emptyState');
+  const totalCountSpan = document.getElementById('totalCount');
+  const filteredCountSpan = document.getElementById('filteredCount');
+  const searchInput = document.getElementById('searchInput');
+  const clearSearchBtn = document.getElementById('clearSearchBtn');
+  const addContactBtn = document.getElementById('addContactBtn');
+  const exportBtn = document.getElementById('exportBtn');
+  const categoryChips = document.getElementById('categoryChips');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalTitle = document.getElementById('modalTitle');
+  const contactNameInput = document.getElementById('contactName');
+  const contactNumberInput = document.getElementById('contactNumber');
+  const editIndexInput = document.getElementById('editIndex');
+  const saveContactBtn = document.getElementById('saveContactBtn');
+  const cancelModalBtn = document.getElementById('cancelModalBtn');
+  const toast = document.getElementById('toast');
+  const toastMessage = document.getElementById('toastMessage');
+  const historyToggleBtn = document.getElementById('historyToggleBtn');
+  const historyPanel = document.getElementById('historyPanel');
+  const historyList = document.getElementById('historyList');
+  const historyCountBadge = document.getElementById('historyCountBadge');
+  const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+
+  // ---------- UTILITIES ----------
+  function showToast(msg, isError = false) {
+    toastMessage.textContent = msg;
+    toast.style.background = isError ? '#ef4444' : '#1e293b';
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  function saveToLocal() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(contacts));
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(searchHistory));
+    } catch (e) { /* ignore quota errors */ }
+  }
+
+  function loadFromLocal() {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          contacts = parsed;
+          filteredContacts = [...contacts];
+        }
+      }
+      const hist = localStorage.getItem(HISTORY_KEY);
+      if (hist) {
+        searchHistory = JSON.parse(hist);
+        if (!Array.isArray(searchHistory)) searchHistory = [];
+      }
+    } catch (e) { /* ignore */ }
+  }
+
+  // ---------- GET FIRST CHARACTER (Bengali + English + numbers) ----------
+  function getFirstChar(name) {
+    if (!name) return '#';
+    const ch = name.trim().charAt(0);
+    // Bengali digits -> keep as is, or map to '০-৯'
+    if (/[০-৯]/.test(ch)) return ch;
+    if (/[0-9]/.test(ch)) return ch;
+    return ch.toUpperCase();
+  }
+
+  // ---------- BUILD CATEGORY CHIPS ----------
+  function buildCategoryChips() {
+    const charSet = new Set();
+    contacts.forEach(c => {
+      const ch = getFirstChar(c.name);
+      charSet.add(ch);
+    });
+    // Always include A-Z, ০-৯, and others
+    const english = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    const bengali = 'অআইঈউঊঋএঐওঔকখগঘঙচছজঝঞটঠডঢণতথদধনপফবভমযরলশষসহড়ঢ়য়ৎংঃঁ'.split('');
+    const digits = '0123456789০১২৩৪৫৬৭৮৯'.split('');
+    const allChars = new Set([...english, ...bengali, ...digits, ...charSet]);
+
+    // Sort: English A-Z, Bengali, digits, others
+    const sorted = Array.from(allChars).sort((a, b) => {
+      const isEngA = /[A-Z]/.test(a);
+      const isEngB = /[A-Z]/.test(b);
+      if (isEngA && isEngB) return a.localeCompare(b);
+      if (isEngA) return -1;
+      if (isEngB) return 1;
+      const isBenA = /[অ-হ]/.test(a);
+      const isBenB = /[অ-হ]/.test(b);
+      if (isBenA && isBenB) return a.localeCompare(b, 'bn');
+      if (isBenA) return -1;
+      if (isBenB) return 1;
+      return a.localeCompare(b);
+    });
+
+    let html = `<div class="chip ${activeCategory === 'all' ? 'active' : ''}" data-cat="all">
+      <i class="fas fa-list"></i> সব <span class="count-badge">${contacts.length}</span>
+    </div>`;
+
+    sorted.forEach(ch => {
+      if (ch === '#') return; // skip
+      const count = contacts.filter(c => getFirstChar(c.name) === ch).length;
+      if (count === 0 && !'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.includes(ch)) return; // show only if has items or common
+      // Show only those with count > 0, plus always show A-Z + digits for filtering possibility
+      if (count === 0 && !/[A-Z0-9০-৯]/.test(ch)) return;
+      const isActive = activeCategory === ch ? 'active' : '';
+      html += `<div class="chip ${isActive}" data-cat="${ch}">
+        ${ch} <span class="count-badge">${count}</span>
+      </div>`;
+    });
+
+    categoryChips.innerHTML = html;
+
+    // Attach event listeners
+    categoryChips.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const cat = chip.dataset.cat;
+        activeCategory = cat === 'all' ? 'all' : cat;
+        // Update active class
+        categoryChips.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        applyFilters();
+      });
+    });
+  }
+
+  // ---------- APPLY FILTERS (search + category) ----------
+  function applyFilters() {
+    const q = searchQuery.toLowerCase().trim();
+
+    filteredContacts = contacts.filter(c => {
+      // category filter
+      if (activeCategory !== 'all') {
+        const ch = getFirstChar(c.name);
+        if (ch !== activeCategory) return false;
+      }
+      // search filter
+      if (q) {
+        const nameMatch = c.name.toLowerCase().includes(q);
+        const numMatch = c.number.toLowerCase().includes(q);
+        if (!nameMatch && !numMatch) return false;
+      }
+      return true;
+    });
+
+    renderTable();
+    updateStats();
+  }
+
+  // ---------- RENDER TABLE ----------
+  function renderTable() {
+    if (filteredContacts.length === 0) {
+      tableBody.innerHTML = '';
+      emptyState.style.display = 'flex';
+      return;
+    }
+    emptyState.style.display = 'none';
+
+    let html = '';
+    filteredContacts.forEach((c, idx) => {
+      const realIndex = contacts.indexOf(c); // find original index for edit/delete
+      const safeNumber = c.number.replace(/'/g, "\\'");
+      const safeName = c.name.replace(/'/g, "\\'");
+      html += `<tr>
+        <td>
+          <div class="contact-name">
+            <i class="fas fa-user-circle"></i>
+            ${escapeHtml(c.name)}
+          </div>
+        </td>
+        <td class="number-cell">${escapeHtml(c.number)}</td>
+        <td class="action-cell">
+          <button class="icon-btn copy" title="কপি" onclick="copyNumber('${safeNumber}')"><i class="fas fa-copy"></i></button>
+          <button class="icon-btn speak" title="শুনুন" onclick="speakNumber('${safeNumber}')"><i class="fas fa-volume-up"></i></button>
+          <button class="icon-btn call" title="কল" onclick="callNumber('${safeNumber}')"><i class="fas fa-phone-alt"></i></button>
+          <button class="icon-btn whatsapp" title="হোয়াটসঅ্যাপ" onclick="openWhatsApp('${safeNumber}')"><i class="fab fa-whatsapp"></i></button>
+          <button class="icon-btn imo" title="ইমো" onclick="openImo('${safeNumber}')"><i class="fas fa-comment-dots"></i></button>
+          <button class="icon-btn edit" title="এডিট" onclick="editContact(${realIndex})"><i class="fas fa-edit"></i></button>
+          <button class="icon-btn delete" title="ডিলিট" onclick="deleteContact(${realIndex})"><i class="fas fa-trash-alt"></i></button>
+        </td>
+      </tr>`;
+    });
+    tableBody.innerHTML = html;
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>"]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      if (m === '"') return '&quot;';
+      return m;
+    });
+  }
+
+  // ---------- UPDATE STATS ----------
+  function updateStats() {
+    totalCountSpan.textContent = contacts.length;
+    filteredCountSpan.textContent = filteredContacts.length;
+  }
+
+  // ---------- SEARCH HANDLER ----------
+  function handleSearch() {
+    const q = searchInput.value;
+    searchQuery = q;
+    if (q.trim().length > 0) {
+      // add to history if different from last
+      const last = searchHistory[0];
+      if (!last || last.query !== q.trim()) {
+        searchHistory.unshift({ query: q.trim(), timestamp: Date.now() });
+        if (searchHistory.length > 20) searchHistory.pop();
+        updateHistoryUI();
+        saveToLocal();
+      }
+    }
+    applyFilters();
+  }
+
+  // ---------- RENDER HISTORY ----------
+  function updateHistoryUI() {
+    historyCountBadge.textContent = searchHistory.length;
+    if (searchHistory.length === 0) {
+      historyList.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:20px;">কোনো হিস্ট্রি নেই</div>`;
+      return;
+    }
+    let html = '';
+    searchHistory.slice(0, 15).forEach(item => {
+      const d = new Date(item.timestamp);
+      const timeStr = d.toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' });
+      html += `<div class="history-item">
+        <span>${escapeHtml(item.query)}</span>
+        <span class="time">${timeStr}</span>
+      </div>`;
+    });
+    historyList.innerHTML = html;
+  }
+
+  // ---------- CRUD ----------
+  function openAddModal() {
+    modalTitle.textContent = 'নতুন কন্টাক্ট';
+    editIndexInput.value = '-1';
+    contactNameInput.value = '';
+    contactNumberInput.value = '';
+    modalOverlay.classList.add('active');
+    contactNameInput.focus();
+  }
+
+  function editContact(index) {
+    if (index < 0 || index >= contacts.length) return;
+    const c = contacts[index];
+    modalTitle.textContent = 'কন্টাক্ট এডিট';
+    editIndexInput.value = index;
+    contactNameInput.value = c.name;
+    contactNumberInput.value = c.number;
+    modalOverlay.classList.add('active');
+    contactNameInput.focus();
+  }
+
+  function deleteContact(index) {
+    if (!confirm('আপনি কি এই কন্টাক্টটি ডিলিট করতে চান?')) return;
+    contacts.splice(index, 1);
+    saveToLocal();
+    buildCategoryChips();
+    applyFilters();
+    showToast('কন্টাক্ট ডিলিট হয়েছে');
+  }
+
+  function saveContact() {
+    const name = contactNameInput.value.trim();
+    const number = contactNumberInput.value.trim();
+    if (!name || !number) {
+      showToast('নাম এবং নাম্বার উভয়ই দিন', true);
+      return;
+    }
+    const editIdx = parseInt(editIndexInput.value);
+    if (editIdx === -1) {
+      // Add new
+      contacts.push({ name, number });
+      showToast('নতুন কন্টাক্ট যোগ হয়েছে');
+    } else {
+      // Edit existing
+      if (editIdx >= 0 && editIdx < contacts.length) {
+        contacts[editIdx] = { name, number };
+        showToast('কন্টাক্ট আপডেট হয়েছে');
+      }
+    }
+    saveToLocal();
+    buildCategoryChips();
+    applyFilters();
+    modalOverlay.classList.remove('active');
+  }
+
+  // ---------- ACTION FUNCTIONS ----------
+  window.copyNumber = function(num) {
+    navigator.clipboard.writeText(num).then(() => showToast('নাম্বার কপি হয়েছে'))
+      .catch(() => showToast('কপি ব্যর্থ', true));
+  };
+
+  window.speakNumber = function(num) {
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(num);
+      utterance.lang = 'bn-BD';
+      speechSynthesis.speak(utterance);
+      showToast('শোনানো হচ্ছে...');
+    } else {
+      showToast('স্পিচ সাপোর্ট নেই', true);
+    }
+  };
+
+  window.callNumber = function(num) {
+    window.location.href = 'tel:' + num;
+  };
+
+  window.openWhatsApp = function(num) {
+    const clean = num.replace(/\D/g, '');
+    window.open('https://wa.me/' + clean, '_blank');
+  };
+
+  window.openImo = function(num) {
+    const clean = num.replace(/\D/g, '');
+    window.open('https://imo.im/' + clean, '_blank');
+  };
+
+  // ---------- EXPORT ----------
+  function exportData() {
+    const dataStr = JSON.stringify(contacts, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'contacts_backup_' + new Date().toISOString().slice(0,10) + '.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('এক্সপোর্ট সম্পন্ন');
+  }
+
+  // ---------- INIT ----------
+  function init() {
+    loadFromLocal();
+    buildCategoryChips();
+    applyFilters();
+    updateHistoryUI();
+
+    // Event listeners
+    searchInput.addEventListener('input', handleSearch);
+    clearSearchBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      searchQuery = '';
+      applyFilters();
+    });
+    addContactBtn.addEventListener('click', openAddModal);
+    exportBtn.addEventListener('click', exportData);
+    saveContactBtn.addEventListener('click', saveContact);
+    cancelModalBtn.addEventListener('click', () => modalOverlay.classList.remove('active'));
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) modalOverlay.classList.remove('active');
+    });
+    historyToggleBtn.addEventListener('click', () => {
+      historyPanel.classList.toggle('active');
+    });
+    clearHistoryBtn.addEventListener('click', () => {
+      searchHistory = [];
+      updateHistoryUI();
+      saveToLocal();
+      showToast('হিস্ট্রি ক্লিয়ার হয়েছে');
+    });
+
+    // Close history panel on outside click
+    document.addEventListener('click', (e) => {
+      if (!historyPanel.contains(e.target) && e.target !== historyToggleBtn && !historyToggleBtn.contains(e.target)) {
+        historyPanel.classList.remove('active');
+      }
+    });
+
+    // Keyboard shortcut ESC to close modal
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        modalOverlay.classList.remove('active');
+        historyPanel.classList.remove('active');
+      }
+    });
+  }
+
+  // Start
+  window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+  </html>
+  
